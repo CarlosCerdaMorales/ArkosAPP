@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="text-align: center; margin-top: 100px;">
+    <h1>Bienvenido a Arkos Store</h1>
+    <p>Descubre nuestros productos y servicios</p>
+
+    {% if user.is_authenticated %}
+        <p>Hola, {{ user.username }} 👋</p>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+        <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a>
+    {% endif %}
+</div>
+{% endblock %}
