@@ -1,3 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/register.css' %}">
+{% endblock %}
 
 {% block content %}
 <h2>Registro de usuario</h2>
@@ -9,4 +15,5 @@
 </form>
 
 <p>¿Ya tiene una cuenta? <a href="{% url 'login' %}">Inicie sesión</a>.</p>
+<a class="reg" href="{% url 'home' %}">Continuar sin iniciar sesión</a>
 {% endblock %}
