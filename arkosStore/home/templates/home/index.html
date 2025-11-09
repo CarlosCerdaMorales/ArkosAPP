@@ -1,16 +1,43 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'home/index.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="container" style="text-align: center; margin-top: 100px;">
-    <h1>Bienvenido a Arkos Store</h1>
-    <p>Descubre nuestros productos y servicios</p>
+<div class="container" style="margin-top: 50px;">
+    <header class="hero-section text-center mb-5">
+        <h1>Bienvenido a NATURSUR, tu centro de Bienestar Unificado</h1>
+        <p class="lead">Simplificamos la gestión de tus citas de masajes y tus pedidos en un solo lugar.</p>
+        <hr>
+    </header>
 
+    <section class="auth-status auth-box mb-5">
     {% if user.is_authenticated %}
-        <p>Hola, {{ user.username }} 👋</p>
-        <a href="{% url 'logout' %}">Cerrar sesión</a>
+        <p style="font-size: 1.2em;">Hola, {{ user.username }} 👋. ¡Estamos listos para atenderte!</p>
+        <div class="button-group">
+            <a href="" class="btn btn-success">Ver mis Citas</a>
+            <a href="" class="btn btn-info">Ir a la Tienda</a>
+        </div>
     {% else %}
-        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
-        <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a>
+        <p>Empieza a gestionar tu bienestar. ¡Únete a la comunidad!</p>
+        <div class="button-group">
+            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+            <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a>
+        </div>
     {% endif %}
+</section>
+
+    <section class="content-intro">
+        <h2>Nuestra Misión</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <h3>Servicios Destacados</h3>
+        <p>Aliquam erat volutpat. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. **Masajes terapéuticos** y de relajación disponibles para reserva inmediata. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+
+        <h3>Compra de Productos</h3>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. **Pedidos de Herbalife** simplificados y entregados directamente a tu puerta. Lorum Ipsum. Lorum Ipsum. Lorum Ipsum. Lorum Ipsum.</p>
+    </section>
 </div>
-{% endblock %}
+{% endblock content %}

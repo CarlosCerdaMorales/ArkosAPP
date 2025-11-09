@@ -9,8 +9,10 @@ main{
     margin-bottom: 10px;
 }
 
-.navbar li{
-    float:left
+.navbar {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    width: 100%; 
 }
 
 .navbar ul{
@@ -19,21 +21,28 @@ main{
     padding: 0px;
     margin: 0px;
     overflow: hidden;
+
+    display: flex; 
+    justify-content: space-between; 
+    width: 100%;
+}
+
+.navbar li{
+    flex-grow: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .navbar a{
     color: white;
     text-decoration: none;
-    padding: 15px;
+    padding: 15px; 
     display: block;
     text-align: center;
+    width: 100%; 
 }
 
 .navbar a:hover{
-    background-color: rgb(42, 124, 42);
-}
-
-.navbar {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
+    background-color: rgb(42, 124, 42); 
 }

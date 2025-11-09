@@ -1,0 +1,58 @@
+.btn {
+    padding: 10px 20px;
+    margin: 5px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+.btn-primary { background-color: rgb(59, 180, 59); color: white; border: 1px solid rgb(59, 180, 59); }
+.btn-secondary { background-color: #f8f9fa; color: #333; border: 1px solid #ccc; }
+.btn-warning { background-color: #ffc107; color: #333; border: 1px solid #ffc107; }
+.btn-success { background-color: #28a745; color: white; border: 1px solid #28a745; }
+.btn-info { background-color: #17a2b8; color: white; border: 1px solid #17a2b8; }
+
+/* Estilos para el texto de la introducción */
+.hero-section h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+.lead {
+    font-size: 1.25em;
+    color: #6c757d;
+}
+.content-intro {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 30px;
+    text-align: justify;
+}
+
+.auth-box {
+    max-width: 600px; /* Define un ancho para que el centrado sea visible */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.auth-status {
+    /* Centra la caja completa (SECTION) en la página */
+    max-width: 600px; 
+    margin-left: auto;
+    margin-right: auto;
+    
+    /* Flexbox: Apila los ítems verticalmente y los centra horizontalmente */
+    display: flex;
+    flex-direction: column; 
+    align-items: center; /* Centra el contenido (párrafos y el nuevo div.button-group) */
+}
+
+/* Nueva regla: Centra los botones dentro de su grupo */
+.button-group {
+    /* Permite que el DIV ocupe el ancho disponible */
+    width: 100%; 
+    /* Centra el contenido en línea (los botones A) */
+    text-align: center; 
+    /* Añadimos un pequeño margen para separarlo del texto de arriba */
+    margin-top: 10px;
+}
