@@ -1,0 +1,59 @@
+[
+  {
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$AFgWmchkJKiRt9dcLTDLPN$YHmQctNIl3jT1tSEBkNk4M7nzGjaOk14VaXw0phT2zg=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "Site",
+      "last_name": "Admin",
+      "email": "admin@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-11-10T20:00:00Z",
+      "role": "ADMIN",
+      "phone_number": "111222333",
+      "address": "123 Admin St, City"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$vknBNpSF03XMHZ8zTiYojS$al2wnHd+6KTORkMbHJENnUV3Ruc4y6NJKi/ZqptFaSY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "user1",
+      "first_name": "First",
+      "last_name": "User",
+      "email": "test1@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-11-10T20:01:00Z",
+      "role": "REG",
+      "phone_number": "444555666",
+      "address": "456 User Ave, Town"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$vknBNpSF03XMHZ8zTiYojS$al2wnHd+6KTORkMbHJENnUV3Ruc4y6NJKi/ZqptFaSY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "user2",
+      "first_name": "Second",
+      "last_name": "User",
+      "email": "test2@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-11-10T20:02:00Z",
+      "role": "REG",
+      "phone_number": null,
+      "address": null
+    }
+  }
+]
