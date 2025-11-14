@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Trabajador(models.Model):
+class Worker(models.Model):
     nombre = models.CharField(max_length=120)
     especialidad = models.CharField(max_length=120)
 
