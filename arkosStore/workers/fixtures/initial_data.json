@@ -1,0 +1,50 @@
+[
+  {
+    "model": "workers.worker",
+    "pk": 1,
+    "fields": {
+      "name": "Peluquín Skywalker",
+      "specialty": "TYPE1"
+    }
+  },
+  {
+    "model": "workers.worker",
+    "pk": 2,
+    "fields": {
+      "name": "Don Chewbacca de la Mancha",
+      "specialty": "TYPE2"
+    }
+  },
+  {
+    "model": "workers.worker",
+    "pk": 3,
+    "fields": {
+      "name": "Paco Paquete",
+      "specialty": "TYPE1"
+    }
+  },
+  {
+    "model": "workers.worker",
+    "pk": 4,
+    "fields": {
+      "name": "Susi Susto",
+      "specialty": "TYPE2"
+    }
+  },
+  {
+    "model": "workers.worker",
+    "pk": 5,
+    "fields": {
+      "name": "Hanzo González",
+      "specialty": "TYPE1"
+    }
+  },
+  {
+    "model": "workers.worker",
+    "pk": 6,
+    "fields": {
+      "name": "Genji González",
+      "specialty": "TYPE2"
+    }
+  }
+]
