@@ -4,12 +4,14 @@ from django.db import models
 
 class Worker(models.Model):
     class AppointmentType(models.TextChoices):
-        TYPE1 = 'TYPE1', 'T1'
-        TYPE2 = 'TYPE2', 'T2'
-        TYPE3 = 'TYPE3', 'T3'
+        MASAJE = 'Masaje', 'Osteopatía y Masaje Holístico'
+        PAR = 'ParBiomagnético', 'Par Biomagnético Equilibrado'
+        EMOCIONES = 'TécnicasEmocionales', 'Técnicas Emocionales Adaptadas'
+        NUTRICION = 'AsesoramientoNutricional', 'Asesoramiento Nutricional'
+        OTRO = 'Otro', 'Otro'
     
     name = models.CharField(max_length=120)
-    specialty = models.CharField(max_length=20, choices=AppointmentType.choices, default=AppointmentType.TYPE1)
+    specialty = models.CharField(max_length=50, choices=AppointmentType.choices, default=AppointmentType.OTRO)
 
     def __str__(self):
-        return f"{self.name} — {self.specialty}"
+        return f"{self.name} — {self.get_specialty_display()}"

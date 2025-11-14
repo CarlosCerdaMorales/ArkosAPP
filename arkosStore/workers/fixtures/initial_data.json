@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "Peluquín Skywalker",
-      "specialty": "TYPE1"
+      "specialty": "Masaje"
     }
   },
   {
@@ -12,7 +12,7 @@
     "pk": 2,
     "fields": {
       "name": "Don Chewbacca de la Mancha",
-      "specialty": "TYPE2"
+      "specialty": "ParBiomagnético"
     }
   },
   {
@@ -20,7 +20,7 @@
     "pk": 3,
     "fields": {
       "name": "Paco Paquete",
-      "specialty": "TYPE1"
+      "specialty": "TécnicasEmocionales"
     }
   },
   {
@@ -28,7 +28,7 @@
     "pk": 4,
     "fields": {
       "name": "Susi Susto",
-      "specialty": "TYPE2"
+      "specialty": "AsesoramientoNutricional"
     }
   },
   {
@@ -36,7 +36,7 @@
     "pk": 5,
     "fields": {
       "name": "Hanzo González",
-      "specialty": "TYPE1"
+      "specialty": "Masaje"
     }
   },
   {
@@ -44,7 +44,7 @@
     "pk": 6,
     "fields": {
       "name": "Genji González",
-      "specialty": "TYPE2"
+      "specialty": "ParBiomagnético"
     }
   }
 ]
