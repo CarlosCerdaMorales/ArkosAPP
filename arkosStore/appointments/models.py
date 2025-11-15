@@ -1,7 +1,7 @@
 from django.db import models
 
 from accounts.models import User
-from worker.models import Worker
+from workers.models import Worker
 
 
 
