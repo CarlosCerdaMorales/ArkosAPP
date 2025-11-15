@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'home/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="contact-page">
+    <section class="contact-hero">
+        <div class="contact-hero-left">
+            <h1>CONÉCTATE CON NOSOTROS</h1>
+            <p>Síguenos en nuestras redes sociales</p>
+        </div>
+        <div class="contact-hero-right">
+            <div class="contact-owner-avatar">
+                <img src="{% static 'home/owner.jpg' %}" alt="Propietario de Natursur">
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-socials">
+        <a href="https://www.facebook.com/natursur" target="_blank" class="social-card">
+            <div class="social-icon-container">
+                <img src="{% static 'home/icons/facebook_logo.png' %}" class="social-img">
+            </div>
+            <p class="social-username">Fernando Escalona Cuaresma</p>
+        </a>
+
+        <a href="https://www.instagram.com/yosoyescalona/?hl=es" target="_blank" class="social-card">
+            <div class="social-icon-container">
+                <img src="{% static 'home/icons/instagram_logo.png' %}" class="social-img">
+            </div>
+            <p class="social-username">@yosoyescalona</p>
+        </a>
+
+        <a href="https://www.youtube.com/@natursur" target="_blank" class="social-card">
+            <div class="social-icon-container">
+                <img src="{% static 'home/icons/youtube_logo.png' %}" class="social-img">
+            </div>
+            <p class="social-username">@natursur</p>
+        </a>
+    </section>
+</div>
+{% endblock %}
