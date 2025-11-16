@@ -2,18 +2,37 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'accounts/login.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/login.css' %}">
 {% endblock %}
 
 {% block content %}
-<h2>Inicio de sesión</h2>
+<div class="form-container">
+    
+    <div class="form-image">
+        </div>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Iniciar sesión</button>
-</form>
+    <div class="form-content">
+        <h2>Inicio de sesión</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Nombre de usuario</label>
+                {{ form.username }} 
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                {{ form.password }}
+            </div>
+            
+            <button type="submit">Iniciar sesión</button>
+        </form>
 
-<p class="reg">¿No tiene una cuenta? <a href="{% url 'register' %}">Regístrese</a>.</p>
-<a class="reg" href="{% url 'home' %}">Continuar sin iniciar sesión</a>
+        <p class="reg">¿No tiene una cuenta? <a href="{% url 'register' %}">Regístrese</a>.</p>
+        <a class="reg" href="{% url 'home' %}">Continuar sin iniciar sesión</a>
+    </div>
+
+</div>
 {% endblock %}

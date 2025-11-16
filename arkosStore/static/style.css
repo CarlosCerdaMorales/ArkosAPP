@@ -7,42 +7,86 @@ main{
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 10px;
+    padding-top: 60px;
 }
 
 .navbar {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     width: 100%; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
 
 .navbar ul{
     list-style-type: none;
-    background-color: rgb(59, 180, 59);
+    background-color: transparent;
     padding: 0px;
     margin: 0px;
     overflow: hidden;
 
+    justify-content: center;
+    align-items: center;
     display: flex; 
     justify-content: space-between; 
     width: 100%;
 }
 
 .navbar li{
-    flex-grow: 1; 
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+.navbar li.logo a {
+    font-size: 1.5em; 
+    font-weight: 700; 
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .navbar a{
-    color: white;
+    color: #00373E;
     text-decoration: none;
+    position: relative;
     padding: 15px; 
     display: block;
     text-align: center;
     width: 100%; 
+    transition: color ease-in-out 400ms;}
+
+.navbar a:hover {
+    color: #00373E; 
 }
 
-.navbar a:hover{
-    background-color: rgb(42, 124, 42); 
+.navbar a::after {
+    content: '';
+    display: block;
+    height: 3px; 
+    background-color: #00373E; 
+    position: absolute;
+    bottom: 5px; 
+    left: 50%; 
+    width: 0%; 
+    opacity: 0;
+    
+    transition: all ease-in-out 400ms;
+    transform: translateX(-50%);
+}
+.navbar li.logo a:hover {
+    color: #00373E;
+}
+.navbar a:hover::after {
+    width: calc(100% - 30px); 
+    opacity: 1;
+}
+
+.navbar li.logo a:hover {
+    color: #00373E;
+}
+
+.navbar a:hover::before {
+    width: 100%;
 }
