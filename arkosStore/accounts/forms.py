@@ -21,7 +21,6 @@ class CustomUserCreationForm(UserCreationForm):
     phone_number = forms.CharField(
         label='Teléfono',
         max_length=20,
-        required=False,
         widget=forms.TextInput(attrs={'placeholder': 'Tu número de teléfono'})
     )
     email = forms.EmailField(
@@ -31,7 +30,6 @@ class CustomUserCreationForm(UserCreationForm):
     address = forms.CharField(
         label='Dirección',
         max_length=255,
-        required=False,
         widget=forms.TextInput(attrs={'placeholder': 'Tu dirección'})
     )
     password1 = forms.CharField(

@@ -18,7 +18,7 @@
                 <li><a href="">SERVICIOS</a></li>
                 <li><a href="">FISIOTERAPEUTAS</a></li>
                 <li><a href="">RECURSOS</a></li>
-                <li><a href="">CONTACTO</a></li>
+                <li><a href="{% url 'contact' %}">CONTACTO</a></li>
                 {% if user.is_authenticated and user.is_staff %}
                     <li><a href="/admin">Panel de administración</a></li>
                 {% endif %}

@@ -14,7 +14,7 @@
       "is_active": true,
       "date_joined": "2025-11-10T20:00:00Z",
       "role": "ADMIN",
-      "phone_number": "111222333",
+      "phone_number": "+9999 123123123123123",
       "address": "123 Admin St, City"
     }
   },
@@ -33,7 +33,7 @@
       "is_active": true,
       "date_joined": "2025-11-10T20:01:00Z",
       "role": "REG",
-      "phone_number": "444555666",
+      "phone_number": "+34 111111111122222",
       "address": "456 User Ave, Town"
     }
   },
@@ -52,8 +52,8 @@
       "is_active": true,
       "date_joined": "2025-11-10T20:02:00Z",
       "role": "REG",
-      "phone_number": null,
-      "address": null
+      "phone_number": "+353 555555555544444",
+      "address": "789 User Blvd, Village"
     }
   }
 ]
