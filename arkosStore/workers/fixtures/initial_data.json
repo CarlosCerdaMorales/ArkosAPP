@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "Peluquín Skywalker",
-      "specialty": "Masaje"
+      "specialty": "OSTEOPATIA_MASAJE"
     }
   },
   {
@@ -12,7 +12,7 @@
     "pk": 2,
     "fields": {
       "name": "Don Chewbacca de la Mancha",
-      "specialty": "ParBiomagnético"
+      "specialty": "PAR_MAGNETICO"
     }
   },
   {
@@ -20,7 +20,7 @@
     "pk": 3,
     "fields": {
       "name": "Paco Paquete",
-      "specialty": "TécnicasEmocionales"
+      "specialty": "TECNICAS_EMOCIONALES"
     }
   },
   {
@@ -28,7 +28,7 @@
     "pk": 4,
     "fields": {
       "name": "Susi Susto",
-      "specialty": "AsesoramientoNutricional"
+      "specialty": "ASESORAMIENTO_NUTRICIONAL"
     }
   },
   {
@@ -36,7 +36,7 @@
     "pk": 5,
     "fields": {
       "name": "Hanzo González",
-      "specialty": "Masaje"
+      "specialty": "OSTEOPATIA_MASAJE"
     }
   },
   {
@@ -44,7 +44,7 @@
     "pk": 6,
     "fields": {
       "name": "Genji González",
-      "specialty": "ParBiomagnético"
+      "specialty": "PAR_MAGNETICO"
     }
   }
 ]

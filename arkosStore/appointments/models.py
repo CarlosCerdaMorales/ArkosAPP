@@ -1,26 +1,18 @@
 from django.db import models
 
 from accounts.models import User
-from workers.models import Worker
-
-
+from workers.models import Worker, TypeChoices
 
 # Create your models here.
 
-class Appointment(models.Model):
-    class StatusChoices(models.TextChoices):
+class StatusChoices(models.TextChoices):
         PENDING = 'PENDIENTE', 'Pendiente'
         CONFIRMED = 'CONFIRMADA', 'Confirmada'
         COMPLETED = 'COMPLETADA', 'Completada'
         CANCELLED = 'CANCELADA', 'Cancelada'
 
-    class TypeChoices(models.TextChoices):
-        OSTEOPATHY_MASSAGE = 'OSTEOPATIA_MASAJE', 'Osteopatía y Masaje Holístico'
-        PAR_MAGNETIC = 'PAR_MAGNETICO', 'Par Biomagnético Equilibrado'
-        EMOTIONAL_TECH = 'TECNICAS_EMOCIONALES', 'Técnicas Emocionales Adaptadas'
-        NUTRITIONAL_ADVICE = 'ASESORAMIENTO_NUTRICIONAL', 'Asesoramiento Nutricional'
 
-
+class Appointment(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

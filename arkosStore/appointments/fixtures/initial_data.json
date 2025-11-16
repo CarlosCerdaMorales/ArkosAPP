@@ -1,0 +1,68 @@
+[
+  {
+    "model": "appointments.appointment",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "worker": 1,
+      "datetime": "2025-10-15T10:00:00Z",
+      "status": "COMPLETADA",
+      "appointment_type": "OSTEOPATIA_MASAJE"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "worker": 2,
+      "datetime": "2025-10-20T14:30:00Z",
+      "status": "COMPLETADA",
+      "appointment_type": "PAR_MAGNETICO"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "worker": 3,
+      "datetime": "2025-11-20T09:00:00Z",
+      "status": "CONFIRMADA",
+      "appointment_type": "TECNICAS_EMOCIONALES"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "worker": 4,
+      "datetime": "2025-11-22T11:00:00Z",
+      "status": "PENDIENTE",
+      "appointment_type": "ASESORAMIENTO_NUTRICIONAL"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 5,
+    "fields": {
+      "user": 2,
+      "worker": 5,
+      "datetime": "2025-11-01T16:00:00Z",
+      "status": "CANCELADA",
+      "appointment_type": "OSTEOPATIA_MASAJE"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 6,
+    "fields": {
+      "user": 3,
+      "worker": 6,
+      "datetime": "2025-11-05T10:00:00Z",
+      "status": "COMPLETADA",
+      "appointment_type": "PAR_MAGNETICO"
+    }
+  }
+]
