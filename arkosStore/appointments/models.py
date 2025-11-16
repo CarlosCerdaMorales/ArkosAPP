@@ -21,30 +21,30 @@ class Appointment(models.Model):
         NUTRITIONAL_ADVICE = 'ASESORAMIENTO_NUTRICIONAL', 'Asesoramiento Nutricional'
 
 
-    usuario = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='client_appointments'
     )
 
-    trabajador = models.ForeignKey(
+    worker = models.ForeignKey(
         Worker,
         on_delete=models.CASCADE,
         related_name='worker_appointments'
     )
 
-    fecha = models.DateTimeField()
-    estado = models.CharField(
+    datetime = models.DateTimeField()
+    status = models.CharField(
         max_length=10,
         choices=StatusChoices.choices,
         default=StatusChoices.PENDING)
     
-    tipo = models.CharField(
+    appointment_type = models.CharField(
         max_length=30,
         choices=TypeChoices.choices,
         default=TypeChoices.OSTEOPATHY_MASSAGE
     )
 
     def __str__(self):
-        return f"Cita de {self.usuario.username} con {self.trabajador} el {self.fecha.strftime('%Y-%m-%d %H:%M')}"
+        return f"Cita de {self.user.username} con {self.worker} el {self.datetime.strftime('%Y-%m-%d %H:%M')}"
 
