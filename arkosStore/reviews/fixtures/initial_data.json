@@ -1,0 +1,22 @@
+[
+  {
+    "model": "reviews.review",
+    "pk": 1,
+    "fields": {
+      "rating": 5,
+      "comment": "¡Peluquín es un máquina! Salí nuevo de la sesión de osteopatía. Totalmente recomendado.",
+      "date": "2025-10-16",
+      "appointment": 1
+    }
+  },
+  {
+    "model": "reviews.review",
+    "pk": 2,
+    "fields": {
+      "rating": 4,
+      "comment": "Muy interesante la técnica del Par Biomagnético. Don Chewbacca es muy profesional.",
+      "date": "2025-10-21",
+      "appointment": 2
+    }
+  }
+]
