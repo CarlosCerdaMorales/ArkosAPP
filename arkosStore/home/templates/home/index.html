@@ -17,8 +17,7 @@
     {% if user.is_authenticated %}
         <p style="font-size: 1.2em;">Hola, {{ user.username }} 👋. ¡Estamos listos para atenderte!</p>
         <div class="button-group">
-            <a href="" class="btn btn-success">Ver mis Citas</a>
-            <a href="" class="btn btn-info">Ir a la Tienda</a>
+            <a href="{% url 'create_appointment' %}" class="btn btn-success">Coger una cita</a>
         </div>
     {% else %}
         <p>Empieza a gestionar tu bienestar. ¡Únete a la comunidad!</p>

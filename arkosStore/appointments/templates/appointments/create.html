@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'appointments/create.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="profile-wrapper">
+    
+    <h2 class="profile-title">Reserva tu cita</h2>
+
+    <div class="profile-card">
+        
+        <p>Elige un día y una hora disponibles en el calendario a continuación.</p>
+
+        <div class="calendly-inline-widget" data-url="https://calendly.com/spotifyxdcarlos" style="min-width:320px;height:700px;"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    
+    </div>
+</div>
+
+{% endblock %}

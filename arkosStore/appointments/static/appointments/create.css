@@ -1,0 +1,15 @@
+.profile-card p {
+    text-align: center;
+    color: #00373E;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+        
+.calendly-inline-widget {
+    border-radius: 8px;
+}
+
+.profile-title {
+    text-align: center;
+    color: #00373E;
+}

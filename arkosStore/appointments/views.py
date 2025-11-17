@@ -23,3 +23,7 @@ def upcoming_appointments_view(request):
         datetime__gte=timezone.now()
     ).order_by('datetime')
     return render(request, 'appointments/upcoming.html', {'appointments': appointments})
+
+@login_required
+def create_appointment_view(request):
+    return render(request, 'appointments/create.html')

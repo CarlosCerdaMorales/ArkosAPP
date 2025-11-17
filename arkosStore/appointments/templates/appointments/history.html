@@ -13,9 +13,9 @@
         {% for app in appointments %}
         <div class="history-item">
             <div class="history-data">
-                <b>Fecha:</b> {{ app.date|date:"d/m/Y" }}
-                <b>Tipo:</b> {{ app.service.name }}
-                <b>Trabajador:</b> {{ app.therapist.user.get_full_name }}
+                <b>Fecha:</b> {{ app.datetime|date:"d/m/Y" }}
+                <b>Tipo:</b> {{ app.get_appointment_type_display }}
+                <b>Trabajador:</b> {{ app.worker.name }}
             </div>
             <button class="review-btn">Dejar reseña</button>
         </div>
