@@ -1,0 +1,66 @@
+.profile-wrapper {
+    max-width: 800px;
+    margin: 80px auto;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.profile-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #00373E;
+}
+
+.profile-card {
+    background-color: #a6dce8;
+    padding: 30px 50px;
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+.profile-field {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.profile-field label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: #00373E;
+}
+
+.profile-field input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #cccccc;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.profile-buttons {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+}
+
+.profile-btn {
+    width: 320px;
+    padding: 10px 0;
+    border: none;
+    border-radius: 24px;
+    background-color: #00373E;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.profile-btn:focus,
+.profile-btn:hover {
+    outline: none;
+    opacity: 0.9;
+}
