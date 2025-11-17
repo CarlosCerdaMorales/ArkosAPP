@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'appointments/history.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="history-wrapper">
+    <h2 class="history-title">Historial de citas</h2>
+
+    <div class="history-card">
+        {% for app in appointments %}
+        <div class="history-item">
+            <div class="history-data">
+                <b>Fecha:</b> {{ app.date|date:"d/m/Y" }}
+                <b>Tipo:</b> {{ app.service.name }}
+                <b>Trabajador:</b> {{ app.therapist.user.get_full_name }}
+            </div>
+            <button class="review-btn">Dejar reseña</button>
+        </div>
+        {% empty %}
+        <p class="no-appointments">No hay citas finalizadas.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

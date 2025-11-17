@@ -64,3 +64,22 @@
     outline: none;
     opacity: 0.9;
 }
+
+.form-errors {
+    margin-bottom: 16px;
+    padding-left: 18px;
+    color: #b00020;
+    text-align: left;
+    font-size: 13px;
+}
+
+.profile-form-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.profile-buttons a {
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}

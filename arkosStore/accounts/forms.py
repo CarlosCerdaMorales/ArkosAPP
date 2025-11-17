@@ -55,4 +55,23 @@ class CustomLoginForm(AuthenticationForm):
         label='Contraseña',
         widget=forms.PasswordInput(attrs={'placeholder': 'Tu contraseña'})
     )
+
+
+class ProfileForm(forms.ModelForm):
+    first_name = forms.RegexField(
+        regex=r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$',
+        max_length=150,
+        required=True
+    )
+    last_name = forms.RegexField(
+        regex=r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$',
+        max_length=150,
+        required=True
+    )
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
     

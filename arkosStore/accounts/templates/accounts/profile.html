@@ -10,25 +10,50 @@
     <h2 class="profile-title">Mi perfil</h2>
 
     <div class="profile-card">
-        <div class="profile-field">
-            <label>Nombre</label>
-            <input type="text" value="{{ user.first_name }}" readonly>
-        </div>
+        <form method="post">
+            {% csrf_token %}
 
-        <div class="profile-field">
-            <label>Apellidos</label>
-            <input type="text" value="{{ user.last_name }}" readonly>
-        </div>
+            {% if form.errors %}
+            <ul class="form-errors">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
 
-        <div class="profile-field">
-            <label>Correo electrónico</label>
-            <input type="text" value="{{ user.email }}" readonly>
-        </div>
+            <div class="profile-field">
+                <label>Nombre</label>
+                {{ form.first_name }}
+            </div>
+
+            <div class="profile-field">
+                <label>Apellidos</label>
+                {{ form.last_name }}
+            </div>
+
+            <div class="profile-field">
+                <label>Correo electrónico</label>
+                {{ form.email }}
+            </div>
+
+            <div class="profile-form-actions">
+                <button type="submit" class="profile-btn">Editar</button>
+            </div>
+        </form>
     </div>
 
     <div class="profile-buttons">
-        <button class="profile-btn">Ver historial de citas</button>
-        <button class="profile-btn">Ver citas programadas</button>
+        <a href="{% url 'appointment_history' %}" class="profile-btn">
+            Ver historial de citas
+        </a>
+        <a href="{% url 'upcoming_appointments' %}" class="profile-btn">
+            Ver citas programadas
+        </a>
     </div>
 </div>
 {% endblock %}

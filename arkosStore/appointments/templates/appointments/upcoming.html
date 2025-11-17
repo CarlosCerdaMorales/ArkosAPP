@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'appointments/upcoming.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="up-wrapper">
+    <h2 class="up-title">Citas programadas</h2>
+
+    <div class="up-card">
+        {% for app in appointments %}
+        <div class="up-item">
+            <div class="up-data">
+                <b>Fecha:</b> {{ app.datetime|date:"d/m/Y" }}
+                <b>Tipo:</b> {{ app.get_appointment_type_display }}
+                <b>Trabajador:</b> {{ app.worker.name }}
+            </div>
+            <button class="cancel-btn">Cancelar</button>
+        </div>
+        {% empty %}
+        <p class="no-appointments">No hay citas programadas.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
