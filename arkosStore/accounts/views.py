@@ -38,6 +38,9 @@ def profile_view(request):
         form = ProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
+            return redirect('/accounts/profile/?updated=1')
     else:
         form = ProfileForm(instance=request.user)
+
     return render(request, 'accounts/profile.html', {'form': form})
+

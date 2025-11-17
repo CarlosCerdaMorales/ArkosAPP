@@ -6,11 +6,18 @@
 {% endblock %}
 
 {% block content %}
+
+{% if request.GET.updated %}
+<div id="success-banner" class="success-banner">
+    Cambios guardados correctamente
+</div>
+{% endif %}
+
 <div class="profile-wrapper">
     <h2 class="profile-title">Mi perfil</h2>
 
     <div class="profile-card">
-        <form method="post">
+        <form method="post" id="profile-form">
             {% csrf_token %}
 
             {% if form.errors %}
@@ -28,19 +35,20 @@
 
             <div class="profile-field">
                 <label>Nombre</label>
-                {{ form.first_name }}
+                <input type="text" name="first_name" value="{{ form.first_name.value }}" 
+                    required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+">
             </div>
 
             <div class="profile-field">
                 <label>Apellidos</label>
-                {{ form.last_name }}
+                <input type="text" name="last_name" value="{{ form.last_name.value }}" 
+                    required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+">
             </div>
 
             <div class="profile-field">
                 <label>Correo electrónico</label>
-                {{ form.email }}
+                <input type="email" name="email" value="{{ form.email.value }}" required>
             </div>
-
             <div class="profile-form-actions">
                 <button type="submit" class="profile-btn">Editar</button>
             </div>
@@ -56,4 +64,62 @@
         </a>
     </div>
 </div>
+
+<div class="confirm-modal-overlay" id="confirmOverlay">
+    <div class="confirm-modal">
+        <div class="confirm-title">Confirmar cambios</div>
+        <div class="confirm-text">
+            Estás a punto de editar tus datos personales. ¿Seguro que quieres continuar?
+        </div>
+        <div class="confirm-btns">
+            <button class="modal-btn modal-btn-cancel" id="modalCancel">Cancelar</button>
+            <button class="modal-btn modal-btn-confirm" id="modalConfirm">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('profile-form');
+    const overlay = document.getElementById('confirmOverlay');
+    const modalConfirm = document.getElementById('modalConfirm');
+    const modalCancel = document.getElementById('modalCancel');
+
+    const originalValues = {
+        first_name: form.first_name.value,
+        last_name: form.last_name.value,
+        email: form.email.value
+    };
+
+    let allowSubmit = false;
+
+    form.addEventListener('submit', function (e) {
+        if (allowSubmit) return;
+        e.preventDefault();
+        if (!form.reportValidity()) return;
+        overlay.style.display = "flex";
+    });
+
+    modalCancel.addEventListener('click', function () {
+        overlay.style.display = "none";
+        form.first_name.value = originalValues.first_name;
+        form.last_name.value = originalValues.last_name;
+        form.email.value = originalValues.email;
+    });
+
+    modalConfirm.addEventListener('click', function () {
+        allowSubmit = true;
+        form.submit();
+    });
+
+    const banner = document.getElementById('success-banner');
+    if (banner) {
+        setTimeout(() => {
+            banner.style.opacity = "0";
+            setTimeout(() => banner.remove(), 500);
+        }, 2500);
+    }
+});
+</script>
+
 {% endblock %}
