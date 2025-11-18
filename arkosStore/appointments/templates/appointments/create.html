@@ -18,7 +18,7 @@
                 <option value="">-- Elige una opción --</option>
                 {% for service in services %}
                     <option value="{{ service.id }}" data-duration="{{ service.duration }}">
-                        {{ service.name }} ({{ service.duration }} min)
+                        {{ service.get_name_display }} (sesión de {{ service.duration }} min)
                     </option>
                 {% endfor %}
             </select>
