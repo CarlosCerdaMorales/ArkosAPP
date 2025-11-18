@@ -9,9 +9,20 @@ class TypeChoices(models.TextChoices):
         NUTRITIONAL_ADVICE = 'ASESORAMIENTO_NUTRICIONAL', 'Asesoramiento Nutricional'
         OTHER = 'OTRO', 'Otro'
 
-class Worker(models.Model):
-    name = models.CharField(max_length=120)
-    specialty = models.CharField(max_length=50, choices=TypeChoices.choices, default=TypeChoices.OTHER)
+class Specialty(models.Model):
+    name = models.CharField(
+        max_length=50, 
+        choices=TypeChoices.choices, 
+        unique=True
+    )
 
     def __str__(self):
-        return f"{self.name} — {self.get_specialty_display()}"
+        return self.get_name_display()
+
+class Worker(models.Model):
+    name = models.CharField(max_length=120)
+    specialties = models.ManyToManyField(Specialty, related_name='workers', blank=True)
+
+    def __str__(self):
+        specialties_list = ", ".join([s.get_name_display() for s in self.specialties.all()])
+        return f"{self.name} — {specialties_list}"

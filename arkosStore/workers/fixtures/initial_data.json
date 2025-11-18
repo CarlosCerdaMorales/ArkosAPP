@@ -1,10 +1,45 @@
 [
   {
+    "model": "workers.specialty",
+    "pk": 1,
+    "fields": {
+      "name": "OSTEOPATIA_MASAJE"
+    }
+  },
+  {
+    "model": "workers.specialty",
+    "pk": 2,
+    "fields": {
+      "name": "PAR_MAGNETICO"
+    }
+  },
+  {
+    "model": "workers.specialty",
+    "pk": 3,
+    "fields": {
+      "name": "TECNICAS_EMOCIONALES"
+    }
+  },
+  {
+    "model": "workers.specialty",
+    "pk": 4,
+    "fields": {
+      "name": "ASESORAMIENTO_NUTRICIONAL"
+    }
+  },
+  {
+    "model": "workers.specialty",
+    "pk": 5,
+    "fields": {
+      "name": "OTRO"
+    }
+  },
+  {
     "model": "workers.worker",
     "pk": 1,
     "fields": {
       "name": "Peluquín Skywalker",
-      "specialty": "OSTEOPATIA_MASAJE"
+      "specialties": [1]
     }
   },
   {
@@ -12,7 +47,7 @@
     "pk": 2,
     "fields": {
       "name": "Don Chewbacca de la Mancha",
-      "specialty": "PAR_MAGNETICO"
+      "specialties": [2]
     }
   },
   {
@@ -20,7 +55,7 @@
     "pk": 3,
     "fields": {
       "name": "Paco Paquete",
-      "specialty": "TECNICAS_EMOCIONALES"
+      "specialties": [3]
     }
   },
   {
@@ -28,7 +63,7 @@
     "pk": 4,
     "fields": {
       "name": "Susi Susto",
-      "specialty": "ASESORAMIENTO_NUTRICIONAL"
+      "specialties": [4]
     }
   },
   {
@@ -36,7 +71,7 @@
     "pk": 5,
     "fields": {
       "name": "Hanzo González",
-      "specialty": "OSTEOPATIA_MASAJE"
+      "specialties": [1]
     }
   },
   {
@@ -44,7 +79,7 @@
     "pk": 6,
     "fields": {
       "name": "Genji González",
-      "specialty": "PAR_MAGNETICO"
+      "specialties": [2]
     }
   }
 ]

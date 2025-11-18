@@ -13,29 +13,11 @@ class StatusChoices(models.TextChoices):
 
 
 class Appointment(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='client_appointments'
-    )
-
-    worker = models.ForeignKey(
-        Worker,
-        on_delete=models.CASCADE,
-        related_name='worker_appointments'
-    )
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='client_appointments')
+    worker = models.ForeignKey(Worker, on_delete=models.CASCADE, related_name='worker_appointments')
     datetime = models.DateTimeField()
-    status = models.CharField(
-        max_length=10,
-        choices=StatusChoices.choices,
-        default=StatusChoices.PENDING)
-    
-    appointment_type = models.CharField(
-        max_length=30,
-        choices=TypeChoices.choices,
-        default=TypeChoices.OSTEOPATHY_MASSAGE
-    )
+    status = models.CharField(max_length=10, choices=StatusChoices.choices, default=StatusChoices.PENDING)
+    appointment_type = models.CharField(max_length=30, choices=TypeChoices.choices, default=TypeChoices.OSTEOPATHY_MASSAGE)
 
     def __str__(self):
         return f"Cita de {self.user.username} con {self.worker} el {self.datetime.strftime('%Y-%m-%d %H:%M')}"
