@@ -18,6 +18,6 @@ class Review(models.Model):
 
     def __str__(self):
         try:
-            return f"Review ({self.rating}/5) de {self.appointment.user.username} para la cita {self.appointment.id}"
+            return f"Review ({self.rating}/5) de {self.appointment.user.username} para la cita {self.appointment.datetime.strftime('%Y-%m-%d %H:%M')}"
         except:
             return f"Review ({self.rating}/5)"
