@@ -1,15 +1,41 @@
-.profile-card p {
-    text-align: center;
-    color: #00373E;
-    font-size: 1.1em;
-    font-weight: 500;
+.step-hidden {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s;
 }
-        
-.calendly-inline-widget {
-    border-radius: 8px;
+.step-visible {
+    opacity: 1;
+    pointer-events: all;
 }
 
-.profile-title {
-    text-align: center;
-    color: #00373E;
+.slot-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.time-slot {
+    padding: 8px 5px;
+    font-size: 0.95em;
+}
+
+.time-slot:hover {
+    background-color: #dcf4f9;
+}
+
+.time-slot.selected {
+    background-color: #00373E;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+#real-django-form {
+    display: none;
+}
+
+.loading-text {
+    font-size: 0.9em;
+    color: #666;
+    font-style: italic;
 }

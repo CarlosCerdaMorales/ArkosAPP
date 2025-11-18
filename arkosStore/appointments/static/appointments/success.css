@@ -1,0 +1,31 @@
+.success-icon {
+    font-size: 60px;
+    color: #19a463;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.receipt-data {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: left;
+    border: 1px solid #bfe3ef;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1.05em;
+}
+
+.receipt-label {
+    color: #00373E;
+    font-weight: 600;
+}
+
+.receipt-value {
+    color: #333;
+}

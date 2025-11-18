@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'appointments/success.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-wrapper">
+    
+    <div class="profile-card" style="text-align: center;">
+        
+        <span class="success-icon">✓</span>
+        
+        <h2 class="profile-title" style="margin-bottom: 10px;">¡Reserva Confirmada!</h2>
+        <p>Tu cita ha sido agendada correctamente.</p>
+
+        <div class="receipt-data">
+            <div class="receipt-row">
+                <span class="receipt-label">Servicio:</span>
+                <span class="receipt-value">{{ appointment.service.get_name_display }}</span>
+            </div>
+            <div class="receipt-row">
+                <span class="receipt-label">Día:</span>
+                <span class="receipt-value">{{ appointment.datetime|date:"d/m/Y" }}</span>
+            </div>
+            <div class="receipt-row">
+                <span class="receipt-label">Hora:</span>
+                <span class="receipt-value">{{ appointment.datetime|date:"H:i" }}</span>
+            </div>
+            <div class="receipt-row">
+                <span class="receipt-label">Especialista:</span>
+                <span class="receipt-value">{{ appointment.worker.name }}</span>
+            </div>
+             <div class="receipt-row">
+                <span class="receipt-label">Duración:</span>
+                <span class="receipt-value">{{ appointment.service.duration }} min</span>
+            </div>
+        </div>
+
+        <div class="profile-form-actions">
+            <a href="{% url 'upcoming_appointments' %}" class="profile-btn">
+                Ver mis reservas
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

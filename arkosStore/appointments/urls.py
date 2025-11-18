@@ -5,4 +5,6 @@ urlpatterns = [
     path('history/', views.appointment_history_view, name='appointment_history'),
     path('upcoming/', views.upcoming_appointments_view, name='upcoming_appointments'),
     path('create/', views.create_appointment_view, name='create_appointment'),
+    path('api/get-available-slots/', views.get_available_slots, name='get_available_slots'),
+    path('success/<int:pk>/', views.appointment_success_view, name='appointment_success'),
 ]
