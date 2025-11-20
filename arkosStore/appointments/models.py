@@ -59,29 +59,3 @@ class Appointment(models.Model):
         Útil para saber si un hueco está libre.
         """
         return self.datetime + timedelta(minutes=self.service.duration)
-
-    @classmethod
-    def get_overlapping_appointments(cls, start_time, end_time, worker=None, exclude_pk=None):
-        overlapping_q = models.Q(status__in=[StatusChoices.PENDING, StatusChoices.CONFIRMED])
-        
-        start_overlap_q = models.Q(datetime__lt=end_time)
-        
-        queryset = cls.objects.annotate(
-            calculated_end=models.ExpressionWrapper(
-                models.F('datetime') + models.ExpressionWrapper(
-                    models.F('service__duration') * timedelta(minutes=1),
-                    output_field=models.DurationField()
-                ),
-                output_field=models.DateTimeField()
-            )
-        ).filter(overlapping_q, start_overlap_q)
-
-        queryset = queryset.filter(calculated_end__gt=start_time)
-
-        if worker:
-            queryset = queryset.filter(worker=worker)
-
-        if exclude_pk:
-            queryset = queryset.exclude(pk=exclude_pk)
-
-        return queryset

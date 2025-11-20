@@ -10,11 +10,11 @@
 <div class="profile-wrapper">
     <h2 class="profile-title">Reservar Cita</h2>
 
-    <div class="profile-card" style="text-align: left;">
+    <div class="profile-card"> 
         
         <div class="profile-field">
             <label for="ui-service">1. Selecciona el servicio</label>
-            <select id="ui-service" class="input" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+            <select id="ui-service" class="input"> 
                 <option value="">-- Elige una opción --</option>
                 {% for service in services %}
                     <option value="{{ service.id }}" data-duration="{{ service.duration }}">
@@ -24,16 +24,16 @@
             </select>
         </div>
 
-        <div id="step-2-container" class="profile-field step-hidden">
+        <div id="step-2-container" class="profile-field">
             <label for="ui-date">2. Elige una fecha</label>
-            <input type="date" id="ui-date" class="input" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+            <input type="date" id="ui-date" class="input">
         </div>
 
-        <div id="step-3-container" class="profile-field" style="display: none;">
+        <div id="step-3-container" class="profile-field step-hidden">
             <label>3. Horas disponibles</label>
             <div id="slots-grid" class="slot-container">
                 </div>
-            <p id="feedback-msg" class="loading-text" style="margin-top:10px;"></p>
+            <p id="feedback-msg" class="loading-text"></p>
         </div>
 
         <form method="post" id="real-django-form">
@@ -45,7 +45,7 @@
         </form>
 
         <div class="profile-form-actions">
-            <button type="button" id="confirm-btn" class="profile-btn" disabled style="opacity: 0.5; cursor: not-allowed;">
+            <button type="button" id="confirm-btn" class="profile-btn" disabled>
                 Confirmar Reserva
             </button>
         </div>
@@ -84,17 +84,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         uiDate.value = '';
         slotsGrid.innerHTML = '';
-        step3.style.display = 'none';
+        
+        // El paso 2 es ahora visible por defecto, lo ocultamos si no hay servicio
+        step2.classList.remove('step-visible'); 
+        step3.classList.remove('step-visible'); 
+
         confirmBtn.disabled = true;
         confirmBtn.style.opacity = '0.5';
         confirmBtn.style.cursor = 'not-allowed';
 
         if (serviceId) {
             hiddenService.value = serviceId;
-            step2.classList.remove('step-hidden');
-            step2.classList.add('step-visible');
+            step2.classList.add('step-visible'); // Hacemos visible el paso 2 con la clase CSS
         } else {
-            step2.classList.add('step-hidden');
+            // Si no hay servicio, aseguramos que el paso 2 se oculte (aunque ya lo hace por defecto si no añadimos step-visible)
+            step2.classList.remove('step-visible');
         }
     });
 
@@ -108,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
             feedbackMsg.innerText = 'No puedes reservar con más de 30 días de antelación.';
             slotsGrid.innerHTML = '';
             confirmBtn.disabled = true;
+            step3.classList.remove('step-visible'); // Ocultar paso 3 si falla la validación
             return;
         }
 
@@ -115,7 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         hiddenDate.value = dateVal;
 
-        step3.style.display = 'block';
+        // Usamos la clase para mostrar el paso 3 (Hora)
+        step3.classList.add('step-visible');
         slotsGrid.innerHTML = '';
         feedbackMsg.innerText = 'Buscando disponibilidad...';
         confirmBtn.disabled = true;

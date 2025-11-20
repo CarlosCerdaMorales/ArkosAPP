@@ -1,41 +1,177 @@
-.step-hidden {
-    opacity: 0.5;
-    pointer-events: none;
-    transition: opacity 0.3s;
-}
-.step-visible {
-    opacity: 1;
-    pointer-events: all;
+/* appointments/create.css */
+
+/* Animación de entrada para la tarjeta principal */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.slot-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-    gap: 12px;
-    margin-top: 15px;
+/* Anulación de estilos generales de main para permitir el centrado de profile-wrapper */
+main {
+    margin: 0;
+    padding: 0;
+    padding-top: 60px; 
 }
 
-.time-slot {
-    padding: 8px 5px;
-    font-size: 0.95em;
+
+/* --- Contenedor Principal y Tarjeta --- */
+.profile-wrapper {
+    max-width: 900px;
+    margin: 40px auto; 
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    display: block; 
+    animation: fadeIn 0.6s ease-out; /* APLICAR ANIMACIÓN */
 }
 
-.time-slot:hover {
-    background-color: #dcf4f9;
+.profile-title {
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-.time-slot.selected {
-    background-color: #00373E;
-    color: white;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+.profile-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: left;
 }
 
-#real-django-form {
+/* --- Campos de Formulario (select/input) --- */
+.profile-field {
+    margin-bottom: 25px;
+}
+
+.profile-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 1.1em;
+}
+
+.input, #ui-service {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1em;
+    appearance: none;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s; /* Para la animación de focus */
+}
+
+.input:focus, #ui-service:focus {
+    border-color: #2e8b57; /* Usar el verde principal al hacer focus */
+    box-shadow: 0 0 5px rgba(46, 139, 87, 0.4);
+    outline: none;
+}
+
+/* Ocultar los inputs del formulario real */
+.hidden-input {
     display: none;
 }
 
+/* --- Grid de Horas Disponibles (Slots) --- */
+.slot-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+    padding: 5px;
+    background-color: #fafafa;
+    border-radius: 4px;
+}
+
+.time-slot {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    line-height: 1.3;
+}
+
+.time-slot:hover {
+    background-color: #e9e9e9;
+    border-color: #2e8b57; /* Borde verde sutil en hover */
+}
+
+.time-slot.selected {
+    background-color: #2e8b57; /* Verde principal */
+    color: white;
+    border-color: #2e8b57;
+    box-shadow: 0 0 10px rgba(46, 139, 87, 0.6); /* Sombra más pronunciada al seleccionar */
+    transform: scale(1.05); /* Sutil efecto de zoom al seleccionar */
+}
+
+.time-slot.selected small {
+    color: #fff;
+}
+
+/* --- Botón de Confirmación --- */
+.profile-form-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+#confirm-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: white;
+    background-color: #2e8b57; /* Usar verde principal para el botón activo */
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s, transform 0.1s;
+    width: 100%;
+    max-width: 300px; 
+}
+
+#confirm-btn:not([disabled]):hover {
+    background-color: #1f7040; /* Tono de verde ligeramente más oscuro al pasar el ratón */
+    transform: translateY(-1px);
+}
+
+#confirm-btn[disabled] {
+    background-color: #707070; /* Gris apagado para el estado inactivo */
+    cursor: not-allowed;
+    opacity: 0.7 !important; 
+}
+
+/* Mensajes de feedback */
+#feedback-msg {
+    color: #cc0000;
+    font-weight: 500;
+}
+
 .loading-text {
-    font-size: 0.9em;
-    color: #666;
-    font-style: italic;
+    color: #555;
+}
+
+/* Estados de los pasos con transición de altura */
+.step-hidden {
+    opacity: 0; 
+    height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: all 0.5s ease-out; 
+}
+
+.step-visible {
+    opacity: 1;
+    height: auto; 
+    margin-top: 25px; /* Restaurar margen vertical */
+    margin-bottom: 25px; /* Restaurar margen vertical */
+    pointer-events: auto;
 }
