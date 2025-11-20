@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'workers/list.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="team-wrapper">
+    <div class="team-header">
+        <h2>Nuestro Equipo</h2>
+        <p>Conoce a los profesionales que cuidarán de tu salud.</p>
+    </div>
+
+    <div class="team-grid">
+        {% for worker in workers %}
+        <div class="worker-card">
+            
+            <div class="worker-img-container">
+                {% if worker.image %}
+                    <img src="{{ worker.image.url }}" alt="{{ worker.name }}">
+                {% else %}
+                    <img src="{% static 'img/default-profile.png' %}" alt="Sin foto">
+                {% endif %}
+            </div>
+
+            <div class="worker-info">
+                <h3>{{ worker.name }}</h3>
+                
+                <span class="worker-role">{{ worker.get_specialties_str }}</span>
+                
+                <p class="worker-bio">
+                    {{ worker.bio|default:"Especialista en bienestar y salud integral." }}
+                </p>
+            </div>
+
+        </div>
+        {% empty %}
+        <p>No hay trabajadores disponibles en este momento.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+.team-wrapper {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.team-header h2 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.team-header p {
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 50px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px;
+    padding-bottom: 40px;
+}
+
+.worker-card {
+    background-color: white;
+    border-radius: 10px; 
+    padding: 40px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+}
+
+.worker-card:hover {
+    transform: translateY(-5px); 
+}
+
+.worker-img-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.worker-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Texto */
+.worker-info h3 {
+    font-size: 1.4em;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.worker-role {
+    display: block;
+    color: #19a463;
+    font-weight: 600;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.worker-bio {
+    color: #777;
+    font-size: 0.95em;
+    line-height: 1.6;
+}

@@ -22,7 +22,12 @@ class Specialty(models.Model):
 class Worker(models.Model):
     name = models.CharField(max_length=120)
     specialties = models.ManyToManyField(Specialty, related_name='workers', blank=True)
+    image = models.ImageField(upload_to='workers_images/', blank=True, null=True)
+    bio = models.TextField(max_length=300, blank=True, help_text="Breve descripción para la tarjeta")
 
     def __str__(self):
         specialties_list = ", ".join([s.get_name_display() for s in self.specialties.all()])
         return f"{self.name} — {specialties_list}"
+    
+    def get_specialties_str(self):
+        return ", ".join([s.get_name_display() for s in self.specialties.all()])
