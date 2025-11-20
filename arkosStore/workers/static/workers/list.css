@@ -19,8 +19,9 @@
 }
 
 .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 40px;
     padding-bottom: 40px;
 }
@@ -31,6 +32,9 @@
     padding: 40px 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     transition: transform 0.3s ease;
+    flex: 1 1 300px; 
+    max-width: 380px; 
+    width: 100%;
 }
 
 .worker-card:hover {
@@ -51,7 +55,6 @@
     object-fit: cover;
 }
 
-/* Texto */
 .worker-info h3 {
     font-size: 1.4em;
     color: #222;
