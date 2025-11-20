@@ -56,19 +56,17 @@ class Appointment(models.Model):
     @property
     def calculated_end_time(self):
         """
-        Calcula cuándo termina la cita sumando la duración del servicio a la hora de inicio.
-        Útil para saber si un hueco está libre.
+        If the appointment has a service, returns the end time calculated by adding the service duration to the start time.
+        If no service is associated, returns None.
         """
         return self.datetime + timedelta(minutes=self.service.duration)
 
     @property
     def can_be_cancelled(self):
         """
-        Devuelve True si faltan más de 12 horas para la cita.
-        Devuelve False si ya es demasiado tarde (o si la cita ya pasó).
+        Returns True if the appointment can be cancelled (i.e., if it's more than 12 hours away).
+        Returns False otherwise.
         """
-        # Calculamos el límite: Ahora + 12 horas
         limit = timezone.now() + timedelta(hours=12)
         
-        # Si la fecha de la cita es mayor (está más en el futuro) que el límite -> Se puede
         return self.datetime > limit
