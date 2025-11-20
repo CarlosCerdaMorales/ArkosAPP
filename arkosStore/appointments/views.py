@@ -76,7 +76,12 @@ def get_available_slots(request):
         service_duration = service.duration
         service_duration_delta = timedelta(minutes=service_duration)
 
+        max_date = timezone.now().date() + timedelta(days=30)
+
         if target_date < timezone.now().date():
+            return JsonResponse({'slots': []})
+        
+        if target_date > max_date:
             return JsonResponse({'slots': []})
         
     except (ValueError, Service.DoesNotExist):

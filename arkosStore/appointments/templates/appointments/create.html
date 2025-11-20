@@ -70,8 +70,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const hiddenWorker = document.getElementById('hidden_worker_id');
     const realForm = document.getElementById('real-django-form');
 
-    const today = new Date().toISOString().split('T')[0];
-    uiDate.setAttribute('min', today);
+    const today = new Date();
+    const todayISO = today.toISOString().split('T')[0];
+    uiDate.setAttribute('min', todayISO);
+
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + 30);
+    const maxDateISO = maxDate.toISOString().split('T')[0];
+    uiDate.setAttribute('max', maxDateISO);
 
     uiService.addEventListener('change', function() {
         const serviceId = this.value;
@@ -95,6 +101,15 @@ document.addEventListener('DOMContentLoaded', function() {
     uiDate.addEventListener('change', function() {
         const dateVal = this.value;
         const serviceId = uiService.value;
+
+        const selectedDate = new Date(dateVal)
+
+        if (selectedDate > maxDate) {
+            feedbackMsg.innerText = 'No puedes reservar con más de 30 días de antelación.';
+            slotsGrid.innerHTML = '';
+            confirmBtn.disabled = true;
+            return;
+        }
 
         if (!dateVal || !serviceId) return;
 

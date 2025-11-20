@@ -42,6 +42,10 @@ class AppointmentForm(forms.ModelForm):
             if combined_datetime < timezone.now():
                 raise ValidationError("No puedes reservar en el pasado.")
             
+            max_future_datetime = timezone.now() + timedelta(days=30)
+
+            if combined_datetime > max_future_datetime:
+                raise ValidationError("Las reservas solo están permitidas con un máximo de 30 días de antelación.")
             cleaned_data['datetime_actual'] = combined_datetime
             
             if not Worker.objects.filter(id=worker_id).exists():
