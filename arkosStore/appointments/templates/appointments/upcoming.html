@@ -6,6 +6,15 @@
 {% endblock %}
 
 {% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="success-banner {% if message.tags == 'error' %}banner-error{% else %}banner-success{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 <div class="up-wrapper">
     <h2 class="up-title">Citas programadas</h2>
 
@@ -13,15 +22,72 @@
         {% for app in appointments %}
         <div class="up-item">
             <div class="up-data">
-                <b>Fecha:</b> {{ app.datetime|date:"d/m/Y H:i" }}
-                <b>Tipo:</b> {{ app.service.get_name_display }}
+                <b>Fecha:</b> {{ app.datetime|date:"d/m/Y H:i" }} <br>
+                <b>Tipo:</b> {{ app.service.get_name_display }} <br>
                 <b>Trabajador:</b> {{ app.worker.name }}
             </div>
-            <button class="cancel-btn">Cancelar</button>
+            
+            <button 
+                class="cancel-btn" 
+                data-url="{% url 'cancel_appointment' app.id %}"
+                onclick="openCancelModal(this.dataset.url)">
+                Cancelar
+            </button>
         </div>
         {% empty %}
         <p class="no-appointments">No hay citas programadas.</p>
         {% endfor %}
     </div>
 </div>
+
+<div class="confirm-modal-overlay" id="cancelModal" style="display: none;">
+    <div class="confirm-modal">
+        <div class="confirm-title">¿Estás seguro?</div>
+        <div class="confirm-text">
+            Vas a cancelar tu cita. El hueco quedará libre para otros usuarios.
+            <br><br>
+            <small style="color: #666;">(Solo se permite cancelar con más de 12h de antelación)</small>
+        </div>
+        <div class="confirm-btns">
+            <button class="modal-btn modal-btn-cancel" onclick="closeCancelModal()">Volver</button>
+            
+            <a id="confirmDeleteBtn" href="#" class="modal-btn modal-btn-confirm">
+                Sí, cancelar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('cancelModal');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+    function openCancelModal(cancelUrl) {
+        confirmBtn.href = cancelUrl;
+        modal.style.display = 'flex';
+    }
+
+    function closeCancelModal() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeCancelModal();
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const banners = document.querySelectorAll('.success-banner');
+        if (banners.length > 0) {
+            setTimeout(function() {
+                banners.forEach(banner => {
+                    banner.style.opacity = '0';
+                    setTimeout(() => banner.remove(), 500);
+                });
+            }, 3500);
+        }
+    });
+</script>
+
 {% endblock %}

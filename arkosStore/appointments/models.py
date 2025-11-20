@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.utils import timezone
 from datetime import timedelta
 
 from accounts.models import User
@@ -59,3 +60,15 @@ class Appointment(models.Model):
         Útil para saber si un hueco está libre.
         """
         return self.datetime + timedelta(minutes=self.service.duration)
+
+    @property
+    def can_be_cancelled(self):
+        """
+        Devuelve True si faltan más de 12 horas para la cita.
+        Devuelve False si ya es demasiado tarde (o si la cita ya pasó).
+        """
+        # Calculamos el límite: Ahora + 12 horas
+        limit = timezone.now() + timedelta(hours=12)
+        
+        # Si la fecha de la cita es mayor (está más en el futuro) que el límite -> Se puede
+        return self.datetime > limit

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.utils import timezone
 from .forms import AppointmentForm
 from .models import Service, Worker, Availability, Appointment, StatusChoices
@@ -58,6 +59,20 @@ def appointment_success_view(request, pk):
     
     return render(request, 'appointments/success.html', {'appointment': appointment})
 
+@login_required
+def cancel_appointment_view(request, pk):
+    appointment = get_object_or_404(Appointment, id=pk, user=request.user)
+
+    limit_time = timezone.now() + timedelta(hours=12)
+
+    if appointment.datetime > limit_time:
+        appointment.delete()
+        messages.success(request, "Cita cancelada correctamente.")
+    else:
+        messages.error(request, "No es posible cancelar con menos de 12 horas de antelación.")
+
+    return redirect('upcoming_appointments')
+
 def get_available_slots(request):
     """
     Esta función recibe: ?service_id=X&date=YYYY-MM-DD
@@ -92,7 +107,6 @@ def get_available_slots(request):
 
     available_slots = []
     
-    # Obtenemos TODAS las citas existentes para el día (restricción global)
     existing_appointments_qs = Appointment.objects.filter(
         datetime__date=target_date,
         status__in=[StatusChoices.PENDING, StatusChoices.CONFIRMED]
@@ -128,7 +142,6 @@ def get_available_slots(request):
                 
                 is_overlapping = False
                 for app in existing_appointments_qs:
-                    # Comprobación de solapamiento global
                     if not app.service:
                         continue 
                         
