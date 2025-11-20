@@ -73,6 +73,12 @@ def get_available_slots(request):
         target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
         service = Service.objects.get(id=service_id)
         day_of_week = target_date.weekday()
+        service_duration = service.duration
+        service_duration_delta = timedelta(minutes=service_duration)
+
+        if target_date < timezone.now().date():
+            return JsonResponse({'slots': []})
+        
     except (ValueError, Service.DoesNotExist):
         return JsonResponse({'slots': []})
 
@@ -80,6 +86,13 @@ def get_available_slots(request):
     workers = Worker.objects.filter(specialties__name=service.name)
 
     available_slots = []
+    
+    # Obtenemos TODAS las citas existentes para el día (restricción global)
+    existing_appointments_qs = Appointment.objects.filter(
+        datetime__date=target_date,
+        status__in=[StatusChoices.PENDING, StatusChoices.CONFIRMED]
+    ).select_related('service')
+
 
     for worker in workers:
         availabilities = Availability.objects.filter(
@@ -87,20 +100,40 @@ def get_available_slots(request):
             day_of_week=day_of_week
         )
 
-        for rule in availabilities:
-            current_time = datetime.combine(target_date, rule.start_time)
-            end_time = datetime.combine(target_date, rule.end_time)
-            
-            while current_time + timedelta(minutes=service.duration) <= end_time:
-                slot_start = current_time.time()
-                
-                is_taken = Appointment.objects.filter(
-                    worker=worker,
-                    datetime=current_time,
-                    status__in=['PENDIENTE', 'CONFIRMADA']
-                ).exists()
 
-                if not is_taken:
+        for rule in availabilities:
+            naive_start = datetime.combine(target_date, rule.start_time)
+            current_time = timezone.make_aware(naive_start)
+            
+            naive_end = datetime.combine(target_date, rule.end_time)
+            end_time = timezone.make_aware(naive_end)
+            
+            if target_date == timezone.now().date():
+                if current_time < timezone.now():
+                    minutes_past_hour = timezone.now().minute
+                    minutes_to_add = (service_duration - (minutes_past_hour % service_duration)) % service_duration
+                    current_time = (timezone.now() + timedelta(minutes=minutes_to_add)).replace(second=0, microsecond=0)
+
+                if (current_time >= end_time):
+                    continue
+
+            while current_time + service_duration_delta <= end_time:
+                slot_start = current_time.time()
+                slot_end_time = current_time + service_duration_delta
+                
+                is_overlapping = False
+                for app in existing_appointments_qs:
+                    # Comprobación de solapamiento global
+                    if not app.service:
+                        continue 
+                        
+                    app_end_time = app.calculated_end_time
+
+                    if current_time < app_end_time and app.datetime < slot_end_time:
+                        is_overlapping = True
+                        break
+
+                if not is_overlapping:
                     available_slots.append({
                         'time_display': slot_start.strftime('%H:%M'),
                         'time_value': slot_start.strftime('%H:%M'),
@@ -108,7 +141,7 @@ def get_available_slots(request):
                         'worker_name': worker.name,
                     })
 
-                current_time += timedelta(minutes=service.duration)
+                current_time += service_duration_delta
 
     available_slots.sort(key=lambda x: x['time_value'])
 
