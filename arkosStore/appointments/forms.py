@@ -1,5 +1,7 @@
 from django import forms
-from .models import Appointment, StatusChoices
+
+from accounts.models import User
+from .models import Appointment, Service, StatusChoices
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 from django.utils import timezone
@@ -54,18 +56,14 @@ class AppointmentForm(forms.ModelForm):
 
             end_time = combined_datetime + timedelta(minutes=service.duration)
             
-            # --- CORRECCIÓN DE SOLAPAMIENTO (Se mueve la lógica a Python) ---
-            
-            # 1. Obtenemos todas las citas que *podrían* solaparse (empiezan antes de que termine el nuevo slot)
             overlapping_candidates = Appointment.objects.filter(
                 datetime__lt=end_time,
-                datetime__date=combined_datetime.date(), # Filtramos por el mismo día
+                datetime__date=combined_datetime.date(),
                 status__in=[StatusChoices.PENDING, StatusChoices.CONFIRMED]
-            ).select_related('service') # Necesitamos service para calcular el fin.
+            ).select_related('service') 
 
             is_overlapping = False
             for existing_app in overlapping_candidates:
-                # 2. Comprobamos en Python si la cita existente termina después de que el nuevo slot empieza
                 if existing_app.calculated_end_time > combined_datetime:
                     is_overlapping = True
                     break
@@ -75,4 +73,53 @@ class AppointmentForm(forms.ModelForm):
                     "Esta franja horaria ya está reservada o se solapa con otra cita existente. Por favor, selecciona otro horario."
                 )
 
+        return cleaned_data
+    
+class AdminAppointmentForm(forms.ModelForm):
+    user = forms.ModelChoiceField(
+        queryset=User.objects.filter(role='REG'),
+        label="Cliente",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    service = forms.ModelChoiceField(
+        queryset=Service.objects.all(),
+        label="Servicio",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    worker = forms.ModelChoiceField(
+        queryset=Worker.objects.all(),
+        label="Especialista",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    date = forms.DateField(
+        label="Fecha",
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+    
+    time = forms.TimeField(
+        label="Hora",
+        widget=forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Appointment
+        fields = ['user', 'service', 'worker'] 
+
+    def clean(self):
+        cleaned_data = super(forms.ModelForm, self).clean()
+        
+        date = cleaned_data.get('date')
+        time_data = cleaned_data.get('time')
+
+        if date and time_data:
+            try:
+                naive_combined = datetime.combine(date, time_data)
+                combined_datetime = timezone.make_aware(naive_combined)
+                cleaned_data['datetime_actual'] = combined_datetime
+            except Exception as e:
+                self.add_error('time', "Hora inválida")
+        
         return cleaned_data

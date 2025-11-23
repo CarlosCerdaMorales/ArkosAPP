@@ -1,0 +1,524 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    .admin-wrapper { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
+    .calendar-container { display: flex; border: 1px solid #ddd; background: white; height: 800px; overflow-y: auto; position: relative; }
+    .time-axis { width: 60px; flex-shrink: 0; background: #f8f9fa; border-right: 1px solid #ddd; position: relative; }
+    .time-label { height: 60px; border-bottom: 1px solid #eee; font-size: 12px; color: #666; text-align: center; padding-top: 5px; }
+    .workers-grid { display: flex; flex-grow: 1; position: relative; }
+    .worker-column { flex: 1; border-right: 1px solid #eee; position: relative; min-width: 150px; background: repeating-linear-gradient(to bottom, transparent, transparent 59px, #f0f0f0 60px); background-size: 100% 60px; }
+    .worker-header { text-align: center; padding: 10px; background: #00373E; color: white; border-right: 1px solid #004f59; font-weight: bold; }
+    .headers-row { display: flex; margin-left: 60px; }
+    .header-item { flex: 1; min-width: 150px; }
+    .appointment-card { position: absolute; left: 5px; right: 5px; background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 4px; font-size: 11px; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s; cursor: pointer; z-index: 10; }
+    .appointment-card:hover { transform: scale(1.02); z-index: 20; background-color: #fff; }
+    .status-CONFIRMADA { background-color: #d4edda; border-color: #28a745; }
+    .status-PENDIENTE { background-color: #fff3cd; border-color: #ffc107; }
+    .app-time { font-weight: bold; display: block; }
+    .app-client { font-weight: 600; }
+    .modal-overlay {
+        position: fixed;      
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); 
+        z-index: 1000;       
+        display: none;        
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        background-color: white;
+        padding: 25px;
+        border-radius: 10px;
+        width: 400px;
+        max-width: 90%;       
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+        position: relative;  
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+
+    .modal-header h3 {
+        margin: 0;
+        color: #00373E;
+    }
+
+    .close-btn {
+        font-size: 28px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+        line-height: 1; 
+    }
+    .close-btn:hover {
+        color: #333;
+    }
+
+    .modal-body p {
+        font-size: 16px;
+        margin: 10px 0;
+        border-bottom: 1px solid #f9f9f9; 
+        padding-bottom: 5px;
+    }
+
+    .modal-footer {
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between; 
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        flex: 1;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        color: white;
+    }
+    .btn-danger:hover { background-color: #c9302c; }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border: 2px solid #dc3545;
+        background-color: transparent;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-outline-warning {
+        color: #ffc107;
+        border: 2px solid #ffc107;
+        background-color: transparent;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: #333; 
+    }
+
+    .start-buttons {
+        display: flex;            
+        justify-content: space-between; 
+        align-items: center;      
+        width: 100%;              
+        margin-bottom: 20px;      
+    }
+
+    .start-buttons h2 {
+        margin: 0;
+    }
+
+    .new-appointment-btn {
+    border-radius: 24px;
+    background-color: #00373E;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    }
+    .admin-header {
+        margin-bottom: 20px; 
+    }
+    .btn-outline-secondary {
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        background-color: transparent;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-outline-success {
+        color: #28a745;
+        border: 2px solid #28a745;
+        background-color: transparent;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 15px; 
+        font-family: 'Poppins', sans-serif; 
+        font-size: 15px;
+        color: #333;
+        background-color: #fff;
+        border: 1px solid #e0e0e0; 
+        border-radius: 8px; 
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+    }
+
+    select.form-control {
+        appearance: none; 
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300373E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 16px;
+        padding-right: 40px;
+    }
+
+    .form-control:focus {
+        border-color: #00373E;
+        box-shadow: 0 0 0 3px rgba(0, 55, 62, 0.1); 
+        outline: none;
+    }
+
+    .form-control-date {
+        padding: 8px 15px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        color: #333;
+        background-color: #fff;
+        border: 2px solid #e0e0e0; 
+        border-radius: 25px;    
+        outline: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 160px;         
+    }
+
+    .form-control-date:focus {
+        border-color: #00373E;   
+        box-shadow: 0 4px 10px rgba(0, 55, 62, 0.1);
+    }
+
+    .btn-outline-secondary-today {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 20px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #666;               
+        background-color: transparent;
+        border: 2px solid #e0e0e0; 
+        border-radius: 25px;     
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary-today:hover {
+        color: #fff;
+        background-color: #00373E; 
+        border-color: #00373E;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 55, 62, 0.2);
+    }
+    
+    .new-appointment-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 25px;       
+        background-color: #00373E; 
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        text-decoration: none;
+        border-radius: 25px;       
+        border: 2px solid #00373E;  
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 55, 62, 0.2);
+    }
+
+    .new-appointment-btn:hover {
+        background-color: #004f59;  
+        color: #ffffff;
+        transform: translateY(-2px); 
+        box-shadow: 0 6px 12px rgba(0, 55, 62, 0.3); 
+    }
+    
+    .header-actions {
+        display: flex;
+        align-items: center; 
+        gap: 20px;          
+    }
+
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        width: 100%;
+    }
+
+    @keyframes growBar {
+        from {
+            height: 0;
+            opacity: 0;
+        }
+        to {
+            height: 100%;
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeText {
+        from {
+            opacity: 0;
+            transform: translateX(-15px); 
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .admin-title {
+        font-family: 'Poppins', sans-serif;
+        color: #00373E;
+        font-size: 28px;
+        font-weight: 600;
+        margin: 0;
+        padding-left: 15px;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+        position: relative;
+        animation: fadeText 1.2s ease-out forwards;
+    }
+
+    .admin-title::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 5px;
+        background-color: #00373E; 
+        border-radius: 3px;
+        height: 0;
+        animation: growBar 1s ease-out 0.3s forwards;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-wrapper">
+<div class="d-flex justify-content-between align-items-center admin-header">
+    <h2 class="admin-title">Gestión de Citas</h2>    
+    <div class="header-actions">
+        <a href="" class="new-appointment-btn">
+            Añadir una nueva cita
+        </a>
+
+        <form method="get" class="d-flex gap-2">
+            <input type="date" name="date" class="form-control-date" value="{{ current_date|date:'Y-m-d' }}" onchange="this.form.submit()">
+            <a href="{% url 'custom_admin' %}" class="btn btn-outline-secondary-today">Hoy</a>
+        </form>
+    </div>
+</div>
+
+    <div class="headers-row">
+        {% for item in workers_schedule %}
+            <div class="worker-header header-item">{{ item.worker.name }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="calendar-container">
+        <div class="time-axis">
+            {% for hour in hours_axis %}
+                <div class="time-label" style="height: 60px;">{{ hour }}:00</div>
+            {% endfor %}
+        </div>
+
+        <div class="workers-grid">
+            {% for item in workers_schedule %}
+                <div class="worker-column">
+                    {% for app in item.appointments %}
+                        <div class="appointment-card status-{{ app.status }}" 
+                            style="top: {{ app.css_top }}; height: {{ app.css_height }};"
+                            title="{{ app.service.get_name_display }}"
+                            onclick="openModal(
+                                    '{{ app.id }}', 
+                                    '{{ app.user.first_name }} {{ app.user.last_name }}',  
+                                    '{{ app.service.get_name_display }}',                  
+                                    '{{ app.datetime|date:'d/m/Y' }}',                    
+                                    '{{ app.datetime|date:'H:i' }}',                      
+                                    '{{ app.worker.name }}',                                
+                                    '{% url 'admin_cancel_appointment' app.id %}',                
+                                    '{% url 'modify_appointment' app.id %}',                
+                                    '{{ app.user.id }}',         
+                                    '{{ app.service.id }}',      
+                                    '{{ app.worker.id }}',        
+                                    '{{ app.datetime|date:'Y-m-d' }}',  
+                                    '{{ app.datetime|date:'H:i' }}'                
+                            )">
+                            <span class="app-time">
+                                {{ app.datetime|date:"H:i" }} - {{ app.calculated_end_time|date:"H:i" }}
+                            </span>
+                            <span class="app-client">{{ app.user.first_name }} {{ app.user.last_name }}</span>
+                            <br>
+                            <span class="text-muted">{{ app.service.get_name_display|truncatechars:20 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div id="appointmentModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        
+        <form id="modalForm" method="post" action="">
+            {% csrf_token %}
+            
+            <div class="modal-header">
+                <h3 id="modal-title">Detalle de Cita</h3>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    <strong>Fecha:</strong>
+                    <span id="display-date" class="view-mode"></span>
+                    <input type="date" name="date" id="input-date" class="form-control edit-mode" required style="display:none;">
+                </p>
+
+                <p>
+                    <strong>Hora:</strong>
+                    <span id="display-time" class="view-mode"></span>
+                    <input type="time" name="time" id="input-time" class="form-control edit-mode" required style="display:none;">
+                </p>
+
+                <p>
+                    <strong>Cliente:</strong>
+                    <span id="display-client" class="view-mode"></span>
+                    <select name="user" id="input-client" class="form-control edit-mode" style="display:none;">
+                        {% for client in modal_clients %}
+                            <option value="{{ client.id }}">{{ client.first_name }} {{ client.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+
+                <p>
+                    <strong>Servicio:</strong>
+                    <span id="display-service" class="view-mode"></span>
+                    <select name="service" id="input-service" class="form-control edit-mode" style="display:none;">
+                        {% for s in modal_services %}
+                            <option value="{{ s.id }}">{{ s.get_name_display }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+
+                <p>
+                    <strong>Especialista:</strong>
+                    <span id="display-worker" class="view-mode"></span>
+                    <select name="worker" id="input-worker" class="form-control edit-mode" style="display:none;">
+                        {% for w in modal_workers %}
+                            <option value="{{ w.id }}">{{ w.name }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <a href="#" id="btn-delete" class="btn btn-outline-danger view-mode">Eliminar</a>
+                <button type="button" id="btn-enable-edit" class="btn btn-outline-warning view-mode" onclick="enableEdit()">Modificar</button>
+                <button type="button" class="btn btn-outline-secondary edit-mode" style="display:none;" onclick="disableEdit()">Cancelar Edición</button>
+                <button type="submit" class="btn btn-outline-success edit-mode" style="display:none;">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</div>
+<script>
+    function openModal(id, clientName, serviceName, dateDisplay, timeDisplay, workerName, 
+                       cancelUrl, modifyUrl, 
+                       clientId, serviceId, workerId, dateValue, timeValue) {
+        
+        document.getElementById('modalForm').action = modifyUrl;
+        document.getElementById('btn-delete').href = cancelUrl;
+        document.getElementById('display-client').innerText = clientName;
+        document.getElementById('display-service').innerText = serviceName;
+        document.getElementById('display-date').innerText = dateDisplay;
+        document.getElementById('display-time').innerText = timeDisplay;
+        document.getElementById('display-worker').innerText = workerName;
+        document.getElementById('input-client').value = clientId;
+        document.getElementById('input-service').value = serviceId;
+        document.getElementById('input-date').value = dateValue; 
+        document.getElementById('input-time').value = timeValue;
+        document.getElementById('input-worker').value = workerId;
+        disableEdit();
+        document.getElementById('appointmentModal').style.display = 'flex';
+    }
+
+    function enableEdit() {
+        document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'inline-block');
+        document.getElementById('modal-title').innerText = "Editando Cita...";
+    }
+
+    function disableEdit() {
+        document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'inline-block');
+        document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'none');
+        document.getElementById('modal-title').innerText = "Detalle de Cita";
+    }
+
+    function closeModal() {
+        document.getElementById('appointmentModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('appointmentModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
+
+{% endblock %}

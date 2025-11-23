@@ -8,4 +8,6 @@ urlpatterns = [
     path('api/get-available-slots/', views.get_available_slots, name='get_available_slots'),
     path('success/<int:pk>/', views.appointment_success_view, name='appointment_success'),
     path('cancel/<int:pk>/', views.cancel_appointment_view, name='cancel_appointment'),
+    path('modify/<int:pk>/', views.modify_appointment_view, name='modify_appointment'),
+    path('admin/cancel/<int:pk>/', views.admin_cancel_appointment, name='admin_cancel_appointment'),
 ]
