@@ -19,7 +19,7 @@
 
                 <li class="logo"><a href="/">NATURSUR</a></li>
 
-                <li><a href="">Recursos</a></li>
+                <li><a href="{% url 'resources' %}">Recursos</a></li>
                 <li><a href="{% url 'contact' %}">Contacto</a></li>
                 
                 {% if user.is_authenticated %}

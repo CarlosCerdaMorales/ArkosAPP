@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'home/resources.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="resources-page">
+
+    <section class="resources-hero">
+        <div class="resources-hero-inner">
+            <div class="resources-hero-text">
+                <p class="resources-kicker">Bienestar y nutrición</p>
+                <h1>Recursos recomendados por Fernando Escalona</h1>
+                <p class="resources-hero-subtitle">
+                    Complementa tu tratamiento con una nutrición equilibrada y productos seleccionados para cuidar tu salud desde dentro.
+                </p>
+            </div>
+            <div class="resources-hero-badge">
+                <span class="badge-title">Miembro</span>
+                <span class="badge-brand">Herbalife</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="resources-main">
+        <div class="resources-card resources-intro">
+            <div class="resources-intro-text">
+                <h2>Fernando Escalona es miembro de Herbalife</h2>
+                <p>
+                    Como fisioterapeuta y experto en bienestar, Fernando integra la nutrición como pilar clave de la salud.
+                    Por eso, colabora como miembro de Herbalife, recomendando productos que apoyan una vida más activa y equilibrada.
+                </p>
+                <p>
+                    Desde batidos sustitutivos de comida hasta suplementos específicos, encontrarás opciones adaptadas a tus objetivos:
+                    energía, control de peso, rendimiento o simplemente sentirte mejor en tu día a día.
+                </p>
+                <div class="resources-intro-actions">
+                    <a href="https://www.natursur.herbalife.com/" target="_blank" class="resources-button">
+                        Ir a la tienda oficial de Herbalife
+                    </a>
+                </div>
+            </div>
+            <div class="resources-logo-box">
+                <div class="resources-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/HerbalifeLogo.svg/512px-HerbalifeLogo.svg.png" alt="Herbalife">
+                </div>
+                <p class="resources-logo-caption">
+                    Natursur colabora con Herbalife para acompañarte también en tu nutrición diaria.
+                </p>
+            </div>
+        </div>
+
+        <div class="resources-grid">
+            <div class="resources-mini-card">
+                <h3>Nutrición diaria</h3>
+                <p>
+                    Productos pensados para completar tu alimentación con proteínas, vitaminas y minerales, de forma sencilla y práctica.
+                </p>
+            </div>
+            <div class="resources-mini-card">
+                <h3>Control de peso</h3>
+                <p>
+                    Batidos sustitutivos, snacks saludables y planes personalizados para ayudarte a alcanzar y mantener tu peso objetivo.
+                </p>
+            </div>
+            <div class="resources-mini-card">
+                <h3>Energía y rendimiento</h3>
+                <p>
+                    Opciones para mejorar tu energía diaria, apoyar el rendimiento deportivo y favorecer una mejor recuperación.
+                </p>
+            </div>
+        </div>
+
+        <section class="resources-highlight">
+            <p class="highlight-quote">
+                “La combinación de movimiento, descanso y buena nutrición marca la diferencia en cómo te sientes cada día.”
+            </p>
+            <p class="highlight-author">Fernando Escalona · Natursur</p>
+            <a href="https://www.natursur.herbalife.com/" target="_blank" class="highlight-button">
+                Descubre los productos que recomiendo
+            </a>
+        </section>
+    </section>
+
+</div>
+{% endblock %}
