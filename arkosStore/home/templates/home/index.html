@@ -6,36 +6,115 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" style="margin-top: 50px;">
-    <header class="hero-section text-center mb-5">
-        <h1>Bienvenido a NATURSUR, tu centro de Bienestar Unificado</h1>
-        <p class="lead">Simplificamos la gestión de tus citas de masajes y tus pedidos en un solo lugar.</p>
-        <hr>
-    </header>
+<div class="home-page">
 
-    <section class="auth-status auth-box mb-5">
-    {% if user.is_authenticated %}
-        <p style="font-size: 1.2em;">Hola, {{ user.username }} 👋. ¡Estamos listos para atenderte!</p>
-        <div class="button-group">
-            <a href="{% url 'create_appointment' %}" class="btn btn-success">Coger una cita</a>
+    <section class="home-hero">
+        <div class="home-hero-inner">
+            <div class="home-hero-text">
+                <p class="home-kicker">Centro de bienestar Natursur</p>
+                <h1>Tu espacio para cuidarte por dentro y por fuera</h1>
+                <p class="home-hero-subtitle">
+                    Reserva tus citas, organiza tus sesiones y accede a recursos adicionales en un mismo lugar,
+                    con el acompañamiento de Fernando Escalona.
+                </p>
+
+                <div class="home-hero-ctas">
+                    <a href="{% url 'create_appointment' %}" class="home-btn home-btn-primary">Reservar cita</a>
+                    <a href="#servicios" class="home-btn home-btn-ghost">Ver servicios</a>
+                    <a href="{% url 'resources' %}" class="home-btn home-btn-outline">Recursos y Herbalife</a>
+                </div>
+            </div>
+            <div class="home-hero-figure">
+                <div class="home-hero-circle">
+                    <img src="{% static 'home/owner.jpg' %}" alt="Fernando Escalona">
+                </div>
+                <p class="home-hero-name">Fernando Escalona</p>
+                <p class="home-hero-role">Fisioterapeuta y especialista en bienestar</p>
+            </div>
         </div>
-    {% else %}
-        <p>Empieza a gestionar tu bienestar. ¡Únete a la comunidad!</p>
-        <div class="button-group">
-            <a href="{% url 'create_appointment' %}" class="btn btn-success">Coger una cita</a>
-        </div>
-    {% endif %}
-</section>
-
-    <section class="content-intro">
-        <h2>Nuestra Misión</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-        <h3>Servicios Destacados</h3>
-        <p>Aliquam erat volutpat. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. **Masajes terapéuticos** y de relajación disponibles para reserva inmediata. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
-
-        <h3>Compra de Productos</h3>
-        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. **Pedidos de Herbalife** simplificados y entregados directamente a tu puerta. Lorum Ipsum. Lorum Ipsum. Lorum Ipsum. Lorum Ipsum.</p>
     </section>
+
+    <section class="home-auth">
+        {% if user.is_authenticated %}
+        <div class="home-auth-box">
+            <p class="home-auth-greeting">
+                Hola, {{ user.first_name|default:user.username }}. Desde aquí puedes gestionar tus citas y recursos.
+            </p>
+            <div class="home-auth-actions">
+                <a href="{% url 'create_appointment' %}" class="home-btn home-btn-primary">Reservar cita</a>
+                <a href="{% url 'appointment_history' %}" class="home-btn home-btn-light">Historial de citas</a>
+                <a href="{% url 'resources' %}" class="home-btn home-btn-outline">Ver recursos</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="home-auth-box">
+            <p class="home-auth-greeting">
+                Crea tu cuenta o inicia sesión para reservar cita y llevar un control de tus sesiones.
+            </p>
+            <div class="home-auth-actions">
+                <a href="{% url 'login' %}" class="home-btn home-btn-primary">Iniciar sesión</a>
+                <a href="{% url 'register' %}" class="home-btn home-btn-outline">Registrarme</a>
+            </div>
+        </div>
+        {% endif %}
+    </section>
+
+    <section id="servicios" class="home-services">
+        <h2 class="home-section-title">Cómo podemos ayudarte</h2>
+        <p class="home-section-subtitle">
+            Integramos fisioterapia, masaje y hábitos saludables para acompañarte en tu bienestar.
+        </p>
+
+        <div class="home-services-grid">
+            <div class="home-service-card">
+                <h3>Fisioterapia y masajes</h3>
+                <p>
+                    Sesiones personalizadas para aliviar dolor, mejorar movilidad y ayudarte a desconectar del estrés diario.
+                </p>
+                <ul>
+                    <li>Masaje terapéutico y deportivo</li>
+                    <li>Tratamiento de lesiones</li>
+                    <li>Planes de seguimiento</li>
+                </ul>
+            </div>
+
+            <div class="home-service-card">
+                <h3>Nutrición y hábitos</h3>
+                <p>
+                    Asesoramiento para construir hábitos más saludables y mejorar tu energía a lo largo del día.
+                </p>
+                <ul>
+                    <li>Educación nutricional</li>
+                    <li>Orientación para objetivos concretos</li>
+                    <li>Recomendaciones sencillas de aplicar</li>
+                </ul>
+            </div>
+
+            <div class="home-service-card">
+                <h3>Recursos y productos</h3>
+                <p>
+                    Recursos online y productos recomendados por Fernando para acompañar tu proceso desde casa.
+                </p>
+                <ul>
+                    <li>Material complementario</li>
+                    <li>Recomendaciones personalizadas</li>
+                    <li>Acceso a tienda asociada Herbalife</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-highlight">
+        <div class="home-highlight-inner">
+            <p class="home-highlight-quote">
+                “Cuidar de ti no debería ser complicado. Aquí tienes tus citas, tus recursos y tu seguimiento, todo en un mismo lugar.”
+            </p>
+            <p class="home-highlight-author">Fernando Escalona · Natursur</p>
+            <a href="{% url 'create_appointment' %}" class="home-btn home-btn-primary">
+                Reservar cita ahora
+            </a>
+        </div>
+    </section>
+
 </div>
-{% endblock content %}
+{% endblock %}
