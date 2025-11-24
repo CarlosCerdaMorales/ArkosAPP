@@ -11,14 +11,16 @@ main{
 }
 
 .navbar {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    width: 100%; 
-    position: absolute;
+    background-color: white;
+    padding: 10px 0;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    width: 100%;
+    z-index: 9999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 .navbar ul{
     list-style-type: none;
