@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'appointments/services.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="services-wrapper">
+    
+    <div class="services-header">
+        <h2>Nuestros Servicios</h2>
+        <p>Descubre tratamientos diseñados para tu bienestar integral.</p>
+    </div>
+
+    <div class="services-grid">
+        {% for service in services %}
+        <div class="service-card">
+            <div class="service-img">
+                <img src="{% static service.image %}" alt="{{ service.title }}">
+            </div>
+            
+            <div class="service-content">
+                <h3>{{ service.title }}</h3>
+                <p>{{ service.desc }}</p>
+                
+                <a href="{% url 'create_appointment' %}" class="service-btn">Reservar Cita</a>
+            </div>
+        </div>
+        {% empty %}
+        <p>No hay servicios disponibles actualmente.</p>
+        {% endfor %}
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #ddd; margin: 60px 0;">
+
+    <div class="durations-section">
+        <h3 style="color: #00373E; margin-bottom: 10px; font-size: 1.8em;">Duraciones Disponibles</h3>
+        <p style="color: #666; margin-bottom: 40px;">Elige el tiempo que mejor se adapte a tu agenda y necesidades.</p>
+
+        <div class="durations-container">
+            {% for duration in durations %}
+            <div class="duration-card">
+                <div class="duration-icon">⏱️</div>
+                <div class="duration-info">
+                    <h4>Sesión de {{ duration }} minutos</h4>
+                    <p>Opción disponible para la mayoría de nuestros tratamientos.</p>
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay información de duración disponible.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

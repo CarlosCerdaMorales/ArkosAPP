@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from .forms import AppointmentForm
-from .models import Service, Worker, Availability, Appointment, StatusChoices
+from .models import Service, Worker, Availability, Appointment, StatusChoices, TypeChoices
 from datetime import datetime, timedelta
 from django.http import JsonResponse
 
@@ -164,3 +164,51 @@ def get_available_slots(request):
     available_slots.sort(key=lambda x: x['time_value'])
 
     return JsonResponse({'slots': available_slots})
+
+def services_list_view(request):
+    static_data = {
+        TypeChoices.OSTEOPATHY_MASSAGE: {
+            'title': 'Osteopatía y Masaje Holístico',
+            'desc': 'El cuerpo es un sistema en constante ajuste. El dolor, la tensión o la falta de movilidad son señales de que algo '
+            'no está funcionando bien. A través de técnicas de masaje y osteopatía, trabajamos para liberar restricciones, mejorar la '
+            'postura y restaurar la armonía de tu organismo. Mi objetivo es ayudarte a moverte sin dolor y con mayor libertad, respetando '
+            'siempre la estructura natural de tu cuerpo.',
+            'image': 'img/services/osteo.jpg' 
+        },
+        TypeChoices.PAR_MAGNETIC: {
+            'title': 'Par Biomagnético',
+            'desc': 'Nuestro organismo está lleno de campos energéticos que, en ocasiones, se ven alterados por virus, bacterias o desequilibrios internos. '
+            'El Par Biomagnético es una técnica que utiliza imanes para restaurar el balance natural del cuerpo, favoreciendo la capacidad de recuperación del '
+            'organismo. Si buscas una terapia complementaria para mejorar tu bienestar, esta puede ser una excelente opción.',
+            'image': 'img/services/par.jpg'
+        },
+        TypeChoices.EMOTIONAL_TECH: {
+            'title': 'Técnicas Emocionales',
+            'desc': 'Las emociones no solo afectan nuestra mente, también pueden dejar huella en nuestro cuerpo. Muchas tensiones musculares, bloqueos o '
+            'molestias físicas tienen un origen emocional. Utilizo diversas técnicas para ayudarte a liberar esas cargas y sentirte más ligero y equilibrado.',
+            'image': 'img/services/emo.jpg'
+        },
+        TypeChoices.NUTRITIONAL_ADVICE: {
+            'title': 'Asesoramiento Nutricional',
+            'desc': 'La alimentación es la base de nuestra energía y bienestar. No se trata solo de perder peso, sino de aprender a nutrir '
+            'el cuerpo de forma adecuada. A través de un enfoque basado en la naturopatía, te ayudo a mejorar tu alimentación y a crear hábitos '
+            'saludables que realmente funcionen para ti.',
+            'image': 'img/services/nutri.jpg'
+        },
+        TypeChoices.OTHER: {
+            'title': 'Otras Terapias',
+            'desc': 'Consultas personalizadas para tratamientos específicos o combinados según las necesidades únicas de tu cuerpo.',
+            'image': 'img/services/otro.jpg'
+        }
+    }
+
+    existing_codes = Service.objects.values_list('name', flat=True).distinct()
+
+    services_to_show = []
+    for code in existing_codes:
+        if code in static_data:
+            services_to_show.append(static_data[code])
+
+    durations = Service.objects.values_list('duration', flat=True).distinct().order_by('duration')
+
+    return render(request, 'appointments/services_list.html', {'services': services_to_show, 'durations': durations})
