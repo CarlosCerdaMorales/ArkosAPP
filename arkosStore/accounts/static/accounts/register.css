@@ -1,143 +1,140 @@
-.register-bg {
+body {
     background-color: #f0f2f5;
-    min-height: 100vh; 
+    font-family: 'Poppins', sans-serif;
+}
+
+.register-container {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     padding: 40px 20px;
-    padding-top: 120px; 
-    padding-bottom: 60px;
+    margin-top: 60px; 
+    box-sizing: border-box;
 }
 
-.register-wrapper {
+.form-card {
+    background: #ffffff;
     width: 100%;
-    max-width: 500px;
-    animation: slideUp 0.6s ease-out;
+    max-width: 550px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
 }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+.form-content {
+    padding: 40px 50px;
+    box-sizing: border-box;
 }
 
-.register-card {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    text-align: center;
-    border: 1px solid #e1e1e1;
-}
-
-.register-header h2 {
+.form-content h2 {
+    font-weight: 600;
     color: #333;
-    font-size: 2rem;
+    text-align: center;
     margin-bottom: 10px;
-    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.brand-highlight {
-    color: #19a463;
-}
-
-.register-header p {
+.subtitle {
+    text-align: center;
     color: #666;
     font-size: 0.95rem;
-    margin-bottom: 30px;
-    line-height: 1.5;
+    margin-bottom: 40px;
 }
 
-.register-form {
-    text-align: left;
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
 }
 
-.register-form p {
-    margin-bottom: 15px;
-}
-
-.register-form label {
+.form-group label {
     display: block;
-    margin-bottom: 5px;
-    color: #00373E;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     font-weight: 600;
-    font-size: 0.9rem;
 }
 
-.register-form input {
+.form-group input {
     width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #e1e1e1;
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    font-size: 15px;
+    transition: border-color 0.3s;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    background-color: #fafafa;
+    color: #333;
 }
 
-.register-form input:focus {
-    background-color: #fff;
-    border-color: #19a463;
+.form-group input:focus {
     outline: none;
-    box-shadow: 0 0 0 4px rgba(25, 164, 99, 0.1);
+    border-bottom: 2px solid #00373E;
 }
 
-.helptext {
-    font-size: 0.8em;
-    color: #888;
+.help-text {
     display: block;
-    margin-top: 4px;
+    font-size: 0.75em;
+    color: #999;
+    margin-top: 5px;
 }
 
-.submit-btn {
+.form-errors {
+    color: #d9534f;
+    font-size: 0.85em;
+    margin-top: 5px;
+}
+
+button[type="submit"] {
     width: 100%;
-    background-color: #00373E;
+    padding: 14px;
+    background-color: #333;
     color: white;
     border: none;
-    padding: 14px;
-    font-size: 1rem;
+    border-radius: 4px;
+    font-size: 15px;
     font-weight: 600;
-    border-radius: 10px;
     cursor: pointer;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
     margin-top: 20px;
-    transition: background-color 0.3s, transform 0.2s;
+    letter-spacing: 1px;
 }
 
-.submit-btn:hover {
-    background-color: #004d57;
-    transform: translateY(-2px);
+button[type="submit"]:hover {
+    background-color: #00373E;
 }
 
-/* --- FOOTER Y ENLACES --- */
 .register-footer {
     margin-top: 30px;
-    font-size: 0.9rem;
-    color: #555;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
 }
 
-.login-link {
-    color: #19a463;
-    font-weight: 700;
+.register-footer a {
+    color: #00373E;
     text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
 }
 
-.login-link:hover {
+.register-footer a:hover {
     text-decoration: underline;
-}
-
-.divider {
-    border: 0;
-    border-top: 1px solid #eee;
-    margin: 20px 0;
+    color: #19a463;
 }
 
 .guest-link {
-    color: #777;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s;
+    display: block;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #888 !important;
 }
 
 .guest-link:hover {
-    color: #00373E;
+    color: #00373E !important;
 }
