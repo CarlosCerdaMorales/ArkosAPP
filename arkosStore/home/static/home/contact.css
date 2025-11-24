@@ -2,6 +2,7 @@
     background-color: #aee3f0;
     padding-bottom: 60px;
     min-height: calc(100vh - 80px);
+    font-family: "Poppins", sans-serif;
 }
 
 .contact-hero {
@@ -15,27 +16,30 @@
 }
 
 .contact-hero-left h1 {
-    font-family: "Poppins", sans-serif;
-    font-size: 28px;
+    font-size: 32px;
     letter-spacing: 1px;
-    margin: 0 0 12px 0;
-    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 .contact-hero-left p {
     font-size: 16px;
-    margin: 0;
+    opacity: 0.9;
+}
+
+.contact-hero-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
 }
 
 .contact-owner-avatar {
-    width: 220px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #e5e5e5;
+    border: 4px solid #aee3f0;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
 }
 
 .contact-owner-avatar img {
@@ -44,71 +48,222 @@
     object-fit: cover;
 }
 
-.contact-socials {
+.contact-owner-name {
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.contact-owner-role {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.contact-main {
+    max-width: 1100px;
+    margin: 30px auto 0;
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.social-section,
+.instagram-section {
+    background-color: #f7feff;
+    border-radius: 24px;
+    padding: 24px 26px 28px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
+}
+
+.section-title {
+    font-size: 22px;
+    color: #00373e;
+    margin-bottom: 4px;
+}
+
+.section-subtitle {
+    font-size: 14px;
+    color: #00373e;
+    margin-bottom: 20px;
+}
+
+.social-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 40px;
-    padding: 60px 20px 0 20px;
+    gap: 22px;
 }
 
 .social-card {
-    background-color: #f9ffff;
-    border-radius: 32px;
-    width: 280px;
-    padding: 40px 32px 32px 32px;
+    background-color: #ffffff;
+    border-radius: 26px;
+    padding: 22px 24px;
+    width: 260px;
+    text-decoration: none;
+    color: #00373e;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    transform: translateY(0);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+}
+
+.social-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
+    background-color: #f7feff;
 }
 
 .social-icon-container {
-    width: 150px;
-    height: 150px;
-    border-radius: 32px;
-    background-color: #ffffff;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #aee3f0;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.social-icon {
-    font-size: 72px;
-    font-weight: 700;
-}
-
-.social-icon-container {
-    width: 130px;
-    height: 130px;
-    border-radius: 28px;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
 }
 
 .social-img {
-    width: 85%;
-    height: auto;
+    width: 56px;
+    height: 56px;
     object-fit: contain;
 }
 
-.social-username {
-    margin-top: 24px;
+.social-name {
     font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
 }
 
-@media (max-width: 768px) {
+.social-username {
+    font-size: 14px;
+    color: #00606c;
+}
+
+.social-cta {
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #004750;
+}
+
+/* Instagram embed */
+
+.instagram-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 16px;
+}
+
+.instagram-item {
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.instagram-item .instagram-media {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+.instagram-footer {
+    text-align: center;
+    margin-top: 4px;
+}
+
+.instagram-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 24px;
+    background-color: #00373e;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.22s ease, transform 0.22s ease;
+}
+
+.instagram-button:hover {
+    background-color: #00606c;
+    transform: translateY(-2px);
+}
+
+/* Animaciones suaves */
+
+.fade-up {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.6s ease-out forwards;
+}
+
+.social-section.fade-up {
+    animation-delay: 0.08s;
+}
+
+.instagram-section.fade-up {
+    animation-delay: 0.14s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
     .contact-hero {
         flex-direction: column;
         align-items: flex-start;
         gap: 24px;
     }
 
-    .contact-owner-avatar {
-        width: 160px;
-        height: 160px;
+    .contact-main {
+        padding: 0 20px;
+    }
+
+    .social-grid {
+        gap: 18px;
+    }
+
+    .social-card {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .instagram-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .contact-hero {
+        padding: 28px 22px;
+        border-radius: 0 0 30px 30px;
+    }
+
+    .contact-hero-left h1 {
+        font-size: 26px;
+    }
+
+    .contact-main {
+        padding: 0 16px;
+    }
+
+    .social-section,
+    .instagram-section {
+        padding: 20px 18px 24px;
+        border-radius: 20px;
     }
 }

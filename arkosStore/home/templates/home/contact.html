@@ -7,39 +7,84 @@
 
 {% block content %}
 <div class="contact-page">
-    <section class="contact-hero">
+    <section class="contact-hero fade-up">
         <div class="contact-hero-left">
             <h1>CONÉCTATE CON NOSOTROS</h1>
-            <p>Síguenos en nuestras redes sociales</p>
+            <p>Síguenos en nuestras redes sociales y mantente al día con todo lo que hacemos.</p>
         </div>
         <div class="contact-hero-right">
             <div class="contact-owner-avatar">
-                <img src="{% static 'home/owner.jpg' %}" alt="Propietario de Natursur">
+                <img src="{% static 'home/owner.jpg' %}" alt="Equipo Natursur">
             </div>
+            <p class="contact-owner-name">Fernando Escalona</p>
+            <p class="contact-owner-role">Fisioterapeuta y director de Natursur</p>
         </div>
     </section>
 
-    <section class="contact-socials">
-        <a href="https://www.facebook.com/natursur" target="_blank" class="social-card">
-            <div class="social-icon-container">
-                <img src="{% static 'home/icons/facebook_logo.png' %}" class="social-img">
-            </div>
-            <p class="social-username">Fernando Escalona Cuaresma</p>
-        </a>
+    <section class="contact-main">
+        <section class="social-section fade-up">
+            <h2 class="section-title">Nuestras redes sociales</h2>
+            <p class="section-subtitle">Elige la plataforma que más uses y conéctate con nosotros.</p>
 
-        <a href="https://www.instagram.com/yosoyescalona/?hl=es" target="_blank" class="social-card">
-            <div class="social-icon-container">
-                <img src="{% static 'home/icons/instagram_logo.png' %}" class="social-img">
-            </div>
-            <p class="social-username">@yosoyescalona</p>
-        </a>
+            <div class="social-grid">
+                <a href="https://www.facebook.com/natursur" target="_blank" class="social-card">
+                    <div class="social-icon-container">
+                        <img src="{% static 'home/icons/facebook_logo.png' %}" class="social-img" alt="Facebook">
+                    </div>
+                    <p class="social-name">Facebook</p>
+                    <p class="social-username">Fernando Escalona Cuaresma</p>
+                    <span class="social-cta">Ver página</span>
+                </a>
 
-        <a href="https://www.youtube.com/@natursur" target="_blank" class="social-card">
-            <div class="social-icon-container">
-                <img src="{% static 'home/icons/youtube_logo.png' %}" class="social-img">
+                <a href="https://www.instagram.com/yosoyescalona/?hl=es" target="_blank" class="social-card">
+                    <div class="social-icon-container">
+                        <img src="{% static 'home/icons/instagram_logo.png' %}" class="social-img" alt="Instagram">
+                    </div>
+                    <p class="social-name">Instagram</p>
+                    <p class="social-username">@yosoyescalona</p>
+                    <span class="social-cta">Ver perfil</span>
+                </a>
+
+                <a href="https://www.youtube.com/@natursur" target="_blank" class="social-card">
+                    <div class="social-icon-container">
+                        <img src="{% static 'home/icons/youtube_logo.png' %}" class="social-img" alt="YouTube">
+                    </div>
+                    <p class="social-name">YouTube</p>
+                    <p class="social-username">@natursur</p>
+                    <span class="social-cta">Ver canal</span>
+                </a>
             </div>
-            <p class="social-username">@natursur</p>
-        </a>
+        </section>
+
+        <section class="instagram-section fade-up">
+            <h2 class="section-title">Últimas publicaciones en Instagram</h2>
+            <p class="section-subtitle">
+                Mira directamente algunas de las últimas publicaciones de @yosoyescalona sin salir de la página.
+            </p>
+
+            <div class="instagram-grid">
+                <div class="instagram-item">
+                    <blockquote class="instagram-media"
+                                data-instgrm-permalink="https://www.instagram.com/reel/DRP7iaMDbAX/"
+                                data-instgrm-version="14">
+                    </blockquote>
+                </div>
+                <div class="instagram-item">
+                    <blockquote class="instagram-media"
+                                data-instgrm-permalink="https://www.instagram.com/p/DOW6cE5jHZd/"
+                                data-instgrm-version="14">
+                    </blockquote>
+                </div>
+            </div>
+
+            <div class="instagram-footer">
+                <a href="https://www.instagram.com/yosoyescalona/?hl=es" target="_blank" class="instagram-button">
+                    Ver perfil completo en Instagram
+                </a>
+            </div>
+        </section>
     </section>
 </div>
+
+<script async src="//www.instagram.com/embed.js"></script>
 {% endblock %}
