@@ -1,27 +1,22 @@
-/* Estilos base inspirados en tu Login */
 body {
     background-color: #f0f2f5;
     font-family: 'Poppins', sans-serif;
 }
 
-/* Contenedor principal para centrar vertical y horizontalmente */
 .register-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Ocupa toda la altura */
+    min-height: 100vh;
     padding: 40px 20px;
-    
-    /* Ajuste para la navbar fija */
     margin-top: 60px; 
     box-sizing: border-box;
 }
 
-/* La tarjeta blanca */
 .form-card {
     background: #ffffff;
     width: 100%;
-    max-width: 550px; /* Un poco más ancho que un login simple por los datos */
+    max-width: 550px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -33,11 +28,10 @@ body {
     box-sizing: border-box;
 }
 
-/* Títulos */
 .form-content h2 {
     font-weight: 600;
     color: #333;
-    text-align: center; /* Centrado en registro queda mejor */
+    text-align: center;
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -50,7 +44,6 @@ body {
     margin-bottom: 40px;
 }
 
-/* Campos del formulario (Estilo Material/Login) */
 .form-group {
     margin-bottom: 25px;
     position: relative;
@@ -66,7 +59,6 @@ body {
     font-weight: 600;
 }
 
-/* Inputs con solo borde inferior */
 .form-group input {
     width: 100%;
     padding: 10px 0;
@@ -81,10 +73,9 @@ body {
 
 .form-group input:focus {
     outline: none;
-    border-bottom: 2px solid #00373E; /* Tu color corporativo */
+    border-bottom: 2px solid #00373E;
 }
 
-/* Texto de ayuda y errores */
 .help-text {
     display: block;
     font-size: 0.75em;
@@ -93,12 +84,11 @@ body {
 }
 
 .form-errors {
-    color: #d9534f; /* Rojo error */
+    color: #d9534f;
     font-size: 0.85em;
     margin-top: 5px;
 }
 
-/* Botón */
 button[type="submit"] {
     width: 100%;
     padding: 14px;
@@ -116,10 +106,9 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #00373E; /* Cambio a color corporativo al hover */
+    background-color: #00373E;
 }
 
-/* Footer */
 .register-footer {
     margin-top: 30px;
     text-align: center;
@@ -143,7 +132,7 @@ button[type="submit"]:hover {
     display: block;
     margin-top: 15px;
     font-size: 0.9em;
-    color: #888 !important; /* Un poco más sutil para la opción secundaria */
+    color: #888 !important;
 }
 
 .guest-link:hover {
