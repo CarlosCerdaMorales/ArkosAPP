@@ -13,7 +13,12 @@
         <span class="success-icon">✓</span>
         
         <h2 class="profile-title" style="margin-bottom: 10px;">¡Reserva Confirmada!</h2>
-        <p>Tu cita ha sido agendada correctamente.</p>
+        
+        {% if appointment.user %}
+            <p>Hola <b>{{ appointment.user.username }}</b>, tu cita ha sido agendada correctamente.</p>
+        {% else %}
+            <p>Hola <b>{{ appointment.guest_first_name }}</b>, tu cita ha sido agendada correctamente.</p>
+        {% endif %}
 
         <div class="receipt-data">
             <div class="receipt-row">
@@ -36,12 +41,39 @@
                 <span class="receipt-label">Duración:</span>
                 <span class="receipt-value">{{ appointment.service.duration }} min</span>
             </div>
+
+            {% if not appointment.user %}
+                <hr>
+                <div class="receipt-row">
+                    <span class="receipt-label">Nombre:</span>
+                    <span class="receipt-value">{{ appointment.guest_first_name }} {{ appointment.guest_last_name }}</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Email:</span>
+                    <span class="receipt-value">{{ appointment.guest_email }}</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Teléfono:</span>
+                    <span class="receipt-value">{{ appointment.guest_phone }}</span>
+                </div>
+            {% endif %}
         </div>
 
         <div class="profile-form-actions">
-            <a href="{% url 'upcoming_appointments' %}" class="profile-btn">
-                Ver mis reservas
-            </a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'upcoming_appointments' %}" class="profile-btn">
+                    Ver mis reservas
+                </a>
+            {% else %}
+                <a href="/" class="profile-btn">
+                    Volver al inicio
+                </a>
+                
+                <p class="register-promo">
+                    ¿Quieres gestionar tus citas futuras? 
+                    <a href="{% url 'register' %}" class="register-link">Regístrate aquí</a>
+                </p>
+            {% endif %}
         </div>
 
     </div>

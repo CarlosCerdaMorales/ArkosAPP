@@ -1,31 +1,163 @@
-.success-icon {
-    font-size: 60px;
-    color: #19a463;
-    margin-bottom: 20px;
-    display: block;
+/* --- ANIMACIONES --- */
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
 }
 
+/* --- ESTRUCTURA GENERAL --- */
+.profile-wrapper {
+    max-width: 800px;
+    margin: 80px auto;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.profile-card {
+    background-color: #a6dce8;
+    padding: 40px;
+    border-radius: 16px;
+}
+
+.profile-title {
+    font-size: 24px;
+    color: #00373E;
+}
+
+/* --- ICONO --- */
+.success-icon {
+    font-size: 70px;
+    color: #19a463;
+    margin-bottom: 15px;
+    display: inline-block;
+    animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+    text-shadow: 0 4px 10px rgba(25, 164, 99, 0.3);
+}
+
+/* --- TICKET DE DATOS --- */
 .receipt-data {
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px 0;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    margin: 25px auto;
+    max-width: 500px;
     text-align: left;
-    border: 1px solid #bfe3ef;
+    box-shadow: 0 10px 25px rgba(0, 55, 62, 0.08);
+    border: 1px solid rgba(0, 55, 62, 0.05);
+    border-top: 4px solid #19a463; 
 }
 
 .receipt-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
     font-size: 1.05em;
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+.receipt-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 .receipt-label {
-    color: #00373E;
-    font-weight: 600;
+    color: #666;
+    font-weight: 500;
+    font-size: 0.95em;
 }
 
 .receipt-value {
-    color: #333;
+    color: #00373E;
+    font-weight: 600;
+    text-align: right;
+}
+
+.receipt-data hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 2px dashed #bfe3ef;
+}
+
+/* --- BOTÓN PRINCIPAL --- */
+.profile-form-actions {
+    margin-top: 30px;
+}
+
+.profile-btn {
+    display: inline-block;
+    background-color: #00373E;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 6px rgba(0, 55, 62, 0.2);
+    border: 2px solid transparent;
+}
+
+.profile-btn:hover {
+    background-color: #004d57;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 55, 62, 0.3);
+}
+
+.profile-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 55, 62, 0.2);
+}
+
+/* --- ENLACE DE REGISTRO --- */
+.register-promo {
+    margin-top: 25px;
+    font-size: 0.95em;
+    color: #666;
+}
+
+.register-link {
+    color: #00373E;
+    font-weight: 700;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+    transition: color 0.3s ease;
+}
+
+.register-link::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #19a463;
+    transition: width 0.3s ease-in-out;
+}
+
+.register-link:hover {
+    color: #19a463;
+}
+
+.register-link:hover::after {
+    width: 100%;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 480px) {
+    .receipt-data {
+        padding: 20px;
+    }
+    .receipt-row {
+        font-size: 0.95em;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .receipt-value {
+        text-align: left;
+    }
 }

@@ -3,6 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'appointments/create.css' %}">
+<link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -10,46 +11,101 @@
 <div class="profile-wrapper">
     <h2 class="profile-title">Reservar Cita</h2>
 
-    <div class="profile-card"> 
+    <div class="profile-card" style="text-align: left;">
         
         <div class="profile-field">
             <label for="ui-service">1. Selecciona el servicio</label>
-            <select id="ui-service" class="input"> 
+            <select id="ui-service" class="input" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
                 <option value="">-- Elige una opción --</option>
                 {% for service in services %}
-                    <option value="{{ service.id }}" data-duration="{{ service.duration }}">
-                        {{ service.get_name_display }} (sesión de {{ service.duration }} min)
+                    <option value="{{ service.id }}" data-duration="{{ service.duration }}" {% if form.service.value|stringformat:"s" == service.id|stringformat:"s" %}selected{% endif %}>
+                        {{ service.get_name_display }} ({{ service.duration }} min)
                     </option>
                 {% endfor %}
             </select>
         </div>
 
-        <div id="step-2-container" class="profile-field">
+        <div id="step-2-container" class="profile-field {% if not form.service.value %}step-hidden{% endif %}">
             <label for="ui-date">2. Elige una fecha</label>
-            <input type="date" id="ui-date" class="input">
+            <input type="date" id="ui-date" class="input" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;" 
+                   value="{{ form.date.value|default:'' }}">
         </div>
 
-        <div id="step-3-container" class="profile-field step-hidden">
+        <div id="step-3-container" class="profile-field {% if not form.date.value %}step-hidden{% endif %}">
             <label>3. Horas disponibles</label>
             <div id="slots-grid" class="slot-container">
                 </div>
-            <p id="feedback-msg" class="loading-text"></p>
+            <p id="feedback-msg" class="loading-text" style="margin-top:10px;"></p>
         </div>
+
+        {% if not user.is_authenticated %}
+        <div id="guest-info-container" class="profile-field {% if not form.errors %}step-hidden{% endif %}" 
+             style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
+            
+            <h3 style="font-size: 1.1em; color: #00373E; margin-bottom: 15px;">Tus datos de contacto</h3>
+            
+            {% if form.non_field_errors %}
+                <div style="color: #d9534f; margin-bottom: 10px; font-size: 0.9em;">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label>Nombre *</label>
+                    <input type="text" name="guest_first_name" form="real-django-form" class="input" required placeholder="Nombre"
+                           value="{{ form.guest_first_name.value|default:'' }}">
+                    <div style="color: #d9534f; font-size: 0.85em; margin-top: 4px;">{{ form.guest_first_name.errors }}</div>
+                </div>
+                <div>
+                    <label>Apellidos *</label>
+                    <input type="text" name="guest_last_name" form="real-django-form" class="input" required placeholder="Apellidos"
+                           value="{{ form.guest_last_name.value|default:'' }}">
+                    <div style="color: #d9534f; font-size: 0.85em; margin-top: 4px;">{{ form.guest_last_name.errors }}</div>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <label>Email *</label>
+                <input type="email" name="guest_email" form="real-django-form" class="input" required placeholder="tu@email.com"
+                       value="{{ form.guest_email.value|default:'' }}">
+                <div style="color: #d9534f; font-size: 0.85em; margin-top: 4px;">{{ form.guest_email.errors }}</div>
+            </div>
+            <div style="margin-top: 15px;">
+                <label>Teléfono *</label>
+                <input type="tel" name="guest_phone" form="real-django-form" class="input" required placeholder="+34 600000000"
+                       value="{{ form.guest_phone.value|default:'' }}">
+                <div style="color: #d9534f; font-size: 0.85em; margin-top: 4px;">{{ form.guest_phone.errors }}</div>
+            </div>
+        </div>
+        {% endif %}
 
         <form method="post" id="real-django-form">
             {% csrf_token %}
             {{ form.service }} 
             {{ form.date }}
             {{ form.time }}
-            <input type="hidden" name="worker_id" id="hidden_worker_id">
+            <input type="hidden" name="worker_id" id="hidden_worker_id" value="{{ form.data.worker_id|default:'' }}">
         </form>
 
         <div class="profile-form-actions">
-            <button type="button" id="confirm-btn" class="profile-btn" disabled>
+            <button type="button" id="confirm-btn" class="profile-btn" disabled style="opacity: 0.5; cursor: not-allowed;">
                 Confirmar Reserva
             </button>
         </div>
 
+    </div>
+</div>
+
+<div class="confirm-modal-overlay" id="conflictModal" style="display: none;">
+    <div class="confirm-modal">
+        <div class="confirm-title" style="color: #d9534f;">⚠️ ¡Atención!</div>
+        <div class="confirm-text">
+            Ya tienes otra cita programada que coincide o se solapa con este horario.
+            <br><br>
+            ¿Deseas reservar de todas formas?
+        </div>
+        <div class="confirm-btns">
+            <button class="modal-btn modal-btn-cancel" id="modalCancelBtn">Revisar hora</button>
+            <button class="modal-btn modal-btn-confirm" id="modalConfirmBtn">Reservar igual</button>
+        </div>
     </div>
 </div>
 
@@ -60,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const uiDate = document.getElementById('ui-date');
     const step2 = document.getElementById('step-2-container');
     const step3 = document.getElementById('step-3-container');
+    const guestContainer = document.getElementById('guest-info-container'); 
     const slotsGrid = document.getElementById('slots-grid');
     const feedbackMsg = document.getElementById('feedback-msg');
     const confirmBtn = document.getElementById('confirm-btn');
@@ -70,6 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const hiddenWorker = document.getElementById('hidden_worker_id');
     const realForm = document.getElementById('real-django-form');
 
+    const conflictModal = document.getElementById('conflictModal');
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+
     const today = new Date();
     const todayISO = today.toISOString().split('T')[0];
     uiDate.setAttribute('min', todayISO);
@@ -79,52 +140,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxDateISO = maxDate.toISOString().split('T')[0];
     uiDate.setAttribute('max', maxDateISO);
 
-    uiService.addEventListener('change', function() {
-        const serviceId = this.value;
+    // --- FUNCIÓN REUTILIZABLE PARA CARGAR HUECOS ---
+    function fetchAndRenderSlots(serviceId, dateVal) {
+        if (!serviceId || !dateVal) return;
 
-        uiDate.value = '';
+        // UI Reset parcial
+        feedbackMsg.innerText = 'Buscando disponibilidad...';
         slotsGrid.innerHTML = '';
         
-        // El paso 2 es ahora visible por defecto, lo ocultamos si no hay servicio
-        step2.classList.remove('step-visible'); 
-        step3.classList.remove('step-visible'); 
-
-        confirmBtn.disabled = true;
-        confirmBtn.style.opacity = '0.5';
-        confirmBtn.style.cursor = 'not-allowed';
-
-        if (serviceId) {
-            hiddenService.value = serviceId;
-            step2.classList.add('step-visible'); // Hacemos visible el paso 2 con la clase CSS
-        } else {
-            // Si no hay servicio, aseguramos que el paso 2 se oculte (aunque ya lo hace por defecto si no añadimos step-visible)
-            step2.classList.remove('step-visible');
-        }
-    });
-
-    uiDate.addEventListener('change', function() {
-        const dateVal = this.value;
-        const serviceId = uiService.value;
-
-        const selectedDate = new Date(dateVal)
-
-        if (selectedDate > maxDate) {
-            feedbackMsg.innerText = 'No puedes reservar con más de 30 días de antelación.';
-            slotsGrid.innerHTML = '';
-            confirmBtn.disabled = true;
-            step3.classList.remove('step-visible'); // Ocultar paso 3 si falla la validación
-            return;
-        }
-
-        if (!dateVal || !serviceId) return;
-
-        hiddenDate.value = dateVal;
-
-        // Usamos la clase para mostrar el paso 3 (Hora)
-        step3.classList.add('step-visible');
-        slotsGrid.innerHTML = '';
-        feedbackMsg.innerText = 'Buscando disponibilidad...';
-        confirmBtn.disabled = true;
+        // Recuperamos valores previos si existen (para la recarga tras error)
+        // Usamos 'Slice' para quitar segundos si vienen (09:00:00 -> 09:00)
+        const preSelectedTime = hiddenTime.value ? hiddenTime.value.slice(0, 5) : null; 
+        const preSelectedWorker = hiddenWorker.value;
 
         fetch(`/appointments/api/get-available-slots/?service_id=${serviceId}&date=${dateVal}`)
             .then(response => {
@@ -144,6 +171,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     btn.className = 'time-slot';
                     btn.innerHTML = `<strong>${slot.time_display}</strong><br><small>${slot.worker_name}</small>`;
                     
+                    // --- LÓGICA DE AUTO-SELECCIÓN TRAS ERROR ---
+                    // Si la hora y el worker coinciden con lo que había antes del error, lo marcamos
+                    if (preSelectedTime === slot.time_value && preSelectedWorker == slot.worker_id) {
+                        btn.classList.add('selected');
+                        // Reactivar botón confirmar
+                        confirmBtn.disabled = false;
+                        confirmBtn.style.opacity = '1';
+                        confirmBtn.style.cursor = 'pointer';
+                        // Asegurar que guest form se vea
+                        if (guestContainer) {
+                            guestContainer.classList.remove('step-hidden');
+                            guestContainer.classList.add('step-visible');
+                        }
+                    }
+
                     btn.onclick = function() {
                         document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
                         this.classList.add('selected');
@@ -151,6 +193,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         hiddenTime.value = slot.time_value;
                         hiddenWorker.value = slot.worker_id; 
                         
+                        if (guestContainer) {
+                            guestContainer.classList.remove('step-hidden');
+                            guestContainer.classList.add('step-visible');
+                        }
+
                         confirmBtn.disabled = false;
                         confirmBtn.style.opacity = '1';
                         confirmBtn.style.cursor = 'pointer';
@@ -163,10 +210,100 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
                 feedbackMsg.innerText = 'Ocurrió un error al cargar los horarios.';
             });
+    }
+
+    // --- EVENTOS UI ---
+
+    uiService.addEventListener('change', function() {
+        const serviceId = this.value;
+        // Reset total al cambiar servicio
+        uiDate.value = '';
+        slotsGrid.innerHTML = '';
+        step3.classList.add('step-hidden');
+        if(guestContainer) guestContainer.classList.add('step-hidden');
+        confirmBtn.disabled = true;
+        confirmBtn.style.opacity = '0.5';
+        confirmBtn.style.cursor = 'not-allowed';
+
+        if (serviceId) {
+            hiddenService.value = serviceId;
+            step2.classList.remove('step-hidden');
+            step2.classList.add('step-visible');
+        } else {
+            step2.classList.add('step-hidden');
+        }
     });
 
-    confirmBtn.addEventListener('click', function() {
+    uiDate.addEventListener('change', function() {
+        const dateVal = this.value;
+        const serviceId = uiService.value;
+        
+        // Validación fecha máxima
+        const selectedDate = new Date(dateVal);
+        if (selectedDate > maxDate) {
+            feedbackMsg.innerText = 'No puedes reservar con más de 30 días de antelación.';
+            slotsGrid.innerHTML = '';
+            confirmBtn.disabled = true;
+            step3.classList.add('step-hidden');
+            return;
+        }
+
+        if (!dateVal || !serviceId) return;
+
+        hiddenDate.value = dateVal;
+        step3.classList.remove('step-hidden');
+        
+        // Llamamos a la función extraída
+        fetchAndRenderSlots(serviceId, dateVal);
+    });
+
+    // --- AUTO-EJECUCIÓN AL CARGAR (SI HAY ERRORES) ---
+    // Si Django devolvió el form con datos, ejecutamos la carga automáticamente
+    if (hiddenService.value && hiddenDate.value) {
+        fetchAndRenderSlots(hiddenService.value, hiddenDate.value);
+    }
+
+    // --- CONFIRMACIÓN ---
+    confirmBtn.addEventListener('click', function(e) {
+        e.preventDefault(); 
+
+        if (!realForm.reportValidity()) return; 
+
+        const sId = hiddenService.value;
+        const dVal = hiddenDate.value;
+        const tVal = hiddenTime.value;
+
+        if (!tVal) {
+            alert("Por favor, selecciona una hora.");
+            return;
+        }
+
+        confirmBtn.disabled = true;
+        confirmBtn.innerText = "Verificando agenda...";
+
+        fetch(`/appointments/api/check-conflict/?service_id=${sId}&date=${dVal}&time=${tVal}`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.conflict) {
+                    conflictModal.style.display = 'flex';
+                    confirmBtn.innerText = "Confirmar Reserva";
+                    confirmBtn.disabled = false;
+                } else {
+                    realForm.submit();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                realForm.submit();
+            });
+    });
+
+    modalConfirmBtn.addEventListener('click', function() {
         realForm.submit();
+    });
+
+    modalCancelBtn.addEventListener('click', function() {
+        conflictModal.style.display = 'none';
     });
 });
 </script>

@@ -5,7 +5,7 @@ from django.utils import timezone
 from .forms import AppointmentForm
 from .models import Service, Worker, Availability, Appointment, StatusChoices, TypeChoices
 from datetime import datetime, timedelta
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 
 
 
@@ -28,16 +28,20 @@ def upcoming_appointments_view(request):
     ).order_by('datetime')
     return render(request, 'appointments/upcoming.html', {'appointments': appointments})
 
-@login_required
 def create_appointment_view(request):
     if request.method == 'POST':
-        form = AppointmentForm(request.POST)
+        form = AppointmentForm(request.POST, user=request.user)
+        
         if form.is_valid():
             appointment = form.save(commit=False)
             
-            appointment.user = request.user
+            if request.user.is_authenticated:
+                appointment.user = request.user
+
+            else:
+                appointment.user = None
+
             appointment.datetime = form.cleaned_data['datetime_actual']
-            
             worker_id = form.cleaned_data['worker_id']
             appointment.worker = get_object_or_404(Worker, id=worker_id)
             
@@ -45,7 +49,7 @@ def create_appointment_view(request):
             
             return redirect('appointment_success', pk=appointment.id)
     else:
-        form = AppointmentForm()
+        form = AppointmentForm(user=request.user)
 
     context = {
         'form': form,
@@ -53,9 +57,11 @@ def create_appointment_view(request):
     }
     return render(request, 'appointments/create.html', context)
 
-@login_required
 def appointment_success_view(request, pk):
-    appointment = get_object_or_404(Appointment, id=pk, user=request.user)
+    appointment = get_object_or_404(Appointment, id=pk)
+    
+    if appointment.user and appointment.user != request.user:
+        raise Http404("No tienes permiso para ver esta reserva.")
     
     return render(request, 'appointments/success.html', {'appointment': appointment})
 

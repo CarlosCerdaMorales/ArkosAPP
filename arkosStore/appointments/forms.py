@@ -14,21 +14,34 @@ class AppointmentForm(forms.ModelForm):
         widget=forms.TimeInput(attrs={'type': 'time', 'class': 'hidden-input'}),
         label="Hora"
     )
-    
     worker_id = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
         model = Appointment
-        fields = ['service'] 
+        fields = ['service', 'guest_first_name', 'guest_last_name', 'guest_email', 'guest_phone'] 
         widgets = {
             'service': forms.Select(attrs={'class': 'hidden-input'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
     def clean(self):
-        """
-        This method combines the separate date and time fields into a single datetime object
-        """
         cleaned_data = super().clean()
+        
+        if not self.user or not self.user.is_authenticated:
+            guest_first_name = cleaned_data.get('guest_first_name')
+            guest_email = cleaned_data.get('guest_email')
+            guest_phone = cleaned_data.get('guest_phone')
+
+            if not guest_first_name:
+                self.add_error('guest_first_name', 'El nombre es obligatorio.')
+            if not guest_email:
+                self.add_error('guest_email', 'El email es obligatorio.')
+            if not guest_phone:
+                self.add_error('guest_phone', 'El teléfono es obligatorio.')
+
         date = cleaned_data.get('date')
         time_data = cleaned_data.get('time')
         service = cleaned_data.get('service')
@@ -36,14 +49,12 @@ class AppointmentForm(forms.ModelForm):
 
         if date and time_data and service and worker_id:
             naive_combined_datetime = datetime.combine(date, time_data)
-            
             combined_datetime = timezone.make_aware(naive_combined_datetime)
             
             if combined_datetime < timezone.now():
                 raise ValidationError("No puedes reservar en el pasado.")
             
             max_future_datetime = timezone.now() + timedelta(days=30)
-
             if combined_datetime > max_future_datetime:
                 raise ValidationError("Las reservas solo están permitidas con un máximo de 30 días de antelación.")
                 
@@ -54,25 +65,22 @@ class AppointmentForm(forms.ModelForm):
 
             end_time = combined_datetime + timedelta(minutes=service.duration)
             
-            # --- CORRECCIÓN DE SOLAPAMIENTO (Se mueve la lógica a Python) ---
-            
-            # 1. Obtenemos todas las citas que *podrían* solaparse (empiezan antes de que termine el nuevo slot)
             overlapping_candidates = Appointment.objects.filter(
                 datetime__lt=end_time,
-                datetime__date=combined_datetime.date(), # Filtramos por el mismo día
-                status__in=[StatusChoices.PENDING, StatusChoices.CONFIRMED]
-            ).select_related('service') # Necesitamos service para calcular el fin.
+                datetime__date=combined_datetime.date(),
+                status__in=[StatusChoices.PENDING, StatusChoices.CONFIRMED],
+                worker_id=worker_id 
+            ).select_related('service')
 
             is_overlapping = False
             for existing_app in overlapping_candidates:
-                # 2. Comprobamos en Python si la cita existente termina después de que el nuevo slot empieza
                 if existing_app.calculated_end_time > combined_datetime:
                     is_overlapping = True
                     break
 
             if is_overlapping:
                 raise ValidationError(
-                    "Esta franja horaria ya está reservada o se solapa con otra cita existente. Por favor, selecciona otro horario."
+                    "Esta franja horaria ya está reservada o se solapa con otra cita existente."
                 )
 
         return cleaned_data

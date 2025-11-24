@@ -22,8 +22,7 @@
     {% else %}
         <p>Empieza a gestionar tu bienestar. ¡Únete a la comunidad!</p>
         <div class="button-group">
-            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
-            <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a>
+            <a href="{% url 'create_appointment' %}" class="btn btn-success">Coger una cita</a>
         </div>
     {% endif %}
 </section>
