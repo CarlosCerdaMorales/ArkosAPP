@@ -72,10 +72,10 @@ class Command(BaseCommand):
                 "Terapeuta holística experta en desbloquear tensiones emocionales. Su enfoque suave te ayudará a reconectar contigo mismo."
             ),
             (
-                "Dani Alves", 
+                "Nemanja Gudelj", 
                 [TypeChoices.NUTRITIONAL_ADVICE], 
-                "dani.jpg",
-                "Pura energía y potencia por la banda derecha. Revolucionó el club y ahora revolucionará tu dieta con la misma intensidad y alegría brasileña."
+                "gud.jpg",
+                "El comodín incombustible. Un líder nato dentro y fuera del campo que destaca por su enorme polivalencia, rindiendo tanto de mediocentro como de central."
             ),
             (
                 "Sofía General", 
