@@ -7,13 +7,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('appointments', '0003_appointment_guest_email_appointment_guest_first_name_and_more'),
+        (
+            "appointments",
+            "0003_appointment_guest_email_appointment_guest_first_name_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='appointment',
-            name='guest_phone',
-            field=models.CharField(blank=True, max_length=22, validators=[django.core.validators.RegexValidator(message="El formato del teléfono debe ser: '+[código país] [número]'. Ej: +34 123456789012345", regex='^\\+\\d{1,5} \\d{1,15}$')], verbose_name='Teléfono de contacto'),
+            model_name="appointment",
+            name="guest_phone",
+            field=models.CharField(
+                blank=True,
+                max_length=22,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        message="El formato del teléfono debe ser: '+[código país] [número]'. Ej: +34 123456789012345",
+                        regex="^\\+\\d{1,5} \\d{1,15}$",
+                    )
+                ],
+                verbose_name="Teléfono de contacto",
+            ),
         ),
     ]

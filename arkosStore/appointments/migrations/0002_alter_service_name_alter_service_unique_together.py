@@ -6,17 +6,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('appointments', '0001_initial'),
+        ("appointments", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='service',
-            name='name',
-            field=models.CharField(choices=[('OSTEOPATIA_MASAJE', 'Osteopatía y Masaje Holístico'), ('PAR_MAGNETICO', 'Par Biomagnético Equilibrado'), ('TECNICAS_EMOCIONALES', 'Técnicas Emocionales Adaptadas'), ('ASESORAMIENTO_NUTRICIONAL', 'Asesoramiento Nutricional'), ('OTRO', 'Otro')], max_length=100, verbose_name='Tipo de Servicio'),
+            model_name="service",
+            name="name",
+            field=models.CharField(
+                choices=[
+                    ("OSTEOPATIA_MASAJE", "Osteopatía y Masaje Holístico"),
+                    ("PAR_MAGNETICO", "Par Biomagnético Equilibrado"),
+                    ("TECNICAS_EMOCIONALES", "Técnicas Emocionales Adaptadas"),
+                    ("ASESORAMIENTO_NUTRICIONAL", "Asesoramiento Nutricional"),
+                    ("OTRO", "Otro"),
+                ],
+                max_length=100,
+                verbose_name="Tipo de Servicio",
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='service',
-            unique_together={('name', 'duration')},
+            name="service",
+            unique_together={("name", "duration")},
         ),
     ]

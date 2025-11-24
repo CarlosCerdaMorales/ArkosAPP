@@ -1,77 +1,83 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+
 from .models import User
+
 
 class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(
-        label='Nombre de usuario',
+        label="Nombre de usuario",
         max_length=150,
-        widget=forms.TextInput(attrs={'placeholder': 'Tu nombre de usuario'})
+        widget=forms.TextInput(attrs={"placeholder": "Tu nombre de usuario"}),
     )
     first_name = forms.CharField(
-        label='Nombre',
+        label="Nombre",
         max_length=100,
-        widget=forms.TextInput(attrs={'placeholder': 'Tu nombre'})
+        widget=forms.TextInput(attrs={"placeholder": "Tu nombre"}),
     )
     last_name = forms.CharField(
-        label='Apellidos',
+        label="Apellidos",
         max_length=150,
-        widget=forms.TextInput(attrs={'placeholder': 'Tus apellidos'})
+        widget=forms.TextInput(attrs={"placeholder": "Tus apellidos"}),
     )
     phone_number = forms.CharField(
-        label='Teléfono',
+        label="Teléfono",
         max_length=20,
-        widget=forms.TextInput(attrs={'placeholder': 'Tu número de teléfono'})
+        widget=forms.TextInput(attrs={"placeholder": "Tu número de teléfono"}),
     )
     email = forms.EmailField(
-        label='Correo electrónico',
-        widget=forms.EmailInput(attrs={'placeholder': 'Tu correo electrónico'})
+        label="Correo electrónico",
+        widget=forms.EmailInput(attrs={"placeholder": "Tu correo electrónico"}),
     )
     address = forms.CharField(
-        label='Dirección',
+        label="Dirección",
         max_length=255,
-        widget=forms.TextInput(attrs={'placeholder': 'Tu dirección'})
+        widget=forms.TextInput(attrs={"placeholder": "Tu dirección"}),
     )
     password1 = forms.CharField(
-        label='Contraseña',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Crea una contraseña'})
+        label="Contraseña",
+        widget=forms.PasswordInput(attrs={"placeholder": "Crea una contraseña"}),
     )
     password2 = forms.CharField(
-        label='Confirmar contraseña',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Repite la contraseña'})
+        label="Confirmar contraseña",
+        widget=forms.PasswordInput(attrs={"placeholder": "Repite la contraseña"}),
     )
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'phone_number', 'email', 'address', 'password1', 'password2']
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "email",
+            "address",
+            "password1",
+            "password2",
+        ]
+
 
 class CustomLoginForm(AuthenticationForm):
     username = forms.CharField(
-        label='Nombre de usuario',
+        label="Nombre de usuario",
         max_length=150,
-        widget=forms.TextInput(attrs={'placeholder': 'Tu nombre de usuario'})
+        widget=forms.TextInput(attrs={"placeholder": "Tu nombre de usuario"}),
     )
     password = forms.CharField(
-        label='Contraseña',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Tu contraseña'})
+        label="Contraseña",
+        widget=forms.PasswordInput(attrs={"placeholder": "Tu contraseña"}),
     )
 
 
 class ProfileForm(forms.ModelForm):
     first_name = forms.RegexField(
-        regex=r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$',
-        max_length=150,
-        required=True
+        regex=r"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$", max_length=150, required=True
     )
     last_name = forms.RegexField(
-        regex=r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$',
-        max_length=150,
-        required=True
+        regex=r"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$", max_length=150, required=True
     )
     email = forms.EmailField(required=True)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
-
-    
+        fields = ["first_name", "last_name", "email"]

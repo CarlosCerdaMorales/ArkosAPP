@@ -7,23 +7,56 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Specialty',
+            name="Specialty",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('OSTEOPATIA_MASAJE', 'Osteopatía y Masaje Holístico'), ('PAR_MAGNETICO', 'Par Biomagnético Equilibrado'), ('TECNICAS_EMOCIONALES', 'Técnicas Emocionales Adaptadas'), ('ASESORAMIENTO_NUTRICIONAL', 'Asesoramiento Nutricional'), ('OTRO', 'Otro')], max_length=50, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        choices=[
+                            ("OSTEOPATIA_MASAJE", "Osteopatía y Masaje Holístico"),
+                            ("PAR_MAGNETICO", "Par Biomagnético Equilibrado"),
+                            ("TECNICAS_EMOCIONALES", "Técnicas Emocionales Adaptadas"),
+                            ("ASESORAMIENTO_NUTRICIONAL", "Asesoramiento Nutricional"),
+                            ("OTRO", "Otro"),
+                        ],
+                        max_length=50,
+                        unique=True,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Worker',
+            name="Worker",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=120)),
-                ('specialties', models.ManyToManyField(blank=True, related_name='workers', to='workers.specialty')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=120)),
+                (
+                    "specialties",
+                    models.ManyToManyField(
+                        blank=True, related_name="workers", to="workers.specialty"
+                    ),
+                ),
             ],
         ),
     ]

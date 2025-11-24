@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Worker, Specialty
+
+from .models import Specialty, Worker
 
 # Register your models here.
 

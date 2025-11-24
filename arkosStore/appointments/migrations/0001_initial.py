@@ -11,42 +11,142 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('workers', '0001_initial'),
+        ("workers", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Service',
+            name="Service",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('OSTEOPATIA_MASAJE', 'Osteopatía y Masaje Holístico'), ('PAR_MAGNETICO', 'Par Biomagnético Equilibrado'), ('TECNICAS_EMOCIONALES', 'Técnicas Emocionales Adaptadas'), ('ASESORAMIENTO_NUTRICIONAL', 'Asesoramiento Nutricional'), ('OTRO', 'Otro')], max_length=100, unique=True, verbose_name='Tipo de Servicio')),
-                ('duration', models.PositiveIntegerField(default=60, help_text='Duración en minutos', validators=[django.core.validators.MinValueValidator(15)])),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        choices=[
+                            ("OSTEOPATIA_MASAJE", "Osteopatía y Masaje Holístico"),
+                            ("PAR_MAGNETICO", "Par Biomagnético Equilibrado"),
+                            ("TECNICAS_EMOCIONALES", "Técnicas Emocionales Adaptadas"),
+                            ("ASESORAMIENTO_NUTRICIONAL", "Asesoramiento Nutricional"),
+                            ("OTRO", "Otro"),
+                        ],
+                        max_length=100,
+                        unique=True,
+                        verbose_name="Tipo de Servicio",
+                    ),
+                ),
+                (
+                    "duration",
+                    models.PositiveIntegerField(
+                        default=60,
+                        help_text="Duración en minutos",
+                        validators=[django.core.validators.MinValueValidator(15)],
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Availability',
+            name="Availability",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('day_of_week', models.IntegerField(choices=[(0, 'Lunes'), (1, 'Martes'), (2, 'Miércoles'), (3, 'Jueves'), (4, 'Viernes'), (5, 'Sábado'), (6, 'Domingo')], verbose_name='Día')),
-                ('start_time', models.TimeField(verbose_name='Hora Inicio')),
-                ('end_time', models.TimeField(verbose_name='Hora Fin')),
-                ('worker', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='availabilities', to='workers.worker')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "day_of_week",
+                    models.IntegerField(
+                        choices=[
+                            (0, "Lunes"),
+                            (1, "Martes"),
+                            (2, "Miércoles"),
+                            (3, "Jueves"),
+                            (4, "Viernes"),
+                            (5, "Sábado"),
+                            (6, "Domingo"),
+                        ],
+                        verbose_name="Día",
+                    ),
+                ),
+                ("start_time", models.TimeField(verbose_name="Hora Inicio")),
+                ("end_time", models.TimeField(verbose_name="Hora Fin")),
+                (
+                    "worker",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="availabilities",
+                        to="workers.worker",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Horario disponible',
-                'verbose_name_plural': 'Horarios disponibles',
+                "verbose_name": "Horario disponible",
+                "verbose_name_plural": "Horarios disponibles",
             },
         ),
         migrations.CreateModel(
-            name='Appointment',
+            name="Appointment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('datetime', models.DateTimeField()),
-                ('status', models.CharField(choices=[('PENDIENTE', 'Pendiente'), ('CONFIRMADA', 'Confirmada'), ('COMPLETADA', 'Completada'), ('CANCELADA', 'Cancelada')], default='PENDIENTE', max_length=10)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='client_appointments', to=settings.AUTH_USER_MODEL)),
-                ('worker', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='worker_appointments', to='workers.worker')),
-                ('service', models.ForeignKey(default=None, on_delete=django.db.models.deletion.PROTECT, related_name='service_appointments', to='appointments.service')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("datetime", models.DateTimeField()),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("PENDIENTE", "Pendiente"),
+                            ("CONFIRMADA", "Confirmada"),
+                            ("COMPLETADA", "Completada"),
+                            ("CANCELADA", "Cancelada"),
+                        ],
+                        default="PENDIENTE",
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="client_appointments",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "worker",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="worker_appointments",
+                        to="workers.worker",
+                    ),
+                ),
+                (
+                    "service",
+                    models.ForeignKey(
+                        default=None,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="service_appointments",
+                        to="appointments.service",
+                    ),
+                ),
             ],
         ),
     ]

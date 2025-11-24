@@ -8,34 +8,44 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('appointments', '0002_alter_service_name_alter_service_unique_together'),
+        ("appointments", "0002_alter_service_name_alter_service_unique_together"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='appointment',
-            name='guest_email',
-            field=models.EmailField(blank=True, max_length=254, verbose_name='Email'),
+            model_name="appointment",
+            name="guest_email",
+            field=models.EmailField(blank=True, max_length=254, verbose_name="Email"),
         ),
         migrations.AddField(
-            model_name='appointment',
-            name='guest_first_name',
-            field=models.CharField(blank=True, max_length=100, verbose_name='Nombre'),
+            model_name="appointment",
+            name="guest_first_name",
+            field=models.CharField(blank=True, max_length=100, verbose_name="Nombre"),
         ),
         migrations.AddField(
-            model_name='appointment',
-            name='guest_last_name',
-            field=models.CharField(blank=True, max_length=100, verbose_name='Apellidos'),
+            model_name="appointment",
+            name="guest_last_name",
+            field=models.CharField(
+                blank=True, max_length=100, verbose_name="Apellidos"
+            ),
         ),
         migrations.AddField(
-            model_name='appointment',
-            name='guest_phone',
-            field=models.CharField(blank=True, max_length=22, verbose_name='Teléfono de contacto'),
+            model_name="appointment",
+            name="guest_phone",
+            field=models.CharField(
+                blank=True, max_length=22, verbose_name="Teléfono de contacto"
+            ),
         ),
         migrations.AlterField(
-            model_name='appointment',
-            name='user',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='client_appointments', to=settings.AUTH_USER_MODEL),
+            model_name="appointment",
+            name="user",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="client_appointments",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]
