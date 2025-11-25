@@ -16,6 +16,9 @@ def index(request):
 def contact(request):
     return render(request, "home/contact.html")
 
+def resources_view(request):
+    return render(request, "home/resources.html")
+
 def custom_admin(request):
     date_param = request.GET.get('date')
     if date_param:

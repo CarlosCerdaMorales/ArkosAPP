@@ -233,3 +233,32 @@ def services_list_view(request):
         "appointments/services_list.html",
         {"services": services_to_show, "durations": durations},
     )
+
+def modify_appointment_view(request, pk):
+    appointment = get_object_or_404(Appointment, id=pk)
+    
+    if request.method == 'POST':
+        form = AdminAppointmentForm(request.POST, instance=appointment)
+        if form.is_valid():
+            appointment = form.save(commit=False)
+            appointment.datetime = form.cleaned_data['datetime_actual']
+            appointment.save()
+            return redirect('custom_admin')
+    else:
+        initial_data = {
+            'date': appointment.datetime.date(),
+            'time': appointment.datetime.time()
+        }
+        form = AdminAppointmentForm(instance=appointment, initial=initial_data)
+
+    return render(request, 'appointments/admin.html', {
+        'form': form, 
+        'title': f'Modificar Cita #{pk}' 
+    })
+
+def admin_cancel_appointment(request, pk):
+    appointment = get_object_or_404(Appointment, id=pk)
+    
+    appointment.delete()
+    
+    return redirect('custom_admin')
