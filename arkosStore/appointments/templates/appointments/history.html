@@ -3,6 +3,56 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'appointments/history.css' %}">
+<style>
+    .review-section {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+
+    .stars {
+        color: #ffc107;
+        font-size: 1.2em;
+        margin-bottom: 8px;
+    }
+
+    .review-comment {
+        color: #666;
+        font-style: italic;
+        margin: 8px 0;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+    }
+
+    .review-date {
+        color: #999;
+        font-size: 0.85em;
+    }
+
+    .review-btn {
+        background: #4CAF50;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+    }
+
+    .review-btn:hover {
+        background: #45a049;
+        transform: translateY(-2px);
+    }
+
+    .no-review-text {
+        color: #999;
+        font-size: 0.9em;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -17,7 +67,31 @@
                 <b>Tipo:</b> {{ app.service.get_name_display }}
                 <b>Trabajador:</b> {{ app.worker.name }}
             </div>
-            <button class="review-btn">Dejar reseña</button>
+
+            <div class="review-section">
+                {% if app.review %}
+                <!-- Mostrar valoración existente -->
+                <div class="stars">
+                    {% for i in "12345" %}
+                    {% if forloop.counter <= app.review.rating %} ★ {% else %} ☆ {% endif %} {% endfor %} <span
+                        style="color: #666; font-size: 0.8em;">({{ app.review.rating }}/5)</span>
+                </div>
+                {% if app.review.comment %}
+                <div class="review-comment">
+                    "{{ app.review.comment }}"
+                </div>
+                {% endif %}
+                <div class="review-date">
+                    Valorado el {{ app.review.date|date:"d/m/Y" }}
+                </div>
+                {% else %}
+                <!-- Botón para crear valoración -->
+                <p class="no-review-text">Aún no has valorado esta cita</p>
+                <a href="{% url 'create_review' app.id %}" class="review-btn">
+                    ⭐ Dejar valoración
+                </a>
+                {% endif %}
+            </div>
         </div>
         {% empty %}
         <p class="no-appointments">No hay citas finalizadas.</p>
