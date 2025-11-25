@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .review-wrapper {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 20px;
+    }
+
+    .review-title {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .appointment-info {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .appointment-info h3 {
+        margin-top: 0;
+        color: #555;
+        font-size: 1.2em;
+    }
+
+    .appointment-info p {
+        margin: 8px 0;
+        color: #666;
+    }
+
+    .review-form {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    /* Estilo de estrellas */
+    .star-rating {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        font-size: 2.5em;
+    }
+
+    .star-rating input[type="radio"] {
+        display: none;
+    }
+
+    .star-rating .star {
+        cursor: pointer;
+        color: #ddd;
+        transition: color 0.2s, transform 0.2s;
+    }
+
+    .star-rating .star:hover {
+        transform: scale(1.2);
+    }
+
+    .star-rating .star.selected,
+    .star-rating .star.hover {
+        color: #ffc107;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 14px;
+        resize: vertical;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        box-sizing: border-box;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #4CAF50;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+    }
+
+    .btn-primary {
+        background: #4CAF50;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #45a049;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+
+    .char-counter {
+        text-align: right;
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="review-wrapper">
+    <h2 class="review-title">✨ Valorar tu cita</h2>
+
+    <div class="appointment-info">
+        <h3>Detalles de la cita</h3>
+        <p><b>Trabajador:</b> {{ appointment.worker.name }}</p>
+        <p><b>Servicio:</b> {{ appointment.service.get_name_display }}</p>
+        <p><b>Fecha:</b> {{ appointment.datetime|date:"d/m/Y H:i" }}</p>
+    </div>
+
+    <form method="post" class="review-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>{{ form.rating.label }}</label>
+            <div class="star-rating" id="star-rating">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </div>
+            <input type="hidden" name="rating" id="rating-input" value="">
+            {% if form.rating.errors %}
+            <div class="error">{{ form.rating.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
+            {{ form.comment }}
+            <div class="char-counter">
+                <span id="char-count">0</span> / 500 caracteres
+            </div>
+            {% if form.comment.errors %}
+            <div class="error">{{ form.comment.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Enviar valoración</button>
+            <a href="{% url 'appointment_history' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Contador de caracteres
+    const textarea = document.querySelector('textarea');
+    const charCount = document.getElementById('char-count');
+
+    textarea.addEventListener('input', function () {
+        charCount.textContent = this.value.length;
+    });
+
+    // Sistema de estrellas interactivo
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating-input');
+    let selectedRating = 0;
+
+    stars.forEach((star, index) => {
+        // Al hacer hover
+        star.addEventListener('mouseenter', () => {
+            fillStars(index + 1);
+        });
+
+        // Al hacer click
+        star.addEventListener('click', () => {
+            selectedRating = index + 1;
+            ratingInput.value = selectedRating;
+            fillStars(selectedRating);
+        });
+    });
+
+    // Al salir del contenedor de estrellas, mostrar la selección guardada
+    const starRating = document.getElementById('star-rating');
+    starRating.addEventListener('mouseleave', () => {
+        fillStars(selectedRating);
+    });
+
+    // Función para llenar las estrellas
+    function fillStars(count) {
+        stars.forEach((star, index) => {
+            if (index < count) {
+                star.classList.add('selected');
+            } else {
+                star.classList.remove('selected');
+            }
+        });
+    }
+</script>
+{% endblock %}
