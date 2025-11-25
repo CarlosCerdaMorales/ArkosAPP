@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
 
 from django import forms
+
+from accounts.models import User
+from .models import Appointment, Service, StatusChoices
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
@@ -95,4 +98,53 @@ class AppointmentForm(forms.ModelForm):
                     "Esta franja horaria ya está reservada o se solapa con otra cita existente."
                 )
 
+        return cleaned_data
+    
+class AdminAppointmentForm(forms.ModelForm):
+    user = forms.ModelChoiceField(
+        queryset=User.objects.filter(role='REG'),
+        label="Cliente",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    service = forms.ModelChoiceField(
+        queryset=Service.objects.all(),
+        label="Servicio",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    worker = forms.ModelChoiceField(
+        queryset=Worker.objects.all(),
+        label="Especialista",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    date = forms.DateField(
+        label="Fecha",
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+    
+    time = forms.TimeField(
+        label="Hora",
+        widget=forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Appointment
+        fields = ['user', 'service', 'worker'] 
+
+    def clean(self):
+        cleaned_data = super(forms.ModelForm, self).clean()
+        
+        date = cleaned_data.get('date')
+        time_data = cleaned_data.get('time')
+
+        if date and time_data:
+            try:
+                naive_combined = datetime.combine(date, time_data)
+                combined_datetime = timezone.make_aware(naive_combined)
+                cleaned_data['datetime_actual'] = combined_datetime
+            except Exception as e:
+                self.add_error('time', "Hora inválida")
+        
         return cleaned_data
