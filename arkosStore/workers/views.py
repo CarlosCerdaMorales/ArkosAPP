@@ -3,10 +3,24 @@ from django.contrib.auth.decorators import user_passes_test
 from accounts.models import User
 from .models import Worker
 from .forms import WorkerForm
+from django.shortcuts import get_object_or_404
+from reviews.models import Review
 
 def worker_list_view(request):
     workers = Worker.objects.all()
     return render(request, "workers/list.html", {"workers": workers})
+
+def worker_reviews_view(request, worker_id):
+    worker = get_object_or_404(Worker, id=worker_id)
+    
+    reviews = Review.objects.filter(
+        appointment__worker=worker
+    ).order_by('-date')
+
+    return render(request, 'workers/reviews.html', {
+        'worker': worker,
+        'reviews': reviews
+    })
 
 def is_admin(user):
     return user.is_authenticated and user.role == User.Role.ADMIN

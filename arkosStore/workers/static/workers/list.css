@@ -1,77 +1,201 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.page-background {
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 60px;
+}
+
 .team-wrapper {
     max-width: 1200px;
-    margin: 60px auto;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 40px 20px;
     text-align: center;
     font-family: 'Poppins', sans-serif;
 }
 
+.team-header {
+    margin-bottom: 60px;
+    margin-top: 40px;
+}
+
 .team-header h2 {
-    font-size: 2.5em;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 2.8em;
+    color: #00373E;
+    margin-bottom: 15px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .team-header p {
     color: #666;
-    font-size: 1.1em;
-    margin-bottom: 50px;
+    font-size: 1.2em;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+
+.header-line {
+    width: 60px;
+    height: 4px;
+    background-color: #19a463;
+    margin: 0 auto;
+    border-radius: 2px;
 }
 
 .team-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 40px;
-    padding-bottom: 40px;
+    gap: 35px;
 }
 
 .worker-card {
     background-color: white;
-    border-radius: 10px; 
-    padding: 40px 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease;
-    flex: 1 1 300px; 
-    max-width: 380px; 
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(0, 55, 62, 0.05);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    flex: 1 1 320px;
+    max-width: 360px;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .worker-card:hover {
-    transform: translateY(-5px); 
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 55, 62, 0.12);
+}
+
+.card-top-accent {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #00373E 0%, #19a463 100%);
 }
 
 .worker-img-container {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 20px auto;
+    width: 130px;
+    height: 130px;
+    margin-top: 35px;
+    margin-bottom: 20px;
     border-radius: 50%;
-    overflow: hidden;
+    padding: 5px;
+    background: white;
+    box-shadow: 0 0 0 1px #e1e1e1;
+    position: relative;
+    z-index: 1;
 }
 
 .worker-img-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.worker-card:hover .worker-img-container img {
+    transform: scale(1.05);
+}
+
+.worker-info {
+    padding: 0 30px 35px 30px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .worker-info h3 {
-    font-size: 1.4em;
-    color: #222;
-    margin-bottom: 8px;
+    font-size: 1.5em;
+    color: #00373E;
+    margin: 0 0 8px 0;
+    font-weight: 700;
 }
 
 .worker-role {
     display: block;
     color: #19a463;
     font-weight: 600;
-    font-size: 0.9em;
-    margin-bottom: 15px;
+    font-size: 0.85em;
+    margin-bottom: 18px;
     text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.worker-rating {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.rating-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #fff9e6;
+    padding: 6px 16px;
+    border-radius: 50px;
+    border: 1px solid #ffeeba;
+}
+
+.rating-badge.empty {
+    background-color: #f0f2f5;
+    border-color: #e1e4e8;
+}
+
+.star-icon {
+    color: #ffc107;
+    font-size: 1.1em;
+    margin-right: 6px;
+}
+
+.rating-value {
+    color: #333;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+.review-count {
+    color: #666;
+    font-size: 0.85em;
+    text-decoration: none;
+    border-left: 1px solid #ddd;
+    padding-left: 8px;
+    transition: color 0.2s;
+}
+
+.review-count:hover {
+    color: #00373E;
+    text-decoration: underline;
+}
+
+.no-rating {
+    color: #888;
+    font-size: 0.85em;
+    font-weight: 500;
 }
 
 .worker-bio {
-    color: #777;
+    color: #555;
     font-size: 0.95em;
-    line-height: 1.6;
+    line-height: 1.7;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.empty-state {
+    width: 100%;
+    padding: 60px;
+    color: #888;
+    font-size: 1.2em;
 }

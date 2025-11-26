@@ -171,7 +171,7 @@ class Command(BaseCommand):
                 status=status,
             )
 
-            if status == StatusChoices.COMPLETED:
+            if status == StatusChoices.COMPLETED and user != user1:
                 comments = [
                     "Increíble servicio",
                     "Muy profesional",

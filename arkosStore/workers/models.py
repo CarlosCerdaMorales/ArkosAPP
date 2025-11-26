@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 
 # Create your models here.
 
@@ -34,3 +35,13 @@ class Worker(models.Model):
 
     def get_specialties_str(self):
         return ", ".join([s.get_name_display() for s in self.specialties.all()])
+    
+    def get_average_rating(self):
+        average = self.worker_appointments.aggregate(Avg('review__rating'))['review__rating__avg']
+        
+        if average:
+            return round(average, 1)
+        return None
+
+    def get_review_count(self):
+        return self.worker_appointments.filter(review__isnull=False).count()

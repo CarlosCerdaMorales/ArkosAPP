@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
+<link rel="stylesheet" href="{% static 'workers/reviews.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-wrapper">
+    <div class="profile-card" style="background-color: white; border: 1px solid #eee; box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
+        
+        <div class="reviews-header-section">
+            <h2 class="profile-title" style="margin-bottom: 5px;">Opiniones sobre <span class="worker-name-highlight">{{ worker.name }}</span></h2>
+            
+            <div class="rating-summary">
+                <span class="big-rating">{{ worker.get_average_rating|default:"-" }}</span>
+                <div class="star-row">★★★★★</div>
+                <div class="rating-count">Basado en {{ reviews.count }} experiencia{% if reviews.count != 1 %}s{% endif %}</div>
+            </div>
+        </div>
+
+        <div class="reviews-list">
+            {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-name">
+                        <span style="background: #e9ecef; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em;">👤</span>
+                        {{ review.appointment.user.first_name|default:"Usuario Anónimo" }}
+                        <span class="star-rating">★ {{ review.rating }}</span>
+                    </div>
+                    <span class="review-date">{{ review.date|date:"d M Y" }}</span>
+                </div>
+                <p class="review-comment">
+                    {{ review.comment|default:"El usuario no dejó ningún comentario escrito." }}
+                </p>
+            </div>
+            {% empty %}
+            <div style="text-align: center; padding: 40px; color: #888;">
+                <p style="font-size: 3em; margin-bottom: 10px;">💬</p>
+                <p>Este profesional aún no tiene valoraciones.</p>
+                <p style="font-size: 0.9em;">¡Sé el primero en reservar y dejar tu opinión!</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="profile-form-actions" style="margin-top: 40px;">
+            <a href="{% url 'worker_list' %}" class="profile-btn btn-back">
+                &larr; Volver al equipo
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
