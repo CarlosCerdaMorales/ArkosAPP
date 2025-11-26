@@ -153,3 +153,8 @@ class AdminAppointmentForm(forms.ModelForm):
                 self.add_error('time', "Hora inválida")
         
         return cleaned_data
+
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = ["name", "duration"]

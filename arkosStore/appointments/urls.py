@@ -13,4 +13,5 @@ urlpatterns = [
     path("services/", views.services_list_view, name="services_list"),
     path('modify/<int:pk>/', views.modify_appointment_view, name='modify_appointment'),
     path('admin/cancel/<int:pk>/', views.admin_cancel_appointment, name='admin_cancel_appointment'),
+    path('admin/services/create/', views.admin_create_service, name='admin_create_service'),
 ]

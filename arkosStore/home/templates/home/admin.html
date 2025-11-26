@@ -342,6 +342,44 @@
         animation: growBar 1s ease-out 0.3s forwards;
     }
 
+    .admin-management {
+        margin: 20px 0 10px 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .admin-management-card {
+        flex: 1 1 240px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 16px 18px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .admin-management-title {
+        font-size: 18px;
+        margin-bottom: 6px;
+        color: #333333;
+    }
+    .admin-management-text {
+        font-size: 14px;
+        color: #666666;
+        margin-bottom: 12px;
+    }
+    .admin-management-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background-color: #333333;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+    }
+    .admin-management-btn:hover {
+        background-color: #555555;
+    }
+
 </style>
 {% endblock %}
 
@@ -361,7 +399,23 @@
         </div>
     </div>
 
+    {% if user.role == 'ADMIN' %}
+    <div class="admin-management">
+        <div class="admin-management-card">
+            <h3 class="admin-management-title">Servicios</h3>
+            <p class="admin-management-text">Crea nuevos tipos de servicio y ajusta su duración.</p>
+            <a href="{% url 'admin_create_service' %}" class="admin-management-btn">Crear servicio</a>
+        </div>
+        <div class="admin-management-card">
+            <h3 class="admin-management-title">Trabajadores</h3>
+            <p class="admin-management-text">Añade nuevos profesionales para asignarlos a las citas.</p>
+            <a href="{% url 'admin_create_worker' %}" class="admin-management-btn">Crear trabajador</a>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="headers-row">
+
         {% for item in workers_schedule %}
             <div class="worker-header header-item">{{ item.worker.name }}</div>
         {% endfor %}
