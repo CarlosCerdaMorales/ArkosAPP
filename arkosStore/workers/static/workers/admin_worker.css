@@ -44,8 +44,8 @@
 }
 
 .worker-admin-row-two {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
+    display: flex;
+    flex-direction: column;
     gap: 16px;
 }
 
