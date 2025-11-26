@@ -551,8 +551,7 @@
         <span id="display-service" class="view-mode"></span>
         <select name="service" id="input-service" class="form-control edit-mode" style="display:none;">
             {% for s in modal_services %}
-                <option value="{{ s.id }}">{{ s.get_name_display }}</option>
-            {% endfor %}
+                <option value="{{ s.id }}">{{ s.get_name_display }} ({{ s.duration }} minutos)</option>            {% endfor %}
         </select>
     </p>
 
