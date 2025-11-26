@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'appointments/admin_availability.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="avail-wrapper">
+    <div class="avail-card">
+        <div class="avail-header">
+            <h1>Disponibilidad de trabajadores</h1>
+            <p>Selecciona un trabajador, revisa su disponibilidad y añade nuevas franjas horarias.</p>
+        </div>
+
+        <form method="get" class="avail-worker-select">
+            <label for="worker">Trabajador</label>
+            <select name="worker" id="worker" onchange="this.form.submit()">
+                {% for worker in workers %}
+                    <option value="{{ worker.id }}" {% if selected_worker and worker.id == selected_worker.id %}selected{% endif %}>
+                        {{ worker.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+
+        {% if selected_worker %}
+        <div class="avail-section">
+            <h2>Disponibilidad actual de {{ selected_worker.name }}</h2>
+            {% if availabilities %}
+            <table class="avail-table">
+                <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Hora inicio</th>
+                        <th>Hora fin</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for availability in availabilities %}
+                    <tr>
+                        <td>{{ availability.get_day_of_week_display }}</td>
+                        <td>{{ availability.start_time|time:"H:i" }}</td>
+                        <td>{{ availability.end_time|time:"H:i" }}</td>
+                        <td>
+                            <form method="post" class="avail-delete-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete_id" value="{{ availability.id }}">
+                                <button type="submit" class="avail-delete-btn">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="avail-empty">Este trabajador todavía no tiene disponibilidad configurada.</p>
+            {% endif %}
+        </div>
+
+        <div class="avail-section">
+            <h2>Añadir nueva franja</h2>
+            <form method="post" class="avail-form">
+                {% csrf_token %}
+                <div class="avail-form-row">
+                    <div class="avail-field">
+                        {{ form.day_of_week.label_tag }}
+                        {{ form.day_of_week }}
+                        {% for error in form.day_of_week.errors %}
+                            <div class="avail-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="avail-field">
+                        {{ form.start_time.label_tag }}
+                        {{ form.start_time }}
+                        {% for error in form.start_time.errors %}
+                            <div class="avail-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="avail-field">
+                        {{ form.end_time.label_tag }}
+                        {{ form.end_time }}
+                        {% for error in form.end_time.errors %}
+                            <div class="avail-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="avail-actions">
+                    <button type="submit" class="avail-submit-btn">Guardar franja</button>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <p class="avail-empty">No hay trabajadores disponibles todavía.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

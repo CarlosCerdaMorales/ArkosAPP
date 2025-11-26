@@ -380,6 +380,29 @@
         background-color: #555555;
     }
 
+    .availability-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 25px;       
+        background-color: #ffffff; 
+        color: #00373E;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        text-decoration: none;
+        border-radius: 25px;       
+        border: 2px solid #00373E;  
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 55, 62, 0.2);
+    }
+    .availability-btn:hover {
+        background-color: #e9f2f4;
+        color: #00252a;
+        transform: translateY(-1px);
+    }
+
+
 </style>
 {% endblock %}
 
@@ -390,6 +413,10 @@
         <div class="header-actions">
             <a href="{% url 'create_appointment' %}?mode=guest" class="new-appointment-btn">
                 Añadir una nueva cita
+            </a>
+
+            <a href="{% url 'admin_manage_availability' %}" class="availability-btn">
+                Gestionar disponibilidad
             </a>
 
             <form method="get" class="d-flex gap-2">

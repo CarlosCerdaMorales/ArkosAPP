@@ -1,0 +1,226 @@
+.avail-wrapper {
+    min-height: calc(100vh - 80px);
+    padding: 40px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top left, #ffffff, #f0f2f5);
+}
+
+.avail-card {
+    width: 100%;
+    max-width: 900px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 26px 24px 24px 24px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    animation: availFadeUp 0.55s ease-out forwards;
+    transform-origin: center;
+}
+
+.avail-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 4px 0;
+}
+
+.avail-header p {
+    font-size: 14px;
+    color: #666666;
+    margin: 0 0 18px 0;
+}
+
+.avail-worker-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.avail-worker-select label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444444;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.avail-worker-select select {
+    min-width: 220px;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+    padding: 8px 10px;
+    font-size: 14px;
+    background-color: #fafafa;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+.avail-worker-select select:focus {
+    border-color: #00373E;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 55, 62, 0.12);
+    transform: translateY(-1px);
+}
+
+.avail-section {
+    margin-top: 18px;
+}
+
+.avail-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 10px 0;
+}
+
+.avail-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.avail-table thead {
+    background-color: #f5f5f5;
+}
+
+.avail-table th,
+.avail-table td {
+    padding: 10px 12px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.avail-table th {
+    font-weight: 600;
+    color: #444444;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.avail-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.avail-empty {
+    font-size: 14px;
+    color: #777777;
+    margin: 4px 0 0 0;
+}
+
+.avail-delete-form {
+    margin: 0;
+}
+
+.avail-delete-btn {
+    padding: 6px 12px;
+    border-radius: 16px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    background-color: #fbeaea;
+    color: #b33939;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.avail-delete-btn:hover {
+    background-color: #f8d7da;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(179, 57, 57, 0.25);
+}
+
+.avail-form {
+    margin-top: 4px;
+}
+
+.avail-form-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.avail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.avail-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #444444;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.avail-field select,
+.avail-field input[type="time"] {
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+    padding: 8px 10px;
+    font-size: 14px;
+    background-color: #fafafa;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+.avail-field select:focus,
+.avail-field input[type="time"]:focus {
+    border-color: #00373E;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 55, 62, 0.12);
+    transform: translateY(-1px);
+}
+
+.avail-error {
+    font-size: 12px;
+    color: #c0392b;
+}
+
+.avail-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.avail-submit-btn {
+    padding: 9px 20px;
+    border-radius: 22px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #333333;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.avail-submit-btn:hover {
+    background-color: #555555;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+@keyframes availFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .avail-card {
+        padding: 22px 18px 20px 18px;
+    }
+
+    .avail-form-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-
+from . import admin_views
 
 urlpatterns = [
     path('history/', views.appointment_history_view, name='appointment_history'),
@@ -13,5 +13,5 @@ urlpatterns = [
     path("services/", views.services_list_view, name="services_list"),
     path('modify/<int:pk>/', views.modify_appointment_view, name='modify_appointment'),
     path('admin/cancel/<int:pk>/', views.admin_cancel_appointment, name='admin_cancel_appointment'),
-    path('admin/services/create/', views.admin_create_service, name='admin_create_service'),
+    path('admin/availability/', admin_views.admin_manage_availability, name='admin_manage_availability'),
 ]
