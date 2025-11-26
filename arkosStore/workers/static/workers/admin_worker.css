@@ -1,0 +1,197 @@
+.worker-admin-wrapper {
+    min-height: calc(100vh - 80px);
+    padding: 40px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top left, #ffffff, #f0f2f5);
+}
+
+.worker-admin-card {
+    width: 100%;
+    max-width: 760px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 30px 28px 26px 28px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    animation: workerFadeUp 0.55s ease-out forwards;
+    transform-origin: center;
+}
+
+.worker-admin-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 6px 0;
+}
+
+.worker-admin-subtitle {
+    font-size: 14px;
+    color: #666666;
+    margin: 0 0 20px 0;
+}
+
+.worker-admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.worker-admin-row {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.worker-admin-row-two {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
+    gap: 16px;
+}
+
+.worker-admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.worker-admin-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444444;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.worker-admin-field input[type="text"],
+.worker-admin-field input[type="file"],
+.worker-admin-field textarea {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+    background-color: #fafafa;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+.worker-admin-field textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.worker-admin-field input[type="text"]:focus,
+.worker-admin-field input[type="file"]:focus,
+.worker-admin-field textarea:focus {
+    border-color: #00373E;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 55, 62, 0.12);
+    transform: translateY(-1px);
+}
+
+.worker-admin-checkbox-group {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #dddddd;
+    background-color: #fafafa;
+    max-height: 180px;
+    overflow-y: auto;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.worker-admin-checkbox-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.worker-admin-checkbox-group li {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #444444;
+}
+
+.worker-admin-checkbox-group input[type="checkbox"] {
+    transform: scale(1.05);
+}
+
+.worker-admin-checkbox-group:focus-within {
+    border-color: #00373E;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 55, 62, 0.12);
+}
+
+.worker-admin-error {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #c0392b;
+}
+
+.worker-admin-actions {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.worker-admin-submit {
+    padding: 10px 22px;
+    border-radius: 22px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #333333;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.worker-admin-submit:hover {
+    background-color: #555555;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.worker-admin-cancel {
+    padding: 10px 18px;
+    border-radius: 22px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid #cccccc;
+    color: #555555;
+    background-color: #ffffff;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.worker-admin-cancel:hover {
+    background-color: #f4f4f4;
+    border-color: #999999;
+    color: #333333;
+}
+
+@keyframes workerFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .worker-admin-row-two {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .worker-admin-card {
+        padding: 24px 18px 20px 18px;
+    }
+}

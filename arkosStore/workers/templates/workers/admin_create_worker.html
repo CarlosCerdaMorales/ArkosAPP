@@ -1,48 +1,64 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
+<link rel="stylesheet" href="{% static 'workers/admin_worker.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="profile-wrapper">
-    <h2 class="profile-title">Crear trabajador</h2>
-    <div class="profile-card" style="text-align: left;">
-        <form method="post" enctype="multipart/form-data">
+<div class="worker-admin-wrapper">
+    <div class="worker-admin-card">
+        <h1 class="worker-admin-title">Crear trabajador</h1>
+        <p class="worker-admin-subtitle">
+            Añade un nuevo profesional para asignarlo a las citas y mostrarlo en la web.
+        </p>
+
+        <form method="post" enctype="multipart/form-data" class="worker-admin-form">
             {% csrf_token %}
-            <div class="form-errors">
-                {{ form.non_field_errors }}
+
+            <div class="worker-admin-row">
+                <div class="worker-admin-field">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    {% for error in form.name.errors %}
+                        <div class="worker-admin-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="profile-field">
-                {{ form.name.label_tag }}
-                {{ form.name }}
-                {% for error in form.name.errors %}
-                    <div class="form-errors">{{ error }}</div>
-                {% endfor %}
+
+            <div class="worker-admin-row">
+                <div class="worker-admin-field">
+                    {{ form.specialties.label_tag }}
+                    <div class="worker-admin-checkbox-group">
+                        {{ form.specialties }}
+                    </div>
+                    {% for error in form.specialties.errors %}
+                        <div class="worker-admin-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="profile-field">
-                {{ form.specialties.label_tag }}
-                {{ form.specialties }}
-                {% for error in form.specialties.errors %}
-                    <div class="form-errors">{{ error }}</div>
-                {% endfor %}
+
+            <div class="worker-admin-row worker-admin-row-two">
+                <div class="worker-admin-field">
+                    {{ form.image.label_tag }}
+                    {{ form.image }}
+                    {% for error in form.image.errors %}
+                        <div class="worker-admin-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="worker-admin-field">
+                    {{ form.bio.label_tag }}
+                    {{ form.bio }}
+                    {% for error in form.bio.errors %}
+                        <div class="worker-admin-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="profile-field">
-                {{ form.image.label_tag }}
-                {{ form.image }}
-                {% for error in form.image.errors %}
-                    <div class="form-errors">{{ error }}</div>
-                {% endfor %}
+
+            <div class="worker-admin-actions">
+                <button type="submit" class="worker-admin-submit">Guardar trabajador</button>
+                <a href="{% url 'custom_admin' %}" class="worker-admin-cancel">Volver al panel</a>
             </div>
-            <div class="profile-field">
-                {{ form.bio.label_tag }}
-                {{ form.bio }}
-                {% for error in form.bio.errors %}
-                    <div class="form-errors">{{ error }}</div>
-                {% endfor %}
-            </div>
-            <button type="submit" class="profile-btn">Guardar trabajador</button>
         </form>
     </div>
 </div>

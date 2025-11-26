@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from accounts.models import User
-
 from .models import Worker
 from .forms import WorkerForm
-
 
 def worker_list_view(request):
     workers = Worker.objects.all()

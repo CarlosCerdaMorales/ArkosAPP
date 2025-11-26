@@ -402,11 +402,6 @@
     {% if user.role == 'ADMIN' %}
     <div class="admin-management">
         <div class="admin-management-card">
-            <h3 class="admin-management-title">Servicios</h3>
-            <p class="admin-management-text">Crea nuevos tipos de servicio y ajusta su duración.</p>
-            <a href="{% url 'admin_create_service' %}" class="admin-management-btn">Crear servicio</a>
-        </div>
-        <div class="admin-management-card">
             <h3 class="admin-management-title">Trabajadores</h3>
             <p class="admin-management-text">Añade nuevos profesionales para asignarlos a las citas.</p>
             <a href="{% url 'admin_create_worker' %}" class="admin-management-btn">Crear trabajador</a>
