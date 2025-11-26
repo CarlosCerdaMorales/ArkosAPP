@@ -22,18 +22,16 @@ main{
 }
 
 
-.navbar ul{
-    list-style-type: none;
-    background-color: transparent;
-    padding: 0px;
-    margin: 0px;
-    overflow: visible;
-
-    justify-content: center;
+.navbar ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto repeat(3, 1fr);
     align-items: center;
-    display: flex; 
-    justify-content: space-between; 
     width: 100%;
+    list-style-type: none;
+    margin: 0 auto;       /
+    padding: 0 20px;      
+    box-sizing: border-box;
+    max-width: 1600px; 
 }
 
 .navbar li{
@@ -45,8 +43,8 @@ main{
 .navbar li.logo a {
     font-size: 1.5em; 
     font-weight: 700; 
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 80px;
+    padding-right: 80px;
 }
 
 .navbar a{
@@ -58,6 +56,10 @@ main{
     text-align: center;
     width: 100%; 
     transition: color ease-in-out 400ms;
+    font-family: 'Montserrat', sans-serif !important; 
+    font-size: 17px !important;      
+    font-weight: 600 !important;    
+    line-height: 1.5;
 }
 
 .navbar a:hover {
@@ -94,7 +96,6 @@ main{
     width: 100%;
 }
 
-/* --- Estilos Corregidos para el Menú Desplegable --- */
 
 .dropbtn {
     cursor: pointer;

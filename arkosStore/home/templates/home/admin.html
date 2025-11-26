@@ -140,14 +140,14 @@
     }
 
     .new-appointment-btn {
-    border-radius: 24px;
-    background-color: #00373E;
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    display: block;
+        border-radius: 24px;
+        background-color: #00373E;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
     }
     .admin-header {
         margin-bottom: 20px; 
@@ -347,19 +347,19 @@
 
 {% block content %}
 <div class="admin-wrapper">
-<div class="d-flex justify-content-between align-items-center admin-header">
-    <h2 class="admin-title">Gestión de Citas</h2>    
-    <div class="header-actions">
-        <a href="" class="new-appointment-btn">
-            Añadir una nueva cita
-        </a>
+    <div class="d-flex justify-content-between align-items-center admin-header">
+        <h2 class="admin-title">Gestión de Citas</h2>    
+        <div class="header-actions">
+            <a href="{% url 'create_appointment' %}?mode=guest" class="new-appointment-btn">
+                Añadir una nueva cita
+            </a>
 
-        <form method="get" class="d-flex gap-2">
-            <input type="date" name="date" class="form-control-date" value="{{ current_date|date:'Y-m-d' }}" onchange="this.form.submit()">
-            <a href="{% url 'custom_admin' %}" class="btn btn-outline-secondary-today">Hoy</a>
-        </form>
+            <form method="get" class="d-flex gap-2">
+                <input type="date" name="date" class="form-control-date" value="{{ current_date|date:'Y-m-d' }}" onchange="this.form.submit()">
+                <a href="{% url 'custom_admin' %}" class="btn btn-outline-secondary-today">Hoy</a>
+            </form>
+        </div>
     </div>
-</div>
 
     <div class="headers-row">
         {% for item in workers_schedule %}
@@ -383,7 +383,7 @@
                             title="{{ app.service.get_name_display }}"
                             onclick="openModal(
                                     '{{ app.id }}', 
-                                    '{{ app.user.first_name }} {{ app.user.last_name }}',  
+                                    '{% if app.user %}{{ app.user.first_name }} {{ app.user.last_name }}{% else %}{{ app.guest_first_name }} {{ app.guest_last_name }} (Invitado){% endif %}',
                                     '{{ app.service.get_name_display }}',                  
                                     '{{ app.datetime|date:'d/m/Y' }}',                    
                                     '{{ app.datetime|date:'H:i' }}',                      
@@ -394,12 +394,16 @@
                                     '{{ app.service.id }}',      
                                     '{{ app.worker.id }}',        
                                     '{{ app.datetime|date:'Y-m-d' }}',  
-                                    '{{ app.datetime|date:'H:i' }}'                
+                                    '{{ app.datetime|date:'H:i' }}',
+                                    '{{ app.guest_first_name }}',
+                                    '{{ app.guest_last_name }}',
+                                    '{{ app.guest_phone }}',
+                                    '{{ app.guest_email }}'              
                             )">
                             <span class="app-time">
                                 {{ app.datetime|date:"H:i" }} - {{ app.calculated_end_time|date:"H:i" }}
                             </span>
-                            <span class="app-client">{{ app.user.first_name }} {{ app.user.last_name }}</span>
+                            <span class="app-client">{% if app.user %}{{ app.user.first_name }} {{ app.user.last_name }}{% else %}{{ app.guest_first_name }} {{ app.guest_last_name }} (Invitado){% endif %}</span>
                             <br>
                             <span class="text-muted">{{ app.service.get_name_display|truncatechars:20 }}</span>
                         </div>
@@ -422,48 +426,70 @@
             </div>
 
             <div class="modal-body">
-                <p>
-                    <strong>Fecha:</strong>
-                    <span id="display-date" class="view-mode"></span>
-                    <input type="date" name="date" id="input-date" class="form-control edit-mode" required style="display:none;">
-                </p>
+    
+    <div class="row-split">
+        <p>
+            <strong>Fecha:</strong>
+            <span id="display-date" class="view-mode"></span>
+            <input type="date" name="date" id="input-date" class="form-control edit-mode" required style="display:none;">
+        </p>
+        <p>
+            <strong>Hora:</strong>
+            <span id="display-time" class="view-mode"></span>
+            <input type="time" name="time" id="input-time" class="form-control edit-mode" required style="display:none;">
+        </p>
+    </div>
 
-                <p>
-                    <strong>Hora:</strong>
-                    <span id="display-time" class="view-mode"></span>
-                    <input type="time" name="time" id="input-time" class="form-control edit-mode" required style="display:none;">
-                </p>
+    <p>
+        <strong>Cliente:</strong>
+        <span id="display-client" class="view-mode"></span>
+        
+        <select name="user" id="input-client" class="form-control edit-mode" style="display:none;" onchange="toggleGuestFields()">
+            <option value="">Es un Invitado (Manual)</option>
+            {% for client in modal_clients %}
+                <option value="{{ client.id }}">{{ client.first_name }} {{ client.last_name }}</option>
+            {% endfor %}
+        </select>
+    </p>
 
-                <p>
-                    <strong>Cliente:</strong>
-                    <span id="display-client" class="view-mode"></span>
-                    <select name="user" id="input-client" class="form-control edit-mode" style="display:none;">
-                        {% for client in modal_clients %}
-                            <option value="{{ client.id }}">{{ client.first_name }} {{ client.last_name }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
+    <div id="guest-fields" class="edit-mode" style="display:none; border-left: 3px solid #00373E; padding-left: 15px; margin: 10px 0;">
+        <p class="text-muted" style="font-size: 0.85em; margin-bottom: 5px;">Datos de contacto del invitado:</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+            <input type="text" name="guest_first_name" id="input-guest-name" class="form-control" placeholder="Nombre">
+            <input type="text" name="guest_last_name" id="input-guest-lastname" class="form-control" placeholder="Apellidos">
+        </div>
+        <input type="tel" name="guest_phone" id="input-guest-phone" class="form-control" placeholder="Teléfono" style="margin-bottom: 10px;">
+        <input type="email" name="guest_email" id="input-guest-email" class="form-control" placeholder="Email">
+    </div>
 
-                <p>
-                    <strong>Servicio:</strong>
-                    <span id="display-service" class="view-mode"></span>
-                    <select name="service" id="input-service" class="form-control edit-mode" style="display:none;">
-                        {% for s in modal_services %}
-                            <option value="{{ s.id }}">{{ s.get_name_display }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
+    <p id="display-contact-info" class="view-mode" style="display:none; font-size: 15px; margin-top: 10px;">
+        <strong>Contacto:</strong> 
+        <span id="display-phone" style="color: #333;"></span> 
+        <span style="margin: 0 5px; color: #ccc;">|</span> 
+        <span id="display-email" style="color: #333;"></span>
+    </p>
 
-                <p>
-                    <strong>Especialista:</strong>
-                    <span id="display-worker" class="view-mode"></span>
-                    <select name="worker" id="input-worker" class="form-control edit-mode" style="display:none;">
-                        {% for w in modal_workers %}
-                            <option value="{{ w.id }}">{{ w.name }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
-            </div>
+    <p>
+        <strong>Servicio:</strong>
+        <span id="display-service" class="view-mode"></span>
+        <select name="service" id="input-service" class="form-control edit-mode" style="display:none;">
+            {% for s in modal_services %}
+                <option value="{{ s.id }}">{{ s.get_name_display }}</option>
+            {% endfor %}
+        </select>
+    </p>
+
+    <p>
+        <strong>Especialista:</strong>
+        <span id="display-worker" class="view-mode"></span>
+        <select name="worker" id="input-worker" class="form-control edit-mode" style="display:none;">
+            {% for w in modal_workers %}
+                <option value="{{ w.id }}">{{ w.name }}</option>
+            {% endfor %}
+        </select>
+    </p>
+</div>
 
             <div class="modal-footer">
                 <a href="#" id="btn-delete" class="btn btn-outline-danger view-mode">Eliminar</a>
@@ -478,33 +504,82 @@
 </div>
 <script>
     function openModal(id, clientName, serviceName, dateDisplay, timeDisplay, workerName, 
-                       cancelUrl, modifyUrl, 
-                       clientId, serviceId, workerId, dateValue, timeValue) {
-        
+                       cancelUrl, modifyUrl, clientId, serviceId, workerId, dateValue, timeValue,
+                       guestName, guestLastName, guestPhone, guestEmail) {
+    
         document.getElementById('modalForm').action = modifyUrl;
         document.getElementById('btn-delete').href = cancelUrl;
+
         document.getElementById('display-client').innerText = clientName;
         document.getElementById('display-service').innerText = serviceName;
         document.getElementById('display-date').innerText = dateDisplay;
         document.getElementById('display-time').innerText = timeDisplay;
         document.getElementById('display-worker').innerText = workerName;
-        document.getElementById('input-client').value = clientId;
+
+        const contactInfo = document.getElementById('display-contact-info');
+        if (!clientId && (guestPhone || guestEmail)) {
+            document.getElementById('display-phone').innerText = guestPhone || '-';
+            document.getElementById('display-email').innerText = guestEmail || '-';
+            contactInfo.style.display = 'block';
+        } else {
+            contactInfo.style.display = 'none';
+        }
+
+        document.getElementById('input-client').value = clientId; 
         document.getElementById('input-service').value = serviceId;
-        document.getElementById('input-date').value = dateValue; 
+        document.getElementById('input-date').value = dateValue;
         document.getElementById('input-time').value = timeValue;
         document.getElementById('input-worker').value = workerId;
+
+        document.getElementById('input-guest-name').value = guestName;
+        document.getElementById('input-guest-lastname').value = guestLastName;
+        document.getElementById('input-guest-phone').value = guestPhone;
+        document.getElementById('input-guest-email').value = guestEmail;
+
         disableEdit();
         document.getElementById('appointmentModal').style.display = 'flex';
     }
 
+    function toggleGuestFields() {
+        const clientSelect = document.getElementById('input-client');
+        const guestFields = document.getElementById('guest-fields');
+        
+        if (clientSelect.value === "") {
+            guestFields.style.display = 'block';
+            
+            document.getElementById('input-guest-name').required = true;
+            document.getElementById('input-guest-phone').required = true;
+        } else {
+            guestFields.style.display = 'none';
+            document.getElementById('input-guest-name').required = false;
+            document.getElementById('input-guest-phone').required = false;
+        }
+    }
+
     function enableEdit() {
         document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'inline-block');
+        
+        document.querySelectorAll('.edit-mode').forEach(el => {
+            if (el.id !== 'guest-fields') {
+                el.style.display = 'inline-block';
+            }
+        });
+
+        toggleGuestFields();
+        
         document.getElementById('modal-title').innerText = "Editando Cita...";
     }
 
     function disableEdit() {
-        document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'inline-block');
+        document.querySelectorAll('.view-mode').forEach(el => {
+            if (el.id === 'display-contact-info') {
+                const phone = document.getElementById('display-phone').innerText;
+                el.style.display = (phone && phone !== '-') ? 'block' : 'none';
+            } else {
+                el.style.display = 'inline-block';
+            }
+        });
+
         document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'none');
         document.getElementById('modal-title').innerText = "Detalle de Cita";
     }

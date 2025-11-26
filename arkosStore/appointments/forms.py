@@ -101,9 +101,15 @@ class AppointmentForm(forms.ModelForm):
         return cleaned_data
     
 class AdminAppointmentForm(forms.ModelForm):
+    guest_first_name = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    guest_last_name = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    guest_email = forms.EmailField(required=False, widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    guest_phone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
     user = forms.ModelChoiceField(
         queryset=User.objects.filter(role='REG'),
         label="Cliente",
+        required=False,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     
@@ -131,8 +137,7 @@ class AdminAppointmentForm(forms.ModelForm):
 
     class Meta:
         model = Appointment
-        fields = ['user', 'service', 'worker'] 
-
+        fields = ['user', 'service', 'worker', 'guest_first_name', 'guest_last_name', 'guest_email', 'guest_phone']
     def clean(self):
         cleaned_data = super(forms.ModelForm, self).clean()
         

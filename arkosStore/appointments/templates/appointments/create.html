@@ -38,11 +38,13 @@
             <p id="feedback-msg" class="loading-text" style="margin-top:10px;"></p>
         </div>
 
-        {% if not user.is_authenticated %}
+        {% if not user.is_authenticated or force_guest %}
         <div id="guest-info-container" class="profile-field {% if not form.errors %}step-hidden{% endif %}" 
              style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
             
-            <h3 style="font-size: 1.1em; color: #00373E; margin-bottom: 15px;">Tus datos de contacto</h3>
+            <h3 style="font-size: 1.1em; color: #00373E; margin-bottom: 15px;">
+                {% if force_guest %}Datos del Cliente{% else %}Tus datos de contacto{% endif %}
+            </h3>
             
             {% if form.non_field_errors %}
                 <div style="color: #d9534f; margin-bottom: 10px; font-size: 0.9em;">{{ form.non_field_errors }}</div>
@@ -171,15 +173,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     btn.className = 'time-slot';
                     btn.innerHTML = `<strong>${slot.time_display}</strong><br><small>${slot.worker_name}</small>`;
                     
-                    // --- LÓGICA DE AUTO-SELECCIÓN TRAS ERROR ---
-                    // Si la hora y el worker coinciden con lo que había antes del error, lo marcamos
                     if (preSelectedTime === slot.time_value && preSelectedWorker == slot.worker_id) {
                         btn.classList.add('selected');
-                        // Reactivar botón confirmar
                         confirmBtn.disabled = false;
                         confirmBtn.style.opacity = '1';
                         confirmBtn.style.cursor = 'pointer';
-                        // Asegurar que guest form se vea
                         if (guestContainer) {
                             guestContainer.classList.remove('step-hidden');
                             guestContainer.classList.add('step-visible');
@@ -212,11 +210,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // --- EVENTOS UI ---
 
     uiService.addEventListener('change', function() {
         const serviceId = this.value;
-        // Reset total al cambiar servicio
         uiDate.value = '';
         slotsGrid.innerHTML = '';
         step3.classList.add('step-hidden');
@@ -238,7 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const dateVal = this.value;
         const serviceId = uiService.value;
         
-        // Validación fecha máxima
         const selectedDate = new Date(dateVal);
         if (selectedDate > maxDate) {
             feedbackMsg.innerText = 'No puedes reservar con más de 30 días de antelación.';
@@ -253,17 +248,13 @@ document.addEventListener('DOMContentLoaded', function() {
         hiddenDate.value = dateVal;
         step3.classList.remove('step-hidden');
         
-        // Llamamos a la función extraída
         fetchAndRenderSlots(serviceId, dateVal);
     });
 
-    // --- AUTO-EJECUCIÓN AL CARGAR (SI HAY ERRORES) ---
-    // Si Django devolvió el form con datos, ejecutamos la carga automáticamente
     if (hiddenService.value && hiddenDate.value) {
         fetchAndRenderSlots(hiddenService.value, hiddenDate.value);
     }
 
-    // --- CONFIRMACIÓN ---
     confirmBtn.addEventListener('click', function(e) {
         e.preventDefault(); 
 

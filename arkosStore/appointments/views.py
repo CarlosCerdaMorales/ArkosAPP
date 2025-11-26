@@ -31,17 +31,27 @@ def upcoming_appointments_view(request):
 
 
 def create_appointment_view(request):
+    is_guest_mode = request.GET.get('mode') == 'guest'
+    form_user = None if is_guest_mode else request.user
+
     if request.method == "POST":
-        form = AppointmentForm(request.POST, user=request.user)
+        form = AppointmentForm(request.POST, user=form_user)
 
         if form.is_valid():
             appointment = form.save(commit=False)
 
             if request.user.is_authenticated:
                 appointment.user = request.user
-
+                if is_guest_mode:
+                    appointment.user = None
+                    appointment.guest_first_name = request.POST.get('guest_first_name')
+                    appointment.guest_last_name = request.POST.get('guest_last_name')
+                    appointment.guest_email = request.POST.get('guest_email')
+                    appointment.guest_phone = request.POST.get('guest_phone')
+                    appointment.status = StatusChoices.CONFIRMED
             else:
                 appointment.user = None
+
 
             appointment.datetime = form.cleaned_data["datetime_actual"]
             worker_id = form.cleaned_data["worker_id"]
@@ -53,7 +63,7 @@ def create_appointment_view(request):
     else:
         form = AppointmentForm(user=request.user)
 
-    context = {"form": form, "services": Service.objects.all()}
+    context = {"form": form, "services": Service.objects.all(), 'force_guest': is_guest_mode  }
     return render(request, "appointments/create.html", context)
 
 
@@ -247,7 +257,11 @@ def modify_appointment_view(request, pk):
     else:
         initial_data = {
             'date': appointment.datetime.date(),
-            'time': appointment.datetime.time()
+            'time': appointment.datetime.time(),
+            'guest_first_name': appointment.guest_first_name,
+            'guest_last_name': appointment.guest_last_name,
+            'guest_email': appointment.guest_email,
+            'guest_phone': appointment.guest_phone,
         }
         form = AdminAppointmentForm(instance=appointment, initial=initial_data)
 
