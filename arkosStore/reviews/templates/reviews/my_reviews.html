@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* --- Estilos Mejorados para Mis Valoraciones --- */
+
+    /* Ajuste al contenedor principal */
+    .profile-card {
+        background-color: white;
+        border: 1px solid #f0f0f0;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.05); /* Sombra elegante */
+        padding: 40px;
+    }
+
+    .reviews-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    /* Tarjeta de Reseña Individual */
+    .review-card {
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        border: 1px solid #eee;
+        text-align: left;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+    }
+
+    .review-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 55, 62, 0.08);
+        border-color: #bfe3ef; /* Sutil borde azul al pasar el ratón */
+    }
+
+    /* Cabecera de la tarjeta */
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .service-name {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #00373E;
+        margin-bottom: 4px;
+    }
+
+    .review-worker {
+        color: #19a463; /* Verde corporativo */
+        font-weight: 600;
+        font-size: 0.95em;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* Badge de Estrellas */
+    .rating-badge {
+        background-color: #fff9e6;
+        padding: 5px 12px;
+        border-radius: 20px;
+        border: 1px solid #ffeeba;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+    }
+
+    .star-rating {
+        color: #ffc107;
+        font-weight: 800;
+        font-size: 1.1em;
+        letter-spacing: 1px;
+    }
+
+    .review-date {
+        color: #888;
+        font-size: 0.8em;
+        font-weight: 500;
+    }
+
+    /* Cuerpo del Comentario */
+    .review-body {
+        background-color: #f9fbfb;
+        padding: 15px 20px;
+        border-radius: 0 10px 10px 10px;
+        border-left: 4px solid #00373E; /* Línea de acento */
+        position: relative;
+    }
+
+    .review-comment {
+        color: #555;
+        line-height: 1.6;
+        font-style: italic;
+        margin: 0;
+        font-size: 0.95em;
+    }
+
+    /* Estado vacío */
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: #999;
+        background: #fcfcfc;
+        border-radius: 16px;
+        border: 2px dashed #eee;
+    }
+
+    /* Botón de volver mejorado (Estilo Outline) */
+    .btn-outline-back {
+        background-color: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-back:hover {
+        background-color: #6c757d;
+        color: white;
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-wrapper">
+    <div class="profile-card">
+        <h2 class="profile-title">Historial de Valoraciones</h2>
+        <p style="color: #666; margin-bottom: 20px;">Aquí puedes consultar todas las reseñas que has escrito.</p>
+        
+        <div class="reviews-list">
+            {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-header">
+                    <div>
+                        <div class="service-name">{{ review.appointment.service.get_name_display }}</div>
+                        <div class="review-worker">
+                            Atendido por {{ review.appointment.worker.name }}
+                        </div>
+                    </div>
+                    
+                    <div class="rating-badge">
+                        <span class="star-rating">★ {{ review.rating }}</span>
+                        <span class="review-date">{{ review.date|date:"d M Y" }}</span>
+                    </div>
+                </div>
+                
+                <div class="review-body">
+                    <p class="review-comment">
+                        "{{ review.comment|default:"Sin comentario escrito." }}"
+                    </p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <div style="font-size: 3.5em; margin-bottom: 15px; opacity: 0.5;">✍️</div>
+                <h3 style="color: #666; font-size: 1.2em; margin-bottom: 5px;">Aún no has valorado ninguna cita</h3>
+                <p style="font-size: 0.9em;">Tus reseñas aparecerán aquí cuando completes citas y dejes tu opinión.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="profile-form-actions" style="margin-top: 40px;">
+            <a href="{% url 'profile' %}" class="profile-btn btn-outline-back">
+                &larr; Volver al perfil
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

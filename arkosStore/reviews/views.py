@@ -40,3 +40,11 @@ def create_review_view(request, appointment_id):
         'appointment': appointment
     }
     return render(request, 'reviews/create.html', context)
+
+@login_required
+def my_reviews_view(request):
+    reviews = Review.objects.filter(
+        appointment__user=request.user
+    ).order_by('-date')
+    
+    return render(request, 'reviews/my_reviews.html', {'reviews': reviews})
