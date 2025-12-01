@@ -81,3 +81,5 @@ def custom_admin(request):
 
     return render(request, "home/admin.html", context)
 
+def terms_conditions_view(request):
+    return render(request, 'legal/terms.html')

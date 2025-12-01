@@ -18,18 +18,32 @@
                 {% csrf_token %}
                 
                 {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    
-                    {% if field.help_text %}
-                        <small class="help-text">{{ field.help_text }}</small>
+                    {% if field.name == 'terms_confirmed' %}
+                        <div class="form-group checkbox-group">
+                            {{ field }}
+                            <label for="{{ field.id_for_label }}">
+                                He leído y acepto los <a href="{% url 'terms_conditions' %}" target="_blank">Términos y Condiciones</a>
+                            </label>
+                            
+                            {% for error in field.errors %}
+                                <div class="form-errors" style="width: 100%;">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            
+                            {% if field.help_text %}
+                                <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+                            
+                            {% for error in field.errors %}
+                                <div class="form-errors">{{ error }}</div>
+                            {% endfor %}
+                        </div>
                     {% endif %}
-                    
-                    {% for error in field.errors %}
-                        <div class="form-errors">{{ error }}</div>
-                    {% endfor %}
-                </div>
                 {% endfor %}
 
                 {% if form.non_field_errors %}

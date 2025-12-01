@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
+<style>
+    .legal-content h3 { color: #00373E; margin-top: 20px; font-size: 1.2em; }
+    .legal-content p, .legal-content ul { color: #555; line-height: 1.6; font-size: 0.95em; text-align: justify; }
+    .legal-content ul { list-style-type: disc; margin-left: 20px; }
+    .back-btn-container { text-align: center; margin-top: 40px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-wrapper">
+    <div class="profile-card" style="background: white; border: 1px solid #eee;">
+        <h2 class="profile-title">Términos y Condiciones de Uso</h2>
+        <p style="color: #888; font-size: 0.9em; margin-bottom: 30px;">Última actualización: Diciembre 2025</p>
+
+        <div class="legal-content">
+            <h3>1. Introducción</h3>
+            <p>Bienvenido a <strong>NATURSUR</strong>. Al registrarte y utilizar nuestros servicios de reserva de citas y gestión de perfil, aceptas cumplir con los siguientes términos y condiciones. Si no estás de acuerdo con alguna parte de estos términos, te rogamos que no utilices nuestros servicios.</p>
+
+            <h3>2. Registro y Cuentas</h3>
+            <p>Para acceder a ciertas funcionalidades, debes registrarte creando una cuenta. Te comprometes a proporcionar información veraz, exacta y completa (nombre, teléfono, email) y a mantenerla actualizada. Eres responsable de mantener la confidencialidad de tu contraseña.</p>
+
+            <h3>3. Política de Citas y Cancelaciones</h3>
+            <p>NATURSUR ofrece un servicio de reserva de citas online. Al reservar:</p>
+            <ul>
+                <li>Te comprometes a asistir a la cita en la fecha y hora seleccionadas.</li>
+                <li><strong>Política de 12 Horas:</strong> Puedes cancelar tu cita sin penalización hasta 12 horas antes de la hora programada. Pasado este límite, la cita no podrá ser cancelada a través de la plataforma.</li>
+            </ul>
+
+            <h3>4. Uso de Datos Personales</h3>
+            <p>Tus datos personales serán tratados con estricta confidencialidad y utilizados únicamente para la gestión de tus citas, el historial de tratamientos y la comunicación relacionada con nuestros servicios, conforme a la normativa vigente de Protección de Datos.</p>
+
+            <h3>5. Modificaciones</h3>
+            <p>Nos reservamos el derecho a modificar estos términos en cualquier momento. Los cambios serán efectivos desde su publicación en esta plataforma.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

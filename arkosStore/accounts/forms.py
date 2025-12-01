@@ -42,6 +42,12 @@ class CustomUserCreationForm(UserCreationForm):
         label="Confirmar contraseña",
         widget=forms.PasswordInput(attrs={"placeholder": "Repite la contraseña"}),
     )
+    terms_confirmed = forms.BooleanField(
+        required=True,
+        widget=forms.CheckboxInput(attrs={'class': 'checkbox-input'}),
+        label="Acepto los Términos y Condiciones",
+        error_messages={'required': 'Debes aceptar los términos para continuar.'}
+    )
 
     class Meta:
         model = User
@@ -54,6 +60,7 @@ class CustomUserCreationForm(UserCreationForm):
             "address",
             "password1",
             "password2",
+            "terms_confirmed",
         ]
 
 
