@@ -3,6 +3,141 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'home/index.css' %}">
+
+<style>
+    #chatbot-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #00373E;
+        color: white;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        z-index: 9999;
+        transition: transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #chatbot-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    #chatbot-window {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 350px;
+        height: 450px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        z-index: 9999;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .chatbot-header {
+        background-color: #00373E;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+    }
+
+    .chatbot-body {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background-color: #f9f9f9;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .msg {
+        padding: 10px 14px;
+        border-radius: 10px;
+        max-width: 80%;
+        font-size: 0.9em;
+        line-height: 1.4;
+        word-wrap: break-word;
+    }
+
+    .msg.bot {
+        background-color: #e9ecef;
+        align-self: flex-start;
+        color: #333;
+        border-bottom-left-radius: 0;
+    }
+
+    .msg.bot a {
+        color: #00373E;
+        font-weight: bold;
+    }
+
+    .msg.user {
+        background-color: #19a463;
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 0;
+    }
+
+    .chatbot-input-area {
+        padding: 12px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 8px;
+        background: white;
+    }
+
+    .chatbot-input-area input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+        font-size: 0.9em;
+    }
+
+    .chatbot-input-area button {
+        background-color: #00373E;
+        color: white;
+        border: none;
+        padding: 0 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.9em;
+        font-weight: 500;
+    }
+    .chat-btn {
+    display: inline-block;
+    background-color: #19a463;
+    color: white !important;
+    padding: 8px 12px;
+    border-radius: 15px;
+    text-decoration: none;
+    margin-top: 5px;
+    font-size: 0.9em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    }
+    .chat-btn:hover {
+        transform: scale(1.05);
+        background-color: #148650;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +156,7 @@
                 <div class="home-hero-ctas">
                     <a href="{% url 'create_appointment' %}" class="home-btn home-btn-primary">Reservar cita</a>
                     <a href="{% url 'services_list' %}" class="home-btn home-btn-ghost">Ver servicios</a>
-                    <a href="{% url 'resources' %}" class="home-btn home-btn-outline">Recursos y Herbalife</a>
+                    <a href="#" class="home-btn home-btn-outline">Recursos y Herbalife</a>
                 </div>
             </div>
             <div class="home-hero-figure">
@@ -43,7 +178,7 @@
             <div class="home-auth-actions">
                 <a href="{% url 'create_appointment' %}" class="home-btn home-btn-primary">Reservar cita</a>
                 <a href="{% url 'appointment_history' %}" class="home-btn home-btn-light">Historial de citas</a>
-                <a href="{% url 'resources' %}" class="home-btn home-btn-outline">Ver recursos</a>
+                <a href="#" class="home-btn home-btn-outline">Ver recursos</a>
             </div>
         </div>
         {% else %}
@@ -52,6 +187,8 @@
                 Crea tu cuenta o inicia sesión para reservar cita y llevar un control de tus sesiones.
             </p>
             <div class="home-auth-actions">
+                <a href="{% url 'create_appointment' %}" class="home-btn home-btn-success">Coger una cita</a>
+                <span style="margin: 0 10px; color: #aaa;">|</span>
                 <a href="{% url 'login' %}" class="home-btn home-btn-primary">Iniciar sesión</a>
                 <a href="{% url 'register' %}" class="home-btn home-btn-outline">Registrarme</a>
             </div>
@@ -116,5 +253,97 @@
         </div>
     </section>
 
+    <div id="chatbot-container">
+        <button id="chatbot-toggle" onclick="toggleChat()">
+            💬
+        </button>
+    
+        <div id="chatbot-window">
+            <div class="chatbot-header">
+                <span>Asistente NATURSUR</span>
+                <button onclick="toggleChat()" style="background:none; border:none; color:white; cursor:pointer; font-size:1.2em;">✕</button>
+            </div>
+            <div id="chatbot-messages" class="chatbot-body">
+                <div class="msg bot">
+                    ¡Hola! 👋 Soy el asistente virtual de Natursur. 
+                    <br><br>
+                    Puedes preguntarme sobre:
+                    <ul style="margin-left: 15px; margin-top:5px;">
+                        <li>Nuestros servicios</li>
+                        <li>Cómo reservar cita</li>
+                        <li>Precios</li>
+                        <li>Registrarse</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chat-input" placeholder="Escribe tu duda..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<script>
+    function toggleChat() {
+        const chatWindow = document.getElementById('chatbot-window');
+        if (chatWindow.style.display === 'flex') {
+            chatWindow.style.display = 'none';
+        } else {
+            chatWindow.style.display = 'flex';
+            // Enfocar el input al abrir
+            setTimeout(() => document.getElementById('chat-input').focus(), 100);
+        }
+    }
+
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    function appendMessage(text, sender) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `msg ${sender}`;
+        msgDiv.innerHTML = text;
+        
+        const container = document.getElementById('chatbot-messages');
+        container.appendChild(msgDiv);
+        container.scrollTop = container.scrollHeight; // Auto-scroll al fondo
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const text = input.value.trim();
+        if (!text) return;
+
+        // 1. Mostrar mensaje del usuario
+        appendMessage(text, 'user');
+        input.value = '';
+
+        // 2. Enviar a Django (AJAX)
+        // IMPORTANTE: Asegúrate de haber creado la URL y la Vista 'chatbot_api'
+        fetch('/api/chatbot/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ message: text })
+        })
+        .then(r => r.json())
+        .then(data => {
+            // 3. Mostrar respuesta del bot
+            if(data.response) {
+                appendMessage(data.response, 'bot');
+            } else {
+                appendMessage("Lo siento, no he entendido eso.", 'bot');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            appendMessage("Error de conexión con el servidor.", 'bot');
+        });
+    }
+</script>
+
 {% endblock %}
