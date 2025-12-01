@@ -2,15 +2,18 @@
 {% load static %}
 
 {% block extra_css %}
-<style>
-    /* --- Estilos Mejorados para Mis Valoraciones --- */
+<link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
 
-    /* Ajuste al contenedor principal */
+<style>
+    /* --- ESTILOS MEJORADOS (Consistentes con workers/reviews) --- */
+
+    /* Ajuste al contenedor principal para darle aire */
     .profile-card {
         background-color: white;
         border: 1px solid #f0f0f0;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.05); /* Sombra elegante */
+        box-shadow: 0 10px 40px rgba(0,0,0,0.05);
         padding: 40px;
+        border-radius: 16px;
     }
 
     .reviews-list {
@@ -20,9 +23,9 @@
         margin-top: 30px;
     }
 
-    /* Tarjeta de Reseña Individual */
+    /* Tarjeta Individual */
     .review-card {
-        background: white;
+        background: #ffffff;
         padding: 25px;
         border-radius: 16px;
         border: 1px solid #eee;
@@ -34,7 +37,7 @@
     .review-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 10px 25px rgba(0, 55, 62, 0.08);
-        border-color: #bfe3ef; /* Sutil borde azul al pasar el ratón */
+        border-color: #bfe3ef;
     }
 
     /* Cabecera de la tarjeta */
@@ -42,56 +45,65 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px dashed #e5e5e5;
+    }
+
+    .service-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
     }
 
     .service-name {
-        font-size: 1.2em;
+        font-size: 1.15em;
         font-weight: 700;
         color: #00373E;
-        margin-bottom: 4px;
     }
 
     .review-worker {
         color: #19a463; /* Verde corporativo */
         font-weight: 600;
-        font-size: 0.95em;
+        font-size: 0.9em;
         display: flex;
         align-items: center;
         gap: 6px;
     }
 
-    /* Badge de Estrellas */
+    /* Badge de Estrellas y Fecha */
+    .rating-meta {
+        text-align: right;
+    }
+
     .rating-badge {
         background-color: #fff9e6;
-        padding: 5px 12px;
-        border-radius: 20px;
+        padding: 4px 10px;
+        border-radius: 12px;
         border: 1px solid #ffeeba;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 2px;
+        display: inline-block;
+        margin-bottom: 4px;
     }
 
     .star-rating {
         color: #ffc107;
         font-weight: 800;
-        font-size: 1.1em;
+        font-size: 1em;
         letter-spacing: 1px;
     }
 
     .review-date {
-        color: #888;
+        color: #999;
         font-size: 0.8em;
         font-weight: 500;
+        display: block;
     }
 
     /* Cuerpo del Comentario */
     .review-body {
-        background-color: #f9fbfb;
-        padding: 15px 20px;
-        border-radius: 0 10px 10px 10px;
-        border-left: 4px solid #00373E; /* Línea de acento */
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
         position: relative;
     }
 
@@ -106,25 +118,29 @@
     /* Estado vacío */
     .empty-state {
         text-align: center;
-        padding: 50px 20px;
+        padding: 60px 20px;
         color: #999;
         background: #fcfcfc;
         border-radius: 16px;
         border: 2px dashed #eee;
     }
 
-    /* Botón de volver mejorado (Estilo Outline) */
+    /* Botón de volver (Outline) */
     .btn-outline-back {
         background-color: transparent;
         color: #6c757d;
         border: 2px solid #6c757d;
         transition: all 0.3s ease;
+        padding: 10px 25px;
+        font-weight: 600;
+        border-radius: 50px;
     }
 
     .btn-outline-back:hover {
         background-color: #6c757d;
         color: white;
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 </style>
 {% endblock %}
@@ -133,21 +149,23 @@
 <div class="profile-wrapper">
     <div class="profile-card">
         <h2 class="profile-title">Historial de Valoraciones</h2>
-        <p style="color: #666; margin-bottom: 20px;">Aquí puedes consultar todas las reseñas que has escrito.</p>
+        <p style="color: #666; margin-bottom: 30px;">Aquí puedes consultar todas las reseñas que has escrito.</p>
         
         <div class="reviews-list">
             {% for review in reviews %}
             <div class="review-card">
                 <div class="review-header">
-                    <div>
+                    <div class="service-info">
                         <div class="service-name">{{ review.appointment.service.get_name_display }}</div>
                         <div class="review-worker">
-                            Atendido por {{ review.appointment.worker.name }}
+                            <span>👤</span> Atendido por {{ review.appointment.worker.name }}
                         </div>
                     </div>
                     
-                    <div class="rating-badge">
-                        <span class="star-rating">★ {{ review.rating }}</span>
+                    <div class="rating-meta">
+                        <div class="rating-badge">
+                            <span class="star-rating">★ {{ review.rating }}</span>
+                        </div>
                         <span class="review-date">{{ review.date|date:"d M Y" }}</span>
                     </div>
                 </div>

@@ -3,6 +3,44 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'appointments/upcoming.css' %}">
+<link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
+
+<style>
+    .btn-back-container {
+        margin-top: 40px;
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid #bfe3ef;
+    }
+    
+    .btn-back-custom {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px; 
+        background-color: #00373E;
+        color: white !important;
+        padding: 12px 35px;
+        border-radius: 50px; 
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 55, 62, 0.2);
+    }
+
+    .btn-back-custom:hover {
+        background-color: #004d57; 
+        transform: translateY(-3px); 
+        box-shadow: 0 10px 25px rgba(0, 55, 62, 0.3);
+    }
+
+    .arrow-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-back-custom:hover .arrow-icon {
+        transform: translateX(-5px);
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -35,8 +73,17 @@
             </button>
         </div>
         {% empty %}
-        <p class="no-appointments">No hay citas programadas.</p>
+        <div style="text-align: center; padding: 20px; color: #00373E;">
+            <p class="no-appointments">No tienes ninguna cita programada.</p>
+        </div>
         {% endfor %}
+
+        <div class="btn-back-container">
+            <a href="{% url 'profile' %}" class="btn-back-custom">
+                <span class="arrow-icon">&larr;</span> Volver al perfil
+            </a>
+        </div>
+
     </div>
 </div>
 

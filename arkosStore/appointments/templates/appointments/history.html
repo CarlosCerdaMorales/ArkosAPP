@@ -3,54 +3,98 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'appointments/history.css' %}">
+
 <style>
     .review-section {
         margin-top: 15px;
         padding-top: 15px;
-        border-top: 1px solid #eee;
+        border-top: 1px dashed #ddd;
     }
 
     .stars {
         color: #ffc107;
         font-size: 1.2em;
         margin-bottom: 8px;
+        letter-spacing: 1px;
     }
 
     .review-comment {
-        color: #666;
+        color: #555;
         font-style: italic;
-        margin: 8px 0;
-        padding: 10px;
-        background: #f8f9fa;
-        border-radius: 5px;
+        margin: 10px 0;
+        padding: 12px;
+        background: #f0f7f9;
+        border-radius: 8px;
+        border-left: 3px solid #00373E;
     }
 
     .review-date {
-        color: #999;
+        color: #888;
         font-size: 0.85em;
+        text-align: right;
     }
 
     .review-btn {
-        background: #4CAF50;
+        background: #19a463;
         color: white;
         border: none;
         padding: 8px 20px;
-        border-radius: 5px;
+        border-radius: 20px;
         cursor: pointer;
         font-size: 14px;
+        font-weight: 600;
         text-decoration: none;
         display: inline-block;
         transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(25, 164, 99, 0.2);
     }
 
     .review-btn:hover {
-        background: #45a049;
+        background: #148650;
         transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(25, 164, 99, 0.3);
     }
 
     .no-review-text {
-        color: #999;
+        color: #666;
         font-size: 0.9em;
+        margin-bottom: 8px;
+        font-style: italic;
+    }
+
+    .btn-back-container {
+        margin-top: 40px;
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid #bfe3ef;
+    }
+    
+    .btn-back-custom {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #00373E;
+        color: white !important;
+        padding: 12px 35px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 55, 62, 0.2);
+    }
+
+    .btn-back-custom:hover {
+        background-color: #004d57;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 55, 62, 0.3);
+    }
+
+    .arrow-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-back-custom:hover .arrow-icon {
+        transform: translateX(-5px);
     }
 </style>
 {% endblock %}
@@ -63,39 +107,52 @@
         {% for app in appointments %}
         <div class="history-item">
             <div class="history-data">
-                <b>Fecha:</b> {{ app.datetime|date:"d/m/Y H:i" }}
-                <b>Tipo:</b> {{ app.service.get_name_display }}
+                <b>Fecha:</b> {{ app.datetime|date:"d/m/Y H:i" }} <br>
+                <b>Tipo:</b> {{ app.service.get_name_display }} <br>
                 <b>Trabajador:</b> {{ app.worker.name }}
             </div>
 
             <div class="review-section">
                 {% if app.review %}
-                <!-- Mostrar valoración existente -->
                 <div class="stars">
                     {% for i in "12345" %}
-                    {% if forloop.counter <= app.review.rating %} ★ {% else %} ☆ {% endif %} {% endfor %} <span
-                        style="color: #666; font-size: 0.8em;">({{ app.review.rating }}/5)</span>
+                        {% if forloop.counter <= app.review.rating %}★{% else %}☆{% endif %} 
+                    {% endfor %} 
+                    <span style="color: #666; font-size: 0.8em; font-weight: normal;">({{ app.review.rating }}/5)</span>
                 </div>
+                
                 {% if app.review.comment %}
                 <div class="review-comment">
                     "{{ app.review.comment }}"
                 </div>
                 {% endif %}
+                
                 <div class="review-date">
                     Valorado el {{ app.review.date|date:"d/m/Y" }}
                 </div>
+                
                 {% else %}
-                <!-- Botón para crear valoración -->
-                <p class="no-review-text">Aún no has valorado esta cita</p>
-                <a href="{% url 'create_review' app.id %}" class="review-btn">
-                    ⭐ Dejar valoración
-                </a>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <p class="no-review-text" style="margin:0;">Aún no has valorado esta cita</p>
+                    <a href="{% url 'create_review' app.id %}" class="review-btn">
+                        ⭐ Valorar
+                    </a>
+                </div>
                 {% endif %}
             </div>
         </div>
         {% empty %}
-        <p class="no-appointments">No hay citas finalizadas.</p>
+        <div style="text-align: center; padding: 40px; color: #888;">
+            <p>No tienes citas finalizadas en tu historial.</p>
+        </div>
         {% endfor %}
+
+        <div class="btn-back-container">
+            <a href="{% url 'profile' %}" class="btn-back-custom">
+                <span class="arrow-icon">&larr;</span> Volver al perfil
+            </a>
+        </div>
+
     </div>
 </div>
 {% endblock %}
