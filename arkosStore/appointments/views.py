@@ -10,6 +10,7 @@ from accounts.models import User
 from .models import Service, Worker, Availability, Appointment, StatusChoices, TypeChoices
 from datetime import datetime, timedelta
 from django.http import JsonResponse
+from .services import send_appointment_notifications
 
 
 
@@ -59,6 +60,8 @@ def create_appointment_view(request):
             appointment.worker = get_object_or_404(Worker, id=worker_id)
 
             appointment.save()
+
+            send_appointment_notifications(appointment)
 
             return redirect("appointment_success", pk=appointment.id)
     else:
